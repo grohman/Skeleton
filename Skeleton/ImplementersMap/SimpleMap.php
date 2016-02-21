@@ -10,7 +10,8 @@ use \Skeleton\Exceptions;
 
 class SimpleMap implements IMap 
 {
-	private $m_arrMap = [];
+	/** @var array */
+	private $m_map = [];
 	
 	
 	/**
@@ -28,7 +29,7 @@ class SimpleMap implements IMap
 				
 			case Type::Singleton:
 				$instance = new $value;
-				$this->m_arrMap[$key] = $instance;
+				$this->m_map[$key] = $instance;
 				return $instance;
 				
 			default:
@@ -44,16 +45,16 @@ class SimpleMap implements IMap
 	 */
 	public function set($key, $implementer, $flags = Type::Instance)
 	{
-		if (isset($this->m_arrMap[$key]))
+		if (isset($this->m_map[$key]))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
 		
 		if (is_string($implementer) && $flags != Type::StaticClass) 
 		{
-			$this->m_arrMap[$key] = [$implementer, $flags];
+			$this->m_map[$key] = [$implementer, $flags];
 		} 
 		else 
 		{
-			$this->m_arrMap[$key] = $implementer;
+			$this->m_map[$key] = $implementer;
 		}
 	}
 	
@@ -63,10 +64,10 @@ class SimpleMap implements IMap
 	 */
 	public function get($key) 
 	{
-		if (!isset($this->m_arrMap[$key]))
+		if (!isset($this->m_map[$key]))
 			throw new Exceptions\ImplementerNotDefinedException($key);
 		
-		$data = $this->m_arrMap[$key];
+		$data = $this->m_map[$key];
 		
 		if (!is_array($data)) 
 			return $data;
@@ -83,6 +84,6 @@ class SimpleMap implements IMap
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
-		return isset($this->m_arrMap[$key]);
+		return isset($this->m_map[$key]);
 	}
 }
