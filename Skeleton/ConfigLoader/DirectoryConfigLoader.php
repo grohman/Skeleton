@@ -5,7 +5,7 @@ namespace Skeleton\ConfigLoader;
 use \Skeleton\Base\IConfigLoader;
 
 
-class RecursiveConfigLoader implements IConfigLoader
+class DirectoryConfigLoader implements IConfigLoader
 {
 	/** @var array */
 	private $m_aDirectories;

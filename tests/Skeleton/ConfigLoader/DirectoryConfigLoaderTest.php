@@ -2,16 +2,16 @@
 namespace tests\Skeleton\ConfigLoader;
 
 
-use \Skeleton\ConfigLoader\RecursiveConfigLoader;
+use \Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 use \tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 
 
-class RecursiveConfigLoaderTest extends \PHPUnit_Framework_TestCase
+class DirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @param array $dirs
-	 * @return RecursiveConfigLoader
+	 * @return DirectoryConfigLoader
 	 */
 	private function createLoader(array $dirs)
 	{
@@ -20,7 +20,7 @@ class RecursiveConfigLoaderTest extends \PHPUnit_Framework_TestCase
 			$dir = __DIR__ . "/Files/$dir";
 		}
 		
-		return new RecursiveConfigLoader($dirs);
+		return new DirectoryConfigLoader($dirs);
 	}
 	
 	/**
