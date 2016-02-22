@@ -3,6 +3,7 @@
 // Always include this file.
 require_once realpath(__DIR__ . '/Skeleton/Base/IConfigLoader.php');
 require_once realpath(__DIR__ . '/Skeleton/Base/IMap.php');
+require_once realpath(__DIR__ . '/Skeleton/Base/ConfigSearch.php');
 require_once realpath(__DIR__ . '/Skeleton/Skeleton.php');
 require_once realpath(__DIR__ . '/Skeleton/Type.php');
 
