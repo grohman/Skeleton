@@ -1,5 +1,5 @@
 <?php
-namespace tests\Skeleton\Base;
+namespace tests\Skeleton\ImplementersMap;
 
 
 use \Skeleton\Type;

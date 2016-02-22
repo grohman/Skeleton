@@ -1,5 +1,5 @@
 <?php
-namespace test\Skeleton\Base;
+namespace test\Skeleton\ImplementersMap;
 
 
 use \Skeleton\Base\IMap;

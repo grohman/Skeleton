@@ -4,6 +4,7 @@ namespace Skeleton;
 
 use \Skeleton\Exceptions;
 use \Skeleton\Base\IMap;
+use \Skeleton\Base\ConfigSearch;
 use \Skeleton\Base\IConfigLoader;
 
 
@@ -14,28 +15,6 @@ class Skeleton
 	
 	/** @var IConfigLoader */
 	private $m_configLoader;
-	
-	
-	/**
-	 * @param string $key
-	 */
-	private function tryLoad($key) 
-	{
-		$keyPath = explode('\\', $key);
-		$length = count($keyPath);
-		
-		while ($length > 0) 
-		{
-			if ($this->m_configLoader->tryLoad(implode(DIRECTORY_SEPARATOR, $keyPath))) 
-			{
-				if ($this->m_map->has($key)) 
-					break;
-			}
-			
-			array_pop($keyPath);
-			$length--;
-		}
-	}
 	
 	
 	/**
@@ -87,7 +66,7 @@ class Skeleton
 		if ($this->m_map->has($key)) 
 			return $this->m_map->get($key);
 		
-		$this->tryLoad($key);
+		ConfigSearch::searchFor($key, $this->m_map, $this->m_configLoader);
 		
 		return $this->m_map->get($key);
 	}

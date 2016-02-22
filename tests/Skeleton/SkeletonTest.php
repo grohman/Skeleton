@@ -76,7 +76,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		
 		$loader->expects($this->never())->method('tryLoad');
 		
-		$s->get('a');
+		$s->get('a\b');
 	}
 	
 	public function test_get_NotClassInMap_ConfigLoaderCalled()
@@ -87,18 +87,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		
 		$loader->expects($this->atLeastOnce())->method('tryLoad');
 		
-		$s->get('a');
-	}
-	
-	public function test_get_MapAlreadyHasClass_ConfigLoaderNotInvoked()
-	{
-		$s = new Skeleton();
-		$map = $this->mockMapHasValue($s, true);
-		
-		$map->method('has')->willReturn(true);
-		$map->expects($this->once())->method('get')->with('a');
-		
-		$s->get('a');
+		$s->get('a\b');
 	}
 	
 	public function test_get_ConfigLoaderCalledWithCorrectValues()
@@ -109,47 +98,18 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		
 		$loader->expects($this->once())->method('tryLoad')->with('a');
 		
-		$s->get('a');
-	}
-	
-	public function test_get_ComplexKey_LoaderCalledForEachPart()
-	{
-		$s = new Skeleton();
-		$this->mockMapHasValue($s, false);
-		$loader = $this->mockLoader($s);
-		
-		$loader->expects($this->at(0))->method('tryLoad')->with('some/complex/namespace');
-		$loader->expects($this->at(1))->method('tryLoad')->with('some/complex');
-		$loader->expects($this->at(2))->method('tryLoad')->with('some');
-		
-		$s->get('some\complex\namespace');
+		$s->get('a\b');
 	}
 	
 	public function test_get_GetCalledOneMoreTimeAfterConfigLoaded()
 	{
 		$s = new Skeleton();
-		$map = $this->mockMap($s);
+		$map = $this->mockMapHasValue($s, false);
 		$this->mockLoader($s);
 		
+		// Has method will return false by default so get should only be called once. 
 		$map->expects($this->once())->method('get')->with('some\complex\namespace');
 		
-		
-		$s->get('some\complex\namespace');
-	}
-	
-	public function test_get_ConfigFound_StopLoadingConfigs()
-	{
-		$s = new Skeleton();
-		$map = $this->mockMap($s);
-		$loader = $this->mockLoader($s);
-		
-		$map->expects($this->at(0))->method('has')->willReturn(false);
-		$map->expects($this->at(1))->method('has')->willReturn(true);
-		$map->expects($this->exactly(2))->method('has')->willReturn(true);
-		
-		$loader->expects($this->at(0))->method('tryLoad')->with('some/complex/namespace')->willReturn(false);
-		$loader->expects($this->at(1))->method('tryLoad')->with('some/complex')->willReturn(true);
-		$loader->expects($this->exactly(2))->method('tryLoad');
 		
 		$s->get('some\complex\namespace');
 	}
