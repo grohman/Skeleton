@@ -3,6 +3,7 @@ namespace tests\Skeleton\ImplementersMap;
 
 
 use \Skeleton\Type;
+use \Skeleton\ISingleton;
 use \Skeleton\ImplementersMap\SimpleMap;
 
 
@@ -51,10 +52,21 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(\stdClass::class, $map->get('a'));
 	}
 	
-	public function test_get_SetWithFlagSingletone_SameInstanceAlwaysReturned()
+	public function test_get_SetWithFlagSingleton_SameInstanceAlwaysReturned()
 	{
 		$map = new SimpleMap();
 		$map->set('a', \stdClass::class, Type::Singleton);
+		
+		$this->assertSame($map->get('a'), $map->get('a'));
+	}
+	
+	public function test_get_ClassIsInstanceOfISingleton_SameInstanceAlwaysReturned()
+	{
+		$single = $this->getMock(ISingleton::class);
+		$className = get_class($single);
+		
+		$map = new SimpleMap();
+		$map->set('a', $className, Type::Instance);
 		
 		$this->assertSame($map->get('a'), $map->get('a'));
 	}

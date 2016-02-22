@@ -2,4 +2,4 @@
 namespace Skeleton;
 
 
-interface ISingletone {}
+interface ISingleton {}

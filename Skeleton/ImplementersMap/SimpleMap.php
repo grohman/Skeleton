@@ -3,6 +3,7 @@ namespace Skeleton\ImplementersMap;
 
 
 use \Skeleton\Type;
+use \Skeleton\ISingleton;
 use \Skeleton\Base\IMap;
 
 use \Skeleton\Exceptions;
@@ -22,19 +23,14 @@ class SimpleMap implements IMap
 	 */
 	private function getObject($key, $value, $type)
 	{
-		switch ($type)
+		$instance = new $value;
+		
+		if ($instance instanceof ISingleton || $type == Type::Singleton)
 		{
-			case Type::Instance:
-				return new $value;
-				
-			case Type::Singleton:
-				$instance = new $value;
-				$this->m_aMap[$key] = $instance;
-				return $instance;
-				
-			default:
-				throw new Exceptions\SkeletonException("Type $type is not expected at this point!");
+			$this->m_aMap[$key] = $instance;
 		}
+		
+		return $instance;
 	}
 	
 	

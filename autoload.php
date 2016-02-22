@@ -1,11 +1,5 @@
 <?php
-
-// Always include this files.
-require_once realpath(__DIR__ . '/Skeleton/Base/IConfigLoader.php');
-require_once realpath(__DIR__ . '/Skeleton/Base/IMap.php');
-require_once realpath(__DIR__ . '/Skeleton/Base/ConfigSearch.php');
-require_once realpath(__DIR__ . '/Skeleton/Skeleton.php');
-require_once realpath(__DIR__ . '/Skeleton/Type.php');
+require_once __DIR__ . '/Skeleton/inc.php';
 
 
 // Add auto loader.
