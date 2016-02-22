@@ -102,4 +102,27 @@ class DirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(LoadedNotifier::isLoadedAt($this->getPathToFiles($configB, 'ClassA'), 1));
 		$this->assertTrue(LoadedNotifier::isLoadedAt($this->getPathToFiles($configA, 'ClassA'), 2));
 	}
+	
+	public function test_ConfigNotLoadedTwice()
+	{
+		$configA = 'ConfigNotLoadedTwice/ConfigA';
+		
+		$l = $this->createLoader([$configA]);
+		$l->tryLoad('ClassA');
+		$this->assertTrue(LoadedNotifier::isLoadedAt($this->getPathToFiles($configA, 'ClassA'), 1));
+		LoadedNotifier::clear();
+		
+		$l->tryLoad('ClassA');
+		
+		$this->assertFalse(LoadedNotifier::isLoadedAt($this->getPathToFiles($configA, 'ClassA'), 1));
+	}
+	
+	public function test_ComplexPath()
+	{
+		$configA = 'ComplexPath/ConfigA';
+		
+		$l = $this->createLoader([$configA]);
+		$l->tryLoad('Class/In/Path');
+		$this->assertTrue(LoadedNotifier::isLoaded($this->getPathToFiles($configA, 'Class/In/Path')));
+	}
 }
