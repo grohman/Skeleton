@@ -17,7 +17,7 @@ class DirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
 	{
 		foreach ($dirs as &$dir) 
 		{
-			$dir = __DIR__ . "/Files/$dir";
+			$dir = __DIR__ . "/Files/Directory/$dir";
 		}
 		
 		return new DirectoryConfigLoader($dirs);
@@ -30,7 +30,7 @@ class DirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function getPathToFiles($dir, $class)
 	{
-		return __DIR__ . "/Files/$dir/$class.php";
+		return __DIR__ . "/Files/Directory/$dir/$class.php";
 	}
 	
 	

@@ -16,6 +16,11 @@ class LoadedNotifier {
 		return in_array($path, self::$loaded);
 	}
 	
+	public static function getLoadedCount()
+	{
+		return count(self::$loaded);
+	}
+	
 	/**
 	 * At which order the file was loaded.
 	 * @param string $path
