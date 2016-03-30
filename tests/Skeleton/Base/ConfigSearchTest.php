@@ -1,25 +1,19 @@
 <?php
-namespace tests\Skeleton\Base;
-
-
-use \Skeleton\Base\IMap;
-use \Skeleton\Base\ConfigSearch;
-use \Skeleton\Base\IConfigLoader;
+namespace Skeleton\Base;
 
 
 class ConfigSearchTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
 	 */
 	private function mockMap() 
 	{
 		return $this->getMock(IMap::class);
 	}
 	
-	
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IConfigLoader
 	 */
 	private function mockLoader() 
 	{

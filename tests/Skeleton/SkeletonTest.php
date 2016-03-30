@@ -1,9 +1,7 @@
 <?php
-namespace tests\Skeleton;
+namespace Skeleton;
 
 
-use \Skeleton\Type;
-use \Skeleton\Skeleton;
 use \Skeleton\Base\IMap;
 use \Skeleton\Base\IConfigLoader;
 
@@ -14,10 +12,11 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @param Skeleton $s
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
 	 */
 	private function mockMap(Skeleton $s) 
 	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IMap $map */
 		$map = $this->getMock(IMap::class);
 		$s->setMap($map);
 		return $map;
@@ -37,10 +36,11 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	
 	/**
 	 * @param Skeleton $s
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IConfigLoader
 	 */
 	private function mockLoader(Skeleton $s) 
 	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		$s->setConfigLoader($loader);
 		return $loader;
@@ -50,7 +50,11 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	public function test_SelfReturned() 
 	{
 		$s = new Skeleton();
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IMap $map */
 		$map = $this->getMock(IMap::class);
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		
 		$this->assertSame($s, $s->setMap($map));

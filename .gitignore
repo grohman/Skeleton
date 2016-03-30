@@ -1,2 +1,14 @@
-# IDEs
-.idea
+# IDE Folders
+/.buildpath
+/.project
+/.settings
+/.idea
+
+# OS Folders
+.DS_Store
+
+# Composer
+/vendor/
+
+# Local test files
+test.php

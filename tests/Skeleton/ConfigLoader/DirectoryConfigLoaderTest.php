@@ -1,8 +1,6 @@
 <?php
-namespace tests\Skeleton\ConfigLoader;
+namespace Skeleton\ConfigLoader;
 
-
-use \Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 use \tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 

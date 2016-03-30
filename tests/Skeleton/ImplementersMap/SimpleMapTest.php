@@ -1,10 +1,9 @@
 <?php
-namespace tests\Skeleton\ImplementersMap;
+namespace Skeleton\ImplementersMap;
 
 
 use \Skeleton\Type;
 use \Skeleton\ISingleton;
-use \Skeleton\ImplementersMap\SimpleMap;
 
 
 class SimpleMapTest extends \PHPUnit_Framework_TestCase 
