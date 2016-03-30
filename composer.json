@@ -1,11 +1,15 @@
 {
 	"name": "oktopost/skeleton",
+    "description": "Inversion of Control library",
 	"type": "library",
 	"license": "MIT",
+	"homepage": "https://github.com/Oktopost/Skeleton",
+	
 	"authors": [
 		{
 			"name": "Alexey Puchkov",
-			"email": "alexey@oktopost.com"
+			"email": "alexey@oktopost.com",
+			"role": "Developer"
 		}
 	],
 	"minimum-stability": "dev",
