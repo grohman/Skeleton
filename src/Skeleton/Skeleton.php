@@ -13,7 +13,7 @@ class Skeleton
 	/** @var IMap */
 	private $m_map;
 	
-	/** @var IConfigLoader */
+	/** @var IConfigLoader|null */
 	private $m_configLoader;
 	
 	
@@ -36,10 +36,10 @@ class Skeleton
 	}
 	
 	/**
-	 * @param IConfigLoader $loader
+	 * @param IConfigLoader|null $loader
 	 * @return static
 	 */
-	public function setConfigLoader(IConfigLoader $loader)
+	public function setConfigLoader(IConfigLoader $loader = null)
 	{
 		$this->m_configLoader = $loader;
 		return $this;
@@ -65,6 +65,9 @@ class Skeleton
 		
 		if ($this->m_map->has($key)) 
 			return $this->m_map->get($key);
+		
+		if (is_null($this->m_configLoader)) 
+			throw new Exceptions\ImplementerNotDefinedException($key);
 		
 		ConfigSearch::searchFor($key, $this->m_map, $this->m_configLoader);
 		

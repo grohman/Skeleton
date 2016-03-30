@@ -105,6 +105,18 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->get('a\b');
 	}
 	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_get_NotClassInMapAdnConfigLoaderIsNull_ErrorThrown()
+	{
+		$s = new Skeleton();
+		$this->mockMapHasValue($s, false);
+		$s->setConfigLoader(null);
+		
+		$s->get('a\b');
+	}
+	
 	public function test_get_GetCalledOneMoreTimeAfterConfigLoaded()
 	{
 		$s = new Skeleton();
@@ -165,5 +177,12 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$loader = $this->mockLoader($s);
 		
 		$this->assertSame($loader, $s->getConfigLoader());
+	}
+	
+	public function test_setConfigLoader_SetToNull() 
+	{
+		$s = new Skeleton();
+		$s->setConfigLoader(null);
+		$this->assertNull($s->getConfigLoader());
 	}
 }
