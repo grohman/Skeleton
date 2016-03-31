@@ -12,46 +12,17 @@ use \Skeleton\Exceptions;
 class SimpleMap implements IMap 
 {
 	/** @var array */
-	private $m_aMap = [];
+	private $m_aValues = [];
 	
 	
 	/**
 	 * @param string $key
-	 * @param string $value
-	 * @param string $type
-	 * @return object
-	 */
-	private function getObject($key, $value, $type)
-	{
-		$instance = new $value;
-		
-		if ($instance instanceof ISingleton || $type == Type::Singleton)
-		{
-			$this->m_aMap[$key] = $instance;
-		}
-		
-		return $instance;
-	}
-	
-	
-	/**
-	 * @param string $key
-	 * @param string|object $implementer
+	 * @param mixed $value
 	 * @param int $flags
 	 */
-	public function set($key, $implementer, $flags = Type::Instance)
+	public function set($key, $value, $flags = Type::Instance)
 	{
-		if (isset($this->m_aMap[$key]))
-			throw new Exceptions\ImplementerAlreadyDefinedException($key);
-		
-		if (is_string($implementer) && $flags != Type::StaticClass) 
-		{
-			$this->m_aMap[$key] = [$implementer, $flags];
-		} 
-		else 
-		{
-			$this->m_aMap[$key] = $implementer;
-		}
+		$this->m_aValues[$key] = $value;
 	}
 	
 	/**
@@ -60,15 +31,13 @@ class SimpleMap implements IMap
 	 */
 	public function get($key) 
 	{
-		if (!isset($this->m_aMap[$key]))
-			throw new Exceptions\ImplementerNotDefinedException($key);
+		if (!is_string($key))
+			throw new Exceptions\InvalidKeyException($key);
 		
-		$data = $this->m_aMap[$key];
+		if (isset($this->m_aValues[$key]))
+			return $this->m_aValues[$key];
 		
-		if (!is_array($data)) 
-			return $data;
-		
-		return $this->getObject($key, $data[0], $data[1]);
+		throw new Exceptions\ImplementerNotDefinedException($key);
 	}
 	
 	/**
@@ -80,6 +49,6 @@ class SimpleMap implements IMap
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
-		return isset($this->m_aMap[$key]);
+		return isset($this->m_aValues[$key]);
 	}
 }

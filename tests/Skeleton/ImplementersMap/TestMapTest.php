@@ -11,7 +11,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_getMainMap() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
 		$this->assertSame($map, $testMap->getMainMap());
@@ -20,7 +20,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_set_RedirectedToMain() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
 		$map->expects($this->once())
@@ -33,7 +33,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_get_NoOverrideObject_MainMapCalled() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		$testMap->override('c', \stdClass::class);
 		
@@ -46,7 +46,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_get_HasOverrideObject_MainMapCalled() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		$testMap->override('a', \stdClass::class);
 		
@@ -60,7 +60,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_has_NoObjectInTestOrMain_ReturnFalse() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
 		$testMap->override('b', new \stdClass());
@@ -70,7 +70,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_has_ObjectInTestMap_ReturnTrue() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
 		$testMap->override('a', new \stdClass());
@@ -80,7 +80,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_has_ObjectInMainMap_ReturnTrue() 
 	{
-		$map = $this->getMock(IMap::class);
+		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
 		$map->method('has')
@@ -90,5 +90,12 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$testMap->override('b', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
+	}
+	
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
+	 */
+	private function mockIMap() {
+		return $this->getMock(IMap::class);
 	}
 }

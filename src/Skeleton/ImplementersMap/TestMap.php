@@ -34,12 +34,12 @@ class TestMap extends SimpleMap
 	
 	/**
 	 * @param string $key
-	 * @param string|object $implementer
+	 * @param string|object $value
 	 * @param int $flags
 	 */
-	public function set($key, $implementer, $flags = Type::Instance)
+	public function set($key, $value, $flags = Type::Instance)
 	{
-		$this->m_mapMain->set($key, $implementer, $flags);
+		$this->m_mapMain->set($key, $value, $flags);
 	}
 	
 	/**
