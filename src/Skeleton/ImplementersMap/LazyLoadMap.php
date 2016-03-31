@@ -35,17 +35,17 @@ class LazyLoadMap implements IMap
 	
 	/**
 	 * @param string $key
-	 * @param string $value
-	 * @param string $type
 	 * @return object
 	 */
-	private function getObject($key, $value, $type)
+	private function getObject($key)
 	{
-		$instance = $this->getInstance($value);
+		$instance = $this->getInstance($this->m_aMap[$key][0]);
+		$type = $this->m_aMap[$key][1];
 		
-		if (is_object($instance) && ($instance instanceof ISingleton || $type == Type::Singleton))
+		if ($instance instanceof ISingleton || $type == Type::Singleton)
 		{
-			$this->m_aMap[$key] = $instance;
+			$this->m_aValues[$key] = $instance;
+			unset($this->m_aMap[$key]);
 		}
 		
 		return $instance;
@@ -88,12 +88,7 @@ class LazyLoadMap implements IMap
 		if (!isset($this->m_aMap[$key]))
 			throw new Exceptions\ImplementerNotDefinedException($key);
 		
-		$data = $this->m_aMap[$key];
-		
-		if (!is_array($data)) 
-			return $data;
-		
-		return $this->getObject($key, $data[0], $data[1]);
+		return $this->getObject($key);
 	}
 	
 	/**

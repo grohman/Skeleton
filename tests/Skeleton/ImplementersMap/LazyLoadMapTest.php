@@ -111,6 +111,55 @@ class LazyLoadMapTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotSame($a, $map->get('b'));
 	}
 	
+	public function test_get_ValueIsScalar()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', 1);
+		$this->assertEquals(1, $map->get('a'));
+	}
+	
+	public function test_get_ValueIsArray()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', ['a' => 'b']);
+		$this->assertEquals(['a' => 'b'], $map->get('a'));
+	}
+	
+	public function test_get_ValueIsCallback()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', function() { return 1; });
+		$this->assertEquals(1, $map->get('a'));
+	}
+	
+	
+	public function test_get_CallbackMarkedAsSingleTone_CalledOnce()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', function() { static $i = 0; return $i++; }, Type::Singleton);
+		
+		$this->assertEquals(0, $map->get('a'));
+		$this->assertEquals(0, $map->get('a'));
+	}
+	
+	public function test_get_CallbackMarkedAsInstance_CalledEachTime()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', function() { static $i = 0; return $i++; }, Type::Instance);
+		
+		$this->assertEquals(0, $map->get('a'));
+		$this->assertEquals(1, $map->get('a'));
+	}
+	
+	public function test_get_CallbackMarkedAsStatic_CalledOnce()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', function() { static $i = 0; return $i++; }, Type::StaticClass);
+		
+		$this->assertEquals(0, $map->get('a'));
+		$this->assertEquals(1, $map->get('a'));
+	}
+	
 	
 	public function test_has_KeyNotDefined_ReturnFalse()
 	{
@@ -120,10 +169,27 @@ class LazyLoadMapTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($map->has('key'));
 	}
 	
-	public function test_has_KeyDefined_ReturnFalse()
+	public function test_has_ValueIsClassName_ReturnTrue()
+	{
+		$map = new LazyLoadMap();
+		$map->set('key', \stdClass::class);
+		
+		$this->assertTrue($map->has('key'));
+	}
+	
+	public function test_has_ValueIsAScalarObject_ReturnTrue()
 	{
 		$map = new LazyLoadMap();
 		$map->set('key', 'value');
+		
+		$this->assertTrue($map->has('key'));
+	}
+	
+	public function test_has_ValueStillExistsAfterFirstCall()
+	{
+		$map = new LazyLoadMap();
+		$map->set('key', \stdClass::class, Type::Singleton);
+		$map->get('key');
 		
 		$this->assertTrue($map->has('key'));
 	}
