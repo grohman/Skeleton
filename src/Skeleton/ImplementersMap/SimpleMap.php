@@ -3,7 +3,6 @@ namespace Skeleton\ImplementersMap;
 
 
 use \Skeleton\Type;
-use \Skeleton\ISingleton;
 use \Skeleton\Base\IMap;
 
 use \Skeleton\Exceptions;
