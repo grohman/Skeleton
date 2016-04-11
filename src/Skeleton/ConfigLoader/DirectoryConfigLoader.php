@@ -36,10 +36,13 @@ class DirectoryConfigLoader implements IConfigLoader
 	
 	
 	/**
-	 * @param array $directories
+	 * @param array|string $directories
 	 */
-	public function __construct(array $directories) 
+	public function __construct($directories) 
 	{
+		if (!is_array($directories))
+			$directories = [$directories];
+		
 		$this->m_aDirectories = $directories;
 	}
 	

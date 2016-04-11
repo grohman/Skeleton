@@ -18,7 +18,14 @@ class DirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
 			$dir = __DIR__ . "/Files/Directory/$dir";
 		}
 		
-		return new DirectoryConfigLoader($dirs);
+		if (count($dirs) == 1) 
+		{
+			return new DirectoryConfigLoader($dirs[0]);
+		}
+		else
+		{
+			return new DirectoryConfigLoader($dirs);
+		}
 	}
 	
 	/**
