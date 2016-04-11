@@ -93,4 +93,15 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertTrue($map->has('key'));
 	}
+	
+	
+	public function test_reset() 
+	{
+		$map = new SimpleMap();
+		$map->set('key', 'value');
+		
+		$map->reset();
+		
+		$this->assertFalse($map->has('key'));
+	}
 }

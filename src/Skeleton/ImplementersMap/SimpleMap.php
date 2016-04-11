@@ -50,4 +50,9 @@ class SimpleMap implements IMap
 		
 		return isset($this->m_aValues[$key]);
 	}
+	
+	public function reset()
+	{
+		$this->m_aValues = [];
+	}
 }
