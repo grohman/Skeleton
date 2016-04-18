@@ -202,4 +202,17 @@ class LazyLoadMapTest extends \PHPUnit_Framework_TestCase
 		$map = new LazyLoadMap();
 		$map->has(12);
 	}
+	
+	
+	public function test_allowOverride_Called_ValueReset()
+	{
+		$map = new LazyLoadMap();
+		$map->set('a', 'b');
+		
+		$map->allowOverride();
+		
+		$map->set('a', ['c']);
+		
+		$this->assertEquals(['c'], $map->get('a'));
+	}
 }

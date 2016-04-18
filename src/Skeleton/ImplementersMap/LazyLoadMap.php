@@ -11,6 +11,8 @@ use \Skeleton\Exceptions;
 
 class LazyLoadMap implements IMap 
 {
+	private $allowOverride = false;
+	
 	/** @var array */
 	private $m_aValues = [];
 	
@@ -53,13 +55,19 @@ class LazyLoadMap implements IMap
 	
 	
 	/**
+	 * If called, resetting an existing key to a new value will not throw an exception. 
+	 */
+	public function allowOverride() { $this->allowOverride = true; }
+	
+	
+	/**
 	 * @param string $key
 	 * @param string|object $value
 	 * @param int $flags
 	 */
 	public function set($key, $value, $flags = Type::Instance)
 	{
-		if ($this->has($key))
+		if (!$this->allowOverride && $this->has($key))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
 		
 		if ((is_string($value) && $flags != Type::StaticClass) || 
