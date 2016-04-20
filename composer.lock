@@ -4,13 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "289abebd97bba23fa52df1d6d9f843b7",
-    "content-hash": "03675093480e5d2a73277825ebfb0675",
-    "packages": [],
+    "hash": "0d7157a5b22c9fb9027c7dddf1183bf7",
+    "content-hash": "01c747139f717df48d46443dbc30ce61",
+    "packages": [
+        {
+            "name": "oktopost/objection",
+            "version": "1.0.0-RC",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Oktopost/Objection.git",
+                "reference": "5f96c1f0dce49fb5ec004e01d165965c457ca429"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Oktopost/Objection/zipball/5f96c1f0dce49fb5ec004e01d165965c457ca429",
+                "reference": "5f96c1f0dce49fb5ec004e01d165965c457ca429",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5-stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Objection": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Puchkov",
+                    "email": "alexey@oktopost.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Objects in PHP",
+            "homepage": "https://github.com/Oktopost/Objection",
+            "time": "2016-04-07 07:58:15"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "oktopost/objection": 5
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
