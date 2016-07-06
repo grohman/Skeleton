@@ -37,12 +37,14 @@ class Knot
 	
 	/**
 	 * @param Skeleton $skeleton
+	 * @return static
 	 */
 	public function setSkeleton(Skeleton $skeleton)
 	{
 		$this->constructorConnector->setSkeleton($skeleton);
 		$this->propertyConnector->setSkeleton($skeleton);
 		$this->methodConnector->setSkeleton($skeleton);
+		return $this;
 	}
 	
 	
