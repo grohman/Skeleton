@@ -2,10 +2,10 @@
 namespace Skeleton\ImplementersMap;
 
 
-use \Skeleton\Type;
-use \Skeleton\Base\IMap;
+use Skeleton\Type;
+use Skeleton\Base\IMap;
 
-use \Skeleton\Exceptions;
+use Skeleton\Exceptions;
 
 
 class SimpleMap implements IMap 

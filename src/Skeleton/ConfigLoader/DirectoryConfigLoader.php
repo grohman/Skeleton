@@ -2,7 +2,7 @@
 namespace Skeleton\ConfigLoader;
 
 
-use \Skeleton\Base\IConfigLoader;
+use Skeleton\Base\IConfigLoader;
 
 
 class DirectoryConfigLoader implements IConfigLoader

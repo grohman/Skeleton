@@ -2,8 +2,8 @@
 namespace Skeleton\ImplementersMap;
 
 
-use \Skeleton\Type;
-use \Skeleton\ISingleton;
+use Skeleton\Type;
+use Skeleton\ISingleton;
 
 
 class SimpleMapTest extends \PHPUnit_Framework_TestCase 

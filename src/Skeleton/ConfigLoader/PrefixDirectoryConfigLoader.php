@@ -2,8 +2,8 @@
 namespace Skeleton\ConfigLoader;
 
 
-use \Skeleton\Base\IConfigLoader;
-use \Skeleton\Exceptions\SkeletonException;
+use Skeleton\Base\IConfigLoader;
+use Skeleton\Exceptions\SkeletonException;
 
 
 class PrefixDirectoryConfigLoader implements IConfigLoader

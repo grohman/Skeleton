@@ -2,9 +2,9 @@
 namespace test\Skeleton\ImplementersMap;
 
 
-use \Skeleton\Type;
-use \Skeleton\Base\IMap;
-use \Skeleton\ImplementersMap\TestMap;
+use Skeleton\Type;
+use Skeleton\Base\IMap;
+use Skeleton\ImplementersMap\TestMap;
 
 
 class TestMapTest extends \PHPUnit_Framework_TestCase

@@ -2,10 +2,10 @@
 namespace Skeleton;
 
 
-use \Skeleton\Exceptions;
-use \Skeleton\Base\IMap;
-use \Skeleton\Base\ConfigSearch;
-use \Skeleton\Base\IConfigLoader;
+use Skeleton\Exceptions;
+use Skeleton\Base\IMap;
+use Skeleton\Base\ConfigSearch;
+use Skeleton\Base\IConfigLoader;
 
 
 class Skeleton

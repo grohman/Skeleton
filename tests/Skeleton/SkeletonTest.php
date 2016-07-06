@@ -2,10 +2,10 @@
 namespace Skeleton;
 
 
-use \Skeleton\Base\IMap;
-use \Skeleton\Base\IConfigLoader;
+use Skeleton\Base\IMap;
+use Skeleton\Base\IConfigLoader;
 
-use \Skeleton\Exceptions;
+use Skeleton\Exceptions;
 
 
 class SkeletonTest extends \PHPUnit_Framework_TestCase

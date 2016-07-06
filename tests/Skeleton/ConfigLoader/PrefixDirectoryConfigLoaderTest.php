@@ -2,7 +2,7 @@
 namespace Skeleton\ConfigLoader;
 
 
-use \tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
+use tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 
 
 class PrefixDirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase

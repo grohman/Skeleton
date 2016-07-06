@@ -2,7 +2,7 @@
 namespace Skeleton\Base;
 
 
-use \Skeleton\Type;
+use Skeleton\Type;
 
 
 interface IMap 

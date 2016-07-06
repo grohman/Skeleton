@@ -2,11 +2,11 @@
 namespace Skeleton\ImplementersMap;
 
 
-use \Skeleton\Type;
-use \Skeleton\ISingleton;
-use \Skeleton\Base\IMap;
+use Skeleton\Type;
+use Skeleton\ISingleton;
+use Skeleton\Base\IMap;
 
-use \Skeleton\Exceptions;
+use Skeleton\Exceptions;
 
 
 class LazyLoadMap implements IMap 
