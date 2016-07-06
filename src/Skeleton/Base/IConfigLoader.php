@@ -2,8 +2,8 @@
 namespace Skeleton\Base;
 
 
-interface IConfigLoader {
-	
+interface IConfigLoader
+{
 	/**
 	 * @param string $path
 	 * @return bool

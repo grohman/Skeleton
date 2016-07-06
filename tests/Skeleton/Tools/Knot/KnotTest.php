@@ -2,12 +2,12 @@
 namespace Skeleton\Tools\Knot;
 
 
-use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
 
 
 class KnotTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -16,9 +16,9 @@ class KnotTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function getKnot()
 	{
-		/** @var Skeleton skeleton */
-		$this->skeleton = $this->getMock(Skeleton::class);
-		return (new Knot())->setSkeleton($this->skeleton);
+		/** @var ISkeletonSource skeleton */
+		$this->skeleton = $this->getMock(ISkeletonSource::class);
+		return (new Knot())->setSkeletonSource($this->skeleton);
 	}
 	
 	/**
@@ -32,11 +32,11 @@ class KnotTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_setSkeleton_ReturnSelf()
 	{
-		/** @var Skeleton $skeleton */
-		$skeleton = $this->getMock(Skeleton::class);
+		/** @var ISkeletonSource $skeleton */
+		$skeleton = $this->getMock(ISkeletonSource::class);
 		$obj = new Knot();
 		
-		$this->assertSame($obj, $obj->setSkeleton($skeleton));
+		$this->assertSame($obj, $obj->setSkeletonSource($skeleton));
 	}
 	
 	

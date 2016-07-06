@@ -2,13 +2,13 @@
 namespace Skeleton\Tools\Knot;
 
 
-use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
 
 
 class ConstructorConnector
 {
-	/** @var Skeleton */
+	/** @var ISkeletonSource */
 	private $skeleton;
 	
 	/** @var Extractor */
@@ -54,10 +54,10 @@ class ConstructorConnector
 	
 	
 	/**
-	 * @param Skeleton $skeleton
+	 * @param ISkeletonSource $skeleton
 	 * @return static
 	 */
-	public function setSkeleton(Skeleton $skeleton)
+	public function setSkeleton(ISkeletonSource $skeleton)
 	{
 		$this->skeleton = $skeleton;
 		return $this;

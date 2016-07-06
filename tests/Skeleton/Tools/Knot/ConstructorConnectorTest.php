@@ -2,13 +2,13 @@
 namespace Skeleton\Tools\Knot;
 
 
-use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
 
 
 class ConstructorConnectorTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -17,7 +17,7 @@ class ConstructorConnectorTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function getConstructorConnector()
 	{
-		$this->skeleton = $this->getMock(Skeleton::class);
+		$this->skeleton = $this->getMock(ISkeletonSource::class);
 		return (new ConstructorConnector())
 			->setSkeleton($this->skeleton)
 			->setExtractor(new Extractor());
@@ -46,8 +46,8 @@ class ConstructorConnectorTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_setSkeleton_ReturnSelf()
 	{
-		/** @var Skeleton $skeleton */
-		$skeleton = $this->getMock(Skeleton::class);
+		/** @var ISkeletonSource $skeleton */
+		$skeleton = $this->getMock(ISkeletonSource::class);
 		$obj = new ConstructorConnector();
 		
 		$this->assertSame($obj, $obj->setSkeleton($skeleton));

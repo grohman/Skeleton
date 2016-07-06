@@ -2,7 +2,7 @@
 namespace Skeleton\Tools\Knot;
 
 
-use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
 
 
@@ -36,10 +36,10 @@ class Knot
 	
 	
 	/**
-	 * @param Skeleton $skeleton
+	 * @param ISkeletonSource $skeleton
 	 * @return static
 	 */
-	public function setSkeleton(Skeleton $skeleton)
+	public function setSkeletonSource(ISkeletonSource $skeleton)
 	{
 		$this->constructorConnector->setSkeleton($skeleton);
 		$this->propertyConnector->setSkeleton($skeleton);

@@ -6,9 +6,10 @@ use Skeleton\Exceptions;
 use Skeleton\Base\IMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
+use Skeleton\Base\ISkeletonSource;
 
 
-class Skeleton
+class Skeleton implements ISkeletonSource
 {
 	/** @var IMap */
 	private $m_map;

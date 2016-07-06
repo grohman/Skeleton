@@ -2,13 +2,13 @@
 namespace Skeleton\Tools\Knot;
 
 
-use Skeleton\Skeleton;
+use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
 
 
 class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -17,7 +17,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function getPropertyConnector()
 	{
-		$this->skeleton = $this->getMock(Skeleton::class);
+		$this->skeleton = $this->getMock(ISkeletonSource::class);
 		return (new PropertyConnector())
 			->setSkeleton($this->skeleton)
 			->setExtractor(new Extractor());
@@ -60,8 +60,8 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_setSkeleton_ReturnSelf()
 	{
-		/** @var Skeleton $skeleton */
-		$skeleton = $this->getMock(Skeleton::class);
+		/** @var ISkeletonSource $skeleton */
+		$skeleton = $this->getMock(ISkeletonSource::class);
 		$obj = new PropertyConnector();
 		
 		$this->assertSame($obj, $obj->setSkeleton($skeleton));
@@ -146,6 +146,7 @@ class test_PropertyConnector_Helper_NoAutoload
 
 class test_PropertyConnector_Helper_PublicAutoload
 {
+	/** @noinspection PhpUndefinedClassInspection */
 	/**
 	 * @autoload
 	 * @var PubType
@@ -155,6 +156,7 @@ class test_PropertyConnector_Helper_PublicAutoload
 
 class test_PropertyConnector_Helper_ProtectedAutoload
 {
+	/** @noinspection PhpUndefinedClassInspection */
 	/**
 	 * @autoload
 	 * @var ProtType
@@ -166,6 +168,7 @@ class test_PropertyConnector_Helper_ProtectedAutoload
 
 class test_PropertyConnector_Helper_PrivateAutoload
 {
+	/** @noinspection PhpUndefinedClassInspection */
 	/**
 	 * @autoload
 	 * @var PrivType
@@ -177,12 +180,14 @@ class test_PropertyConnector_Helper_PrivateAutoload
 
 class test_PropertyConnector_Helper_NumberOfProperties
 {
+	/** @noinspection PhpUndefinedClassInspection */
 	/**
 	 * @autoload
 	 * @var PrivType
 	 */
 	private $priv;
 	
+	/** @noinspection PhpUndefinedClassInspection */
 	/**
 	 * @autoload
 	 * @var PubType

@@ -2,7 +2,8 @@
 namespace Skeleton\Base;
 
 
-class ConfigSearch {
+class ConfigSearch
+{
 	private function __construct() {}
 	private function __clone() {}
 	private function __wakeup() {}
