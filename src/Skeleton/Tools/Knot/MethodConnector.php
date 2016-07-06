@@ -41,15 +41,17 @@ class MethodConnector
 	private function invokeMethod(\ReflectionMethod $method, $instance)
 	{
 		$parameter = $method->getParameters()[0];
-		$className = $parameter->getClass();
+		$class = $parameter->getClass();
 		
-		if (is_null($className))
+		if (is_null($class))
 		{
 			throw new \Exception('Method autoload is configured but missing it\'s parameter type: ' . $method->name);
 		}
 		
+		$className = $class->getName();
 		$method->setAccessible(true);
-		$method->invoke($instance, $this->skeleton->get($className));
+		$value = $this->skeleton->get($className);
+		$method->invoke($instance, $value);
 	}
 	
 	
@@ -82,7 +84,7 @@ class MethodConnector
 	{
 		foreach ($class->getMethods() as $method)
 		{
-			if (!$this->isAutoloadMethod($method))
+			if ($this->isAutoloadMethod($method))
 			{
 				$this->invokeMethod($method, $instance);
 			}

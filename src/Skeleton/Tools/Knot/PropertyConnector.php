@@ -43,8 +43,8 @@ class PropertyConnector
 			throw new \Exception('Variable autoload is configured but missing it\'s type: ' . $property->name);
 		}
 		
-		$property->setAccessible(true);
-		$property->setValue($instance, $this->skeleton->get($type));
+		$value = $this->skeleton->get($type);
+		$property->setValue($instance, $value);
 	}
 	
 	
