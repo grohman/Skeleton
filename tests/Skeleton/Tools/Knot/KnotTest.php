@@ -40,14 +40,16 @@ class KnotTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_load_NoAutoload_ReturnFalse()
+	public function test_load_NoAutoload_ReturnInstance()
 	{
 		$knot = $this->getKnot();
-		$this->assertFalse($knot->load(test_Knot_Helper_EmptyClass::class));
+		$this->assertInstanceOf(
+			test_Knot_Helper_EmptyClass::class,
+			$knot->load(test_Knot_Helper_EmptyClass::class));
 	}
 	
 	
-	public function test_load_EmptyClassWithAutoload_ReturnInstace()
+	public function test_load_EmptyClassWithAutoload_ReturnInstance()
 	{
 		$knot = $this->getKnot();
 		

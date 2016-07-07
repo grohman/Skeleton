@@ -58,7 +58,7 @@ class Knot
 		
 		if (!$this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATION))
 		{
-			return false;
+			return $reflection->newInstance();
 		}
 		
 		$instance = $this->constructorConnector->connect($reflection);
