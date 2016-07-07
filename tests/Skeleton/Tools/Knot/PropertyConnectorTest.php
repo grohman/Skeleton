@@ -92,7 +92,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_PublicAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('PubType', 1);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\PubType', 1);
 		
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_PublicAutoload::class);
 		$this->assertEquals(1, $instance->pub);
@@ -101,7 +101,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_ProtectedAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('ProtType', 2);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\ProtType', 2);
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_ProtectedAutoload::class);
 		$this->assertEquals(2, $instance->get());
 	}
@@ -109,7 +109,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_PrivTypeAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('PrivType', 3);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\PrivType', 3);
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_PrivateAutoload::class);
 		$this->assertEquals(3, $instance->get());
 	}
@@ -131,6 +131,25 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	{
 		$obj = $this->getPropertyConnector();
 		$this->invokeConnect($obj, test_PropertyConnector_Helper_NoType::class);
+	}
+	
+	
+	public function test_connect_PropertyHasRelativeNamespacePath_PathFixed()
+	{
+		$obj = $this->getPropertyConnector();
+		
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Name');
+		
+		$this->invokeConnect($obj, test_PropertyConnector_TestRelativeNamespace::class);
+	}
+	
+	public function test_connect_PropertyHasFullNamespacePath_ProvidedPathIsUsed()
+	{
+		$obj = $this->getPropertyConnector();
+		
+		$this->expectSkeletonCalledFor('Full\Knot\Name');
+		
+		$this->invokeConnect($obj, test_PropertyConnector_TestFullNamespace::class);
 	}
 }
 
@@ -201,6 +220,28 @@ class test_PropertyConnector_Helper_NoType
 {
 	/**
 	 * @autoload
+	 */
+	private $noType;
+}
+
+class test_PropertyConnector_TestRelativeNamespace
+{
+	/** @noinspection PhpUndefinedClassInspection */
+	/** @noinspection PhpUndefinedNamespaceInspection */
+	/**
+	 * @autoload
+	 * @var Knot\Name
+	 */
+	private $noType;
+}
+
+class test_PropertyConnector_TestFullNamespace
+{
+	/** @noinspection PhpUndefinedClassInspection */
+	/** @noinspection PhpUndefinedNamespaceInspection */
+	/**
+	 * @autoload
+	 * @var \Full\Knot\Name
 	 */
 	private $noType;
 }

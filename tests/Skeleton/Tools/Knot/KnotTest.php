@@ -18,7 +18,7 @@ class KnotTest extends \PHPUnit_Framework_TestCase
 	{
 		/** @var ISkeletonSource skeleton */
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
-		return (new Knot())->setSkeletonSource($this->skeleton);
+		return (new Knot($this->skeleton));
 	}
 	
 	/**
@@ -27,16 +27,6 @@ class KnotTest extends \PHPUnit_Framework_TestCase
 	private function setSkeletonWillReturn($value)
 	{
 		$this->skeleton->method('get')->willReturn($value);
-	}
-	
-	
-	public function test_setSkeleton_ReturnSelf()
-	{
-		/** @var ISkeletonSource $skeleton */
-		$skeleton = $this->getMock(ISkeletonSource::class);
-		$obj = new Knot();
-		
-		$this->assertSame($obj, $obj->setSkeletonSource($skeleton));
 	}
 	
 	

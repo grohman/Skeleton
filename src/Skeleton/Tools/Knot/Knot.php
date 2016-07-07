@@ -21,7 +21,7 @@ class Knot
 	private $extractor;
 	
 	
-	public function __construct() 
+	public function __construct(ISkeletonSource $skeleton) 
 	{
 		$this->extractor = new Extractor();
 		
@@ -32,19 +32,10 @@ class Knot
 		$this->constructorConnector->setExtractor($this->extractor);
 		$this->propertyConnector->setExtractor($this->extractor);
 		$this->methodConnector->setExtractor($this->extractor);
-	}
-	
-	
-	/**
-	 * @param ISkeletonSource $skeleton
-	 * @return static
-	 */
-	public function setSkeletonSource(ISkeletonSource $skeleton)
-	{
+		
 		$this->constructorConnector->setSkeleton($skeleton);
 		$this->propertyConnector->setSkeleton($skeleton);
 		$this->methodConnector->setSkeleton($skeleton);
-		return $this;
 	}
 	
 	

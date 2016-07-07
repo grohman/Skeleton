@@ -38,7 +38,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	 * @param Skeleton $s
 	 * @return \PHPUnit_Framework_MockObject_MockObject|IConfigLoader
 	 */
-	private function mockLoader(Skeleton $s) 
+	private function mockConfigLoader(Skeleton $s) 
 	{
 		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
@@ -60,6 +60,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($s, $s->setMap($map));
 		$this->assertSame($s, $s->setConfigLoader($loader));
 		$this->assertSame($s, $s->set('a', 'b'));
+		$this->assertSame($s, $s->enableKnot());
 	}
 	
 	
@@ -76,7 +77,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		$s = new Skeleton();
 		$this->mockMapHasValue($s, true);
-		$loader = $this->mockLoader($s);
+		$loader = $this->mockConfigLoader($s);
 		
 		$loader->expects($this->never())->method('tryLoad');
 		
@@ -87,7 +88,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		$s = new Skeleton();
 		$this->mockMapHasValue($s, false);
-		$loader = $this->mockLoader($s);
+		$loader = $this->mockConfigLoader($s);
 		
 		$loader->expects($this->atLeastOnce())->method('tryLoad');
 		
@@ -98,7 +99,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		$s = new Skeleton();
 		$this->mockMapHasValue($s, false);
-		$loader = $this->mockLoader($s);
+		$loader = $this->mockConfigLoader($s);
 		
 		$loader->expects($this->once())->method('tryLoad')->with('a');
 		
@@ -121,7 +122,7 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		$s = new Skeleton();
 		$map = $this->mockMapHasValue($s, false);
-		$this->mockLoader($s);
+		$this->mockConfigLoader($s);
 		
 		// Has method will return false by default so get should only be called once. 
 		$map->expects($this->once())->method('get')->with('some\complex\namespace');
@@ -170,11 +171,22 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($map, $s->getMap());
 	}
 	
+	public function test_setMap_LoaderPassedToMap()
+	{
+		/** @var  \PHPUnit_Framework_MockObject_MockObject|IMap $map */
+		$map = $this->getMock(IMap::class);
+		$s = new Skeleton();
+		
+		$map->expects($this->once())->method('setLoader');
+		
+		$s->setMap($map);
+	}
+	
 	
 	public function test_setConfigLoader_LoaderSet() 
 	{
 		$s = new Skeleton();
-		$loader = $this->mockLoader($s);
+		$loader = $this->mockConfigLoader($s);
 		
 		$this->assertSame($loader, $s->getConfigLoader());
 	}
@@ -185,4 +197,49 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->setConfigLoader(null);
 		$this->assertNull($s->getConfigLoader());
 	}
+	
+	
+	public function testSanity_knotNotEnabled()
+	{
+		$s = new Skeleton();
+		
+		$s->set(SkeletonTest_Helper_A::class, SkeletonTest_Helper_A::class);
+		$s->set(SkeletonTest_Helper_B::class, SkeletonTest_Helper_B::class);
+		
+		/** @var SkeletonTest_Helper_B $a */
+		$a = $s->get(SkeletonTest_Helper_B::class);
+		
+		$this->assertNull($a->a);
+	}
+	
+	public function testSanity_knotEnabled()
+	{
+		$s = new Skeleton();
+		
+		$s->set(SkeletonTest_Helper_A::class, SkeletonTest_Helper_A::class);
+		$s->set(SkeletonTest_Helper_B::class, SkeletonTest_Helper_B::class);
+		
+		$s->enableKnot();
+		
+		/** @var SkeletonTest_Helper_B $a */
+		$a = $s->get(SkeletonTest_Helper_B::class);
+		
+		$this->assertInstanceOf(SkeletonTest_Helper_A::class, $a->a);
+	}
+}
+
+
+class SkeletonTest_Helper_A {}
+
+
+/**
+ * @autoload
+ */
+class SkeletonTest_Helper_B
+{
+	/**
+	 * @autoload
+	 * @var SkeletonTest_Helper_A
+	 */
+	public $a;
 }

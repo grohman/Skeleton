@@ -17,6 +17,35 @@ class PropertyConnector
 	
 	/**
 	 * @param \ReflectionProperty $property
+	 * @param string $type
+	 * @return string
+	 */
+	private function getFullTypeName(\ReflectionProperty $property, $type)
+	{
+		$namespace = $property->getDeclaringClass()->getNamespaceName();
+		
+		if (!$namespace)
+		{
+			return $type;
+		}
+		
+		$namespaceSeparatorPosition = strpos($type, '\\');
+		
+		if ($namespaceSeparatorPosition === 0)
+		{
+			return substr($type, 1);
+		}
+		else if ($namespaceSeparatorPosition !== false)
+		{
+			$type = explode('\\', $type, 2)[1];
+			
+		}
+		
+		return "$namespace\\$type";
+	}
+	
+	/**
+	 * @param \ReflectionProperty $property
 	 * @param mixed $instance
 	 * @return bool
 	 */
@@ -43,6 +72,7 @@ class PropertyConnector
 			throw new \Exception('Variable autoload is configured but missing it\'s type: ' . $property->name);
 		}
 		
+		$type = $this->getFullTypeName($property, $type);
 		$value = $this->skeleton->get($type);
 		$property->setValue($instance, $value);
 	}

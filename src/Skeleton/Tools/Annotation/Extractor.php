@@ -64,7 +64,7 @@ class Extractor
 		$pattern = "/^[ \\t]*\\*[ \\t]*@var ([\\w\\\\]+)[ \\t]+\\$?{$parameterName}.*$/m";
 		$matches = [];
 		$result = preg_match($pattern, $this->getDocComment($element), $matches);
-		var_dump($pattern);
+		
 		return ($result === 1 ?
 			$matches[1] :
 			false);

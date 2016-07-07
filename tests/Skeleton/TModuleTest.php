@@ -2,7 +2,7 @@
 namespace Skeleton;
 
 
-use Skeleton\Maps\SimpleMap;
+use Skeleton\Maps\TestMap;
 
 
 class some_module  
@@ -33,13 +33,13 @@ class TModuleTestHelper
 	{
 		if (!$this->skeleton)
 		{
-			$map = new SimpleMap();
-			
-			$map->set('a', 'a_val');
-			$map->set('b', 'b_val');
-			
 			$this->skeleton = new Skeleton();
+			
+			$map = new TestMap($this->skeleton->getMap());
 			$this->skeleton->setMap($map);
+			
+			$map->override('a', 'a_val');
+			$map->override('b', 'b_val');
 		}
 		
 		return $this->skeleton;

@@ -1,12 +1,12 @@
 <?php
-namespace Skeleton\Maps;
+namespace Skeleton\Loader;
 
 
 use Skeleton\Base\ILoader;
 use Skeleton\Tools\Knot\Knot;
 
 
-class LazyLoader implements ILoader 
+class Loader implements ILoader 
 {
 	/** @var Knot|null */
 	private $knot = null;

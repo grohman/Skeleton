@@ -154,14 +154,22 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 	public function test_get_TypeIsInstance_NewInstanceAlwaysReturned()
 	{
 		$map = $this->getSimpleMap();
-		$map->set('b', 'SomeString', Type::Instance);
+		$map->set('b', 'someString', Type::Instance);
 		
 		$this->loader
 			->expects($this->exactly(2))
 			->method('get')
-			->willReturn(new \stdClass());
+			->with('someString')
+			->willReturnCallback(
+				function() 
+				{ 
+					return new \stdClass();
+				});
 		
-		$this->assertNotSame($map->get('b'), $map->get('b'));
+		$a = $map->get('b');
+		$b = $map->get('b');
+		
+		$this->assertNotSame($a, $b);
 	}
 	
 	public function test_get_TypeIsSingleTone_LoaderInvokedOnlyOnce()

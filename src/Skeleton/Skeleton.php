@@ -7,19 +7,28 @@ use Skeleton\Base\IMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
 use Skeleton\Base\ISkeletonSource;
+use Skeleton\Maps\SimpleMap;
 use Skeleton\Tools\Knot\Knot;
+use Skeleton\Loader\Loader;
 
 
 class Skeleton implements ISkeletonSource
 {
 	/** @var IMap */
-	private $m_map;
+	private $map;
 	
 	/** @var IConfigLoader|null */
 	private $m_configLoader;
 	
-	/** @var Knot */
-	private $knot = null;
+	/** @var Loader */
+	private $loader = null;
+	
+	
+	public function __construct() 
+	{
+		$this->loader = new Loader();
+		$this->setMap(new SimpleMap());
+	}
 	
 	
 	/**
@@ -28,7 +37,8 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function setMap(IMap $map) 
 	{
-		$this->m_map = $map;
+		$this->map = $map;
+		$this->map->setLoader($this->loader);
 		return $this;
 	}
 	
@@ -37,7 +47,7 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function getMap()
 	{
-		return $this->m_map;
+		return $this->map;
 	}
 	
 	/**
@@ -58,6 +68,15 @@ class Skeleton implements ISkeletonSource
 		return $this->m_configLoader;
 	}
 	
+	/**
+	 * @return static
+	 */
+	public function enableKnot()
+	{
+		$this->loader->setKnot(new Knot($this));
+		return $this;
+	}
+	
 	
 	/**
 	 * @param string $key
@@ -68,15 +87,15 @@ class Skeleton implements ISkeletonSource
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
-		if ($this->m_map->has($key)) 
-			return $this->m_map->get($key);
+		if ($this->map->has($key)) 
+			return $this->map->get($key);
 		
 		if (is_null($this->m_configLoader)) 
 			throw new Exceptions\ImplementerNotDefinedException($key);
 		
-		ConfigSearch::searchFor($key, $this->m_map, $this->m_configLoader);
+		ConfigSearch::searchFor($key, $this->map, $this->m_configLoader);
 		
-		return $this->m_map->get($key);
+		return $this->map->get($key);
 	}
 	
 	/**
@@ -92,7 +111,7 @@ class Skeleton implements ISkeletonSource
 		else if (!is_string($implementer) && !is_object($implementer))
 			throw new Exceptions\InvalidImplementerException($implementer);
 		
-		$this->m_map->set($key, $implementer, $flags);
+		$this->map->set($key, $implementer, $flags);
 		
 		return $this;
 	}
