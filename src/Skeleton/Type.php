@@ -11,5 +11,5 @@ class Type
 	const Singleton	= 1;
 	
 	/** @var int Always return the value even if it's a class name */
-	const ByValue	 = 2;
+	const ByValue	= 2;
 }

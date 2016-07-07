@@ -18,7 +18,7 @@ class Skeleton implements ISkeletonSource
 	private $map;
 	
 	/** @var IConfigLoader|null */
-	private $m_configLoader;
+	private $configLoader;
 	
 	/** @var Loader */
 	private $loader = null;
@@ -56,7 +56,7 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function setConfigLoader(IConfigLoader $loader = null)
 	{
-		$this->m_configLoader = $loader;
+		$this->configLoader = $loader;
 		return $this;
 	}
 	
@@ -65,7 +65,7 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function getConfigLoader()
 	{
-		return $this->m_configLoader;
+		return $this->configLoader;
 	}
 	
 	/**
@@ -90,10 +90,10 @@ class Skeleton implements ISkeletonSource
 		if ($this->map->has($key)) 
 			return $this->map->get($key);
 		
-		if (is_null($this->m_configLoader)) 
+		if (is_null($this->configLoader)) 
 			throw new Exceptions\ImplementerNotDefinedException($key);
 		
-		ConfigSearch::searchFor($key, $this->map, $this->m_configLoader);
+		ConfigSearch::searchFor($key, $this->map, $this->configLoader);
 		
 		return $this->map->get($key);
 	}

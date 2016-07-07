@@ -9,7 +9,7 @@ use Skeleton\Exceptions\SkeletonException;
 class PrefixDirectoryConfigLoader implements IConfigLoader
 {
 	/** @var array */
-	private $m_aDirByPrefix = [];
+	private $dirByPrefix = [];
 	
 	
 	/**
@@ -71,12 +71,12 @@ class PrefixDirectoryConfigLoader implements IConfigLoader
 		
 		if (is_string($prefix) && $directory)
 		{
-			$this->m_aDirByPrefix[$prefix] = $directory;
+			$this->dirByPrefix[$prefix] = $directory;
 		}
 		else if (is_array($prefix))
 		{
-			$this->m_aDirByPrefix = array_merge(
-				$this->m_aDirByPrefix,
+			$this->dirByPrefix = array_merge(
+				$this->dirByPrefix,
 				$prefix
 			);
 		}
@@ -88,7 +88,7 @@ class PrefixDirectoryConfigLoader implements IConfigLoader
 	 */
 	public function tryLoad($path) 
 	{
-		foreach ($this->m_aDirByPrefix as $prefix => $directory)
+		foreach ($this->dirByPrefix as $prefix => $directory)
 		{
 			if (!$this->isStartsWith($prefix, $path))
 				continue;
