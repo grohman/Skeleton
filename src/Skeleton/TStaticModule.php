@@ -45,10 +45,14 @@ trait TStaticModule
 		{
 			return self::skeleton()->get(self::$components[$name]);
 		}
+		
 		// TODO: this behavior requires php 7.*
-		else if (isset(self::$subModules[$name]))
+		if (PHP_VERSION[0] === 7)
 		{
-			return self::$subModules[$name];
+			if (isset(self::$subModules[$name]))
+			{
+				return self::$subModules[$name];
+			}
 		}
 		
 		throw new SkeletonException("Unrecognized component or sub module '$name'");
