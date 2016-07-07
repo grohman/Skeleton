@@ -7,6 +7,7 @@ use Skeleton\Base\IMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
 use Skeleton\Base\ISkeletonSource;
+use Skeleton\Tools\Knot\Knot;
 
 
 class Skeleton implements ISkeletonSource
@@ -16,6 +17,9 @@ class Skeleton implements ISkeletonSource
 	
 	/** @var IConfigLoader|null */
 	private $m_configLoader;
+	
+	/** @var Knot */
+	private $knot = null;
 	
 	
 	/**

@@ -5,8 +5,13 @@ namespace Skeleton\Base;
 use Skeleton\Type;
 
 
-interface IMap 
+interface IMap
 {
+	/**
+	 * @param ILoader $loader
+	 */
+	public function setLoader(ILoader $loader);
+	
 	/**
 	 * @param string $key
 	 * @param string|object $value

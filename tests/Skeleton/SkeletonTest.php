@@ -156,9 +156,9 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		
 		$map->expects($this->once())
 			->method('set')
-			->with('a', 'b', Type::StaticClass);
+			->with('a', 'b', Type::ByValue);
 		
-		$s->set('a', 'b', Type::StaticClass);
+		$s->set('a', 'b', Type::ByValue);
 	}
 	
 	

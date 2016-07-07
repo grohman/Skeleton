@@ -2,7 +2,7 @@
 namespace Skeleton;
 
 
-use Skeleton\ImplementersMap\SimpleMap;
+use Skeleton\Maps\SimpleMap;
 
 
 class some_module  
@@ -73,6 +73,7 @@ class TModuleTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_get_NotFound_ErrorThrown()
 	{
+		/** @noinspection PhpUndefinedMethodInspection */
 		TModuleTestHelper::aa();
 	}
 	
@@ -81,6 +82,7 @@ class TModuleTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_instance_get_NotFound_ErrorThrown()
 	{
+		/** @noinspection PhpUndefinedMethodInspection */
 		TModuleTestHelper::instance()->aa();
 	}
 	

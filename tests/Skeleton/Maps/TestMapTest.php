@@ -1,20 +1,28 @@
 <?php
-namespace test\Skeleton\ImplementersMap;
+namespace Skeleton\Maps;
 
 
 use Skeleton\Type;
 use Skeleton\Base\IMap;
-use Skeleton\ImplementersMap\TestMap;
 
 
 class TestMapTest extends \PHPUnit_Framework_TestCase
 {
-	public function test_getMainMap() 
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
+	 */
+	private function mockIMap()
+	{
+		return $this->getMock(IMap::class);
+	}
+	
+	
+	public function test_getOriginal() 
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
-		$this->assertSame($map, $testMap->getMainMap());
+		$this->assertSame($map, $testMap->getOriginal());
 	}
 	
 	
@@ -31,6 +39,27 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
+	public function test_override()
+	{
+		$map = $this->mockIMap();
+		$testMap = new TestMap($map);
+		$testMap->override('a', 'b');
+		
+		$this->assertEquals('b', $testMap->get('a'));
+	}
+	
+	public function test_override_OverrideValueReturned()
+	{
+		$map = $this->mockIMap();
+		$testMap = new TestMap($map);
+		$testMap->override('a', 'b');
+		
+		$map->expects($this->never())->method('get');
+		
+		$testMap->get('a');
+	}
+	
+	
 	public function test_get_NoOverrideObject_MainMapCalled() 
 	{
 		$map = $this->mockIMap();
@@ -44,7 +73,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$testMap->get('a');
 	}
 	
-	public function test_get_HasOverrideObject_MainMapCalled() 
+	public function test_get_HasOverrideObject_MainMapNotCalled() 
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
@@ -90,12 +119,5 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$testMap->override('b', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
-	}
-	
-	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
-	 */
-	private function mockIMap() {
-		return $this->getMock(IMap::class);
 	}
 }
