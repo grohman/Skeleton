@@ -32,6 +32,14 @@ class ExtractorTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($e->has(new \ReflectionProperty(test_ExtractorTest_HelperClassB::class, 'a'), 'has'));
 	}
 	
+	public function test_has_MatchArray()
+	{
+		$e = new Extractor();
+		$this->assertTrue($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation', 'testArray']));
+		$this->assertTrue($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation']));
+		$this->assertFalse($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['has', 'no']));
+	}
+	
 	
 	public function test_has_ClassWithNoAnnotations_ReturnFalse()
 	{
@@ -162,6 +170,16 @@ class test_ExtractorTest_HelperClassA
 {
 	/**
 	 * @has
+	 */
+	public $a;
+}
+
+
+class test_ExtractorTest_HasArrayOfValues
+{
+	/**
+	 * @arrayAnnotation
+	 * @testArray
 	 */
 	public $a;
 }

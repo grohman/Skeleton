@@ -51,7 +51,7 @@ class PropertyConnector
 	 */
 	private function isPropertyMustBeLoaded(\ReflectionProperty $property, $instance)
 	{
-		if (!$this->extractor->has($property, KnotConsts::AUTOLOAD_ANNOTATION))
+		if (!$this->extractor->has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			return false;
 		
 		$property->setAccessible(true);

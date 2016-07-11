@@ -115,4 +115,13 @@ class Skeleton implements ISkeletonSource
 		
 		return $this;
 	}
+	
+	/**
+	 * @param string $className
+	 * @return mixed
+	 */
+	public function load($className)
+	{
+		return $this->loader->get($className);
+	}
 }

@@ -26,7 +26,7 @@ class MethodConnector
 			$method->getNumberOfRequiredParameters() != 1 ||
 			$method->isStatic() || 
 			$method->isAbstract() || 
-			!$this->extractor->has($method, KnotConsts::AUTOLOAD_ANNOTATION))
+			!$this->extractor->has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
 		{
 			return false;
 		}

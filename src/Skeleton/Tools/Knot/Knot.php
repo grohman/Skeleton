@@ -47,7 +47,7 @@ class Knot
 	{
 		$reflection = new \ReflectionClass($className);
 		
-		if (!$this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATION))
+		if (!$this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS))
 		{
 			return $reflection->newInstance();
 		}

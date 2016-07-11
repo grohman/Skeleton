@@ -25,17 +25,30 @@ class Extractor
 	
 	/**
 	 * @param mixed $element
-	 * @param string $annotation
+	 * @param string|array $annotation
 	 * @param bool $allowComment
 	 * @return bool
 	 */
 	public function has($element, $annotation, $allowComment = true)
 	{
-		$pattern = $allowComment ?
-			"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
-			"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m";
-		
-		return (preg_match($pattern, $this->getDocComment($element)) == 1);
+		if (is_array($annotation))
+		{
+			foreach ($annotation as $singleAnnotation)
+			{
+				if ($this->has($element, $singleAnnotation, $allowComment)) 
+					return true;
+			}
+			
+			return false;
+		}
+		else
+		{
+			$pattern = $allowComment ?
+				"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
+				"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m";
+			
+			return (preg_match($pattern, $this->getDocComment($element)) == 1);
+		}
 	}
 	
 	/**
