@@ -21,6 +21,13 @@ interface IMap
 	
 	/**
 	 * @param string $key
+	 * @param string|object $value
+	 * @param int $flags
+	 */
+	public function forceSet($key, $value, $flags = Type::Instance);
+	
+	/**
+	 * @param string $key
 	 * @return string|object
 	 */
 	public function get($key);

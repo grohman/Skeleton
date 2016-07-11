@@ -15,7 +15,7 @@ class TestMap implements IMap
 	private $originalMap;
 	
 	/** @var array */
-	private $map;
+	private $overrideMap;
 	
 	
 	/**
@@ -51,9 +51,9 @@ class TestMap implements IMap
 	 */
 	public function get($key) 
 	{
-		if (isset($this->map[$key]))
+		if (isset($this->overrideMap[$key]))
 		{
-			$value = $this->map[$key];
+			$value = $this->overrideMap[$key];
 			
 			if (is_string($value) && class_exists($value))
 			{
@@ -74,7 +74,7 @@ class TestMap implements IMap
 	 */
 	public function has($key)
 	{
-		return (isset($this->map[$key]) || $this->originalMap->has($key));
+		return (isset($this->overrideMap[$key]) || $this->originalMap->has($key));
 	}
 	
 	/**
@@ -85,6 +85,16 @@ class TestMap implements IMap
 		$this->originalMap->setLoader($loader);
 	}
 	
+	/**
+	 * @param string $key
+	 * @param string|object $value
+	 * @param int $flags
+	 */
+	public function forceSet($key, $value, $flags = Type::Instance)
+	{
+		$this->originalMap->forceSet($key, $value, $flags);
+	}
+	
 	
 	/**
 	 * @param string $key
@@ -92,11 +102,11 @@ class TestMap implements IMap
 	 */
 	public function override($key, $value) 
 	{
-		$this->map[$key] = $value;
+		$this->overrideMap[$key] = $value;
 	}
 	
 	public function clear()
 	{
-		$this->map = [];
+		$this->overrideMap = [];
 	}
 }

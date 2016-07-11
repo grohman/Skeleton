@@ -39,11 +39,24 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
+	public function test_forceSet_RedirectedToMain()
+	{
+		$map = $this->mockIMap();
+		$testMap = new TestMap($map);
+		
+		$map->expects($this->once())
+			->method('forceSet')
+			->with('a', \stdClass::class, Type::Singleton);
+		
+		$testMap->forceSet('a', \stdClass::class, Type::Singleton);
+	}
+	
+	
 	public function test_override()
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->override('a', 'b');
+		$testMap->forceSet('a', 'b');
 		
 		$this->assertEquals('b', $testMap->get('a'));
 	}
@@ -52,7 +65,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->override('a', 'b');
+		$testMap->forceSet('a', 'b');
 		
 		$map->expects($this->never())->method('get');
 		
@@ -64,7 +77,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->override('c', \stdClass::class);
+		$testMap->forceSet('c', \stdClass::class);
 		
 		$map->expects($this->once())
 			->method('get')
@@ -77,7 +90,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->override('a', \stdClass::class);
+		$testMap->forceSet('a', \stdClass::class);
 		
 		$map->expects($this->never())
 			->method('get')
@@ -92,7 +105,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
-		$testMap->override('b', new \stdClass());
+		$testMap->forceSet('b', new \stdClass());
 		
 		$this->assertFalse($testMap->has('a'));
 	}
@@ -102,7 +115,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
-		$testMap->override('a', new \stdClass());
+		$testMap->forceSet('a', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
 	}
@@ -116,7 +129,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 			->with('a')
 			->willReturn(true);
 		
-		$testMap->override('b', new \stdClass());
+		$testMap->forceSet('b', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
 	}

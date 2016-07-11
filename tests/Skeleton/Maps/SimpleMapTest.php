@@ -5,6 +5,7 @@ namespace Skeleton\Maps;
 use Skeleton\Type;
 use Skeleton\ISingleton;
 use Skeleton\Base\ILoader;
+use Skeleton\Loader\Loader;
 
 
 class SimpleMapTest extends \PHPUnit_Framework_TestCase 
@@ -40,6 +41,66 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 		
 		$map->set('a', \stdClass::class);
 	}
+	
+	
+	public function test_forceSet_FirstTime()
+	{
+		$map = $this->getSimpleMap();
+		$map->forceSet('a', \stdClass::class);
+	}
+	
+	public function test_forceSet_KeyAlreadySet_NoErrorIsThrown()
+	{
+		$map = $this->getSimpleMap();
+		$map->set('a', \stdClass::class);
+		
+		$map->forceSet('a', \stdClass::class);
+	}
+	
+	public function test_forceSet_OverrideTypeWithValue_NewValueIsUsed()
+	{
+		$map = new SimpleMap();
+		$map->setLoader(new Loader());
+		$map->set('a', \stdClass::class);
+		
+		$map->forceSet('a', 'B', Type::ByValue);
+		
+		$this->assertEquals('B', $map->get('a'));
+	}
+	
+	public function test_forceSet_OverrideValueWithValue_NewValueIsUsed()
+	{
+		$map = new SimpleMap();
+		$map->setLoader(new Loader());
+		$map->set('a', 'C', Type::ByValue);
+		
+		$map->forceSet('a', 'B', Type::ByValue);
+		
+		$this->assertEquals('B', $map->get('a'));
+	}
+	
+	public function test_forceSet_OverrideTypeWithType_NewValueIsUsed()
+	{
+		$map = new SimpleMap();
+		$map->setLoader(new Loader());
+		$map->set('a', self::class);
+		
+		$map->forceSet('a', \stdClass::class);
+		
+		$this->assertInstanceOf(\stdClass::class, $map->get('a'));
+	}
+	
+	public function test_forceSet_OverrideValueWithType_NewValueIsUsed()
+	{
+		$map = new SimpleMap();
+		$map->setLoader(new Loader());
+		$map->set('a', 'C');
+		
+		$map->forceSet('a', \stdClass::class);
+		
+		$this->assertInstanceOf(\stdClass::class, $map->get('a'));
+	}
+	
 	
 	/**
 	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException

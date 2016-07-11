@@ -53,7 +53,7 @@ class SimpleMap implements IMap
 	
 	/**
 	 * @param string $key
-	 * @param string|object $value
+	 * @param mixed $value
 	 * @param int $flags
 	 */
 	public function set($key, $value, $flags = Type::Instance)
@@ -61,14 +61,32 @@ class SimpleMap implements IMap
 		if ($this->has($key))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
 		
-		// Save only the values that should be resolved in the config array.
-		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue) 
+		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue)
 		{
 			$this->config[$key] = [$value, $flags];
-		} 
-		else 
+		}
+		else
 		{
 			$this->resolvedValues[$key] = $value;
+		}
+	}
+	
+	/**
+	 * @param string $key
+	 * @param string|object $value
+	 * @param int $flags
+	 */
+	public function forceSet($key, $value, $flags = Type::Instance)
+	{
+		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue)
+		{
+			$this->config[$key] = [$value, $flags];
+			unset($this->resolvedValues[$key]);
+		}
+		else
+		{
+			$this->resolvedValues[$key] = $value;
+			unset($this->config[$key]);
 		}
 	}
 	
