@@ -38,8 +38,8 @@ class TModuleTestHelper
 			$map = new TestMap($this->skeleton->getMap());
 			$this->skeleton->setMap($map);
 			
-			$map->forceSet('a', 'a_val');
-			$map->forceSet('b', 'b_val');
+			$map->override('a', 'a_val');
+			$map->override('b', 'b_val');
 		}
 		
 		return $this->skeleton;

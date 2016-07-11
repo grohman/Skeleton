@@ -38,7 +38,7 @@ class UnitTestSkeleton implements ISkeletonSource
 	 */
 	public function override($key, $value)
 	{
-		$this->testMap->forceSet($key, $value);
+		$this->testMap->override($key, $value);
 		return $this;
 	}
 	

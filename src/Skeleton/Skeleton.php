@@ -100,19 +100,31 @@ class Skeleton implements ISkeletonSource
 	
 	/**
 	 * @param string $key
-	 * @param string|object $implementer
+	 * @param mixed $value
 	 * @param int $flags
 	 * @return static
 	 */
-	public function set($key, $implementer, $flags = Type::Instance)
+	public function set($key, $value, $flags = Type::Instance)
 	{
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
-		else if (!is_string($implementer) && !is_object($implementer))
-			throw new Exceptions\InvalidImplementerException($implementer);
+		else if (!is_string($value) && !is_object($value))
+			throw new Exceptions\InvalidImplementerException($value);
 		
-		$this->map->set($key, $implementer, $flags);
+		$this->map->set($key, $value, $flags);
 		
+		return $this;
+	}
+	
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @param int $flag
+	 * @return static
+	 */
+	public function override($key, $value, $flag = Type::Instance)
+	{
+		$this->map->forceSet($key, $value, $flag);
 		return $this;
 	}
 	
@@ -124,4 +136,4 @@ class Skeleton implements ISkeletonSource
 	{
 		return $this->loader->get($className);
 	}
-}
+}	

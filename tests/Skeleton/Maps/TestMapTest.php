@@ -56,7 +56,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->forceSet('a', 'b');
+		$testMap->override('a', 'b');
 		
 		$this->assertEquals('b', $testMap->get('a'));
 	}
@@ -65,7 +65,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->forceSet('a', 'b');
+		$testMap->override('a', 'b');
 		
 		$map->expects($this->never())->method('get');
 		
@@ -77,7 +77,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->forceSet('c', \stdClass::class);
+		$testMap->override('c', \stdClass::class);
 		
 		$map->expects($this->once())
 			->method('get')
@@ -90,7 +90,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 	{
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
-		$testMap->forceSet('a', \stdClass::class);
+		$testMap->override('a', \stdClass::class);
 		
 		$map->expects($this->never())
 			->method('get')
@@ -105,7 +105,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
-		$testMap->forceSet('b', new \stdClass());
+		$testMap->override('b', new \stdClass());
 		
 		$this->assertFalse($testMap->has('a'));
 	}
@@ -115,7 +115,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 		$map = $this->mockIMap();
 		$testMap = new TestMap($map);
 		
-		$testMap->forceSet('a', new \stdClass());
+		$testMap->override('a', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
 	}
@@ -129,7 +129,7 @@ class TestMapTest extends \PHPUnit_Framework_TestCase
 			->with('a')
 			->willReturn(true);
 		
-		$testMap->forceSet('b', new \stdClass());
+		$testMap->override('b', new \stdClass());
 		
 		$this->assertTrue($testMap->has('a'));
 	}
