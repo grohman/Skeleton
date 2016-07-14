@@ -40,16 +40,16 @@ class ConstructorConnector
 	 */
 	private function loadParameter(\ReflectionParameter $parameter)
 	{
-		$className = $parameter->getClass();
+		$class = $parameter->getClass();
 		
-		if (is_null($className))
+		if (is_null($class))
 		{
 			throw new \Exception(
 				'Constructor parameter must be autoloaded but missing parameter type for parameter ' . 
 					$parameter->getName());
 		}
 		
-		return $this->skeleton->get($className);
+		return $this->skeleton->get($class->getName());
 	}
 	
 	

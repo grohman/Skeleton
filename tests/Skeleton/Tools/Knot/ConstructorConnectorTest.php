@@ -22,6 +22,7 @@ class ConstructorConnectorTest extends \PHPUnit_Framework_TestCase
 			->setSkeleton($this->skeleton)
 			->setExtractor(new Extractor());
 	}
+	
 	/**
 	 * @param ConstructorConnector $connector
 	 * @param string $type
@@ -86,6 +87,19 @@ class ConstructorConnectorTest extends \PHPUnit_Framework_TestCase
 	{
 		$obj = $this->getConstructorConnector();
 		$this->invokeConnect($obj, test_ConstructorConnector_Helper_InvalidType::class);
+	}
+	
+	public function test_connect_ConstructorWithParameters_ParameterClassNamePassedToSkeleton()
+	{
+		$obj = $this->getConstructorConnector();
+		
+		$this->skeleton
+			->expects($this->once())
+			->method('get')
+			->with(test_ConstructorConnector_TypeA::class)
+			->willReturn(new test_ConstructorConnector_TypeA());
+		
+		$this->invokeConnect($obj, test_ConstructorConnector_Helper_ConstructorWithParam::class);
 	}
 	
 	public function test_connect_ConstructorWithParameters_InstanceReturned()
