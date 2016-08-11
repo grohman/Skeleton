@@ -107,7 +107,8 @@ class PropertyConnector
 	{
 		foreach ($class->getProperties() as $property)
 		{
-			if ($this->isPropertyMustBeLoaded($property, $instance))
+			if ($property->class == $class->name && 
+				$this->isPropertyMustBeLoaded($property, $instance))
 			{
 				$this->loadProperty($property, $instance);
 			}

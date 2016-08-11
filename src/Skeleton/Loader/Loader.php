@@ -21,29 +21,29 @@ class Loader implements ILoader
 	}
 	
 	/**
-	 * @param mixed $className
+	 * @param mixed $item
 	 * @return mixed
 	 */
-	public function get($className) 
+	public function get($item) 
 	{
-		if (is_string($className))
+		if (is_string($item))
 		{
 			if ($this->knot)
 			{
-				return $this->knot->load($className);
+				return $this->knot->load($item);
 			}
 			else
 			{
-				return new $className;
+				return new $item;
 			}
 		}
-		else if (is_callable($className))
+		else if (is_callable($item))
 		{
-			return $className();
+			return $item();
 		}
 		else
 		{
-			return $className;
+			return $this->knot->loadInstance($item);
 		}
 	}
 }

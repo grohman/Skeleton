@@ -84,7 +84,8 @@ class MethodConnector
 	{
 		foreach ($class->getMethods() as $method)
 		{
-			if ($this->isAutoloadMethod($method))
+			if ($method->class == $class->name && 
+				$this->isAutoloadMethod($method))
 			{
 				$this->invokeMethod($method, $instance);
 			}

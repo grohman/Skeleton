@@ -13,8 +13,8 @@ interface ILoader
 	public function setKnot(Knot $knot);
 	
 	/**
-	 * @param mixed $className
+	 * @param mixed $item
 	 * @return mixed
 	 */
-	public function get($className);
+	public function get($item);
 }

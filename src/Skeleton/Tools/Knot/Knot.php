@@ -21,6 +21,16 @@ class Knot
 	private $extractor;
 	
 	
+	/**
+	 * @param \ReflectionClass $reflection
+	 * @return bool
+	 */
+	private function isAutoloadClass(\ReflectionClass $reflection)
+	{
+		return $this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS);
+	}
+	
+	
 	public function __construct(ISkeletonSource $skeleton) 
 	{
 		$this->extractor = new Extractor();
@@ -40,22 +50,36 @@ class Knot
 	
 	
 	/**
+	 * @param mixed $instance
+	 * @return mixed Same instance always returned
+	 */
+	public function loadInstance($instance)
+	{
+		$reflection = new \ReflectionClass($instance);
+		
+		while ($reflection)
+		{
+			if ($this->isAutoloadClass($reflection))
+			{
+				$this->propertyConnector->connect($reflection, $instance);
+				$this->methodConnector->connect($reflection, $instance);
+			}
+			
+			$reflection = $reflection->getParentClass();
+		}
+		
+		return $instance;
+	}
+	
+	/**
 	 * @param string $className
 	 * @return bool|mixed False if no auto loading required.
 	 */
 	public function load($className)
 	{
 		$reflection = new \ReflectionClass($className);
-		
-		if (!$this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS))
-		{
-			return $reflection->newInstance();
-		}
-		
 		$instance = $this->constructorConnector->connect($reflection);
-		$this->propertyConnector->connect($reflection, $instance);
-		$this->methodConnector->connect($reflection, $instance);
 		
-		return $instance;
+		return $this->loadInstance($instance);
 	}
 }
