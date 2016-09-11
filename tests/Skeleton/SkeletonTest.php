@@ -3,6 +3,7 @@ namespace Skeleton;
 
 
 use Skeleton\Base\IMap;
+use Skeleton\Base\ILoader;
 use Skeleton\Base\IConfigLoader;
 
 use Skeleton\Exceptions;
@@ -18,8 +19,17 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		/** @var \PHPUnit_Framework_MockObject_MockObject|IMap $map */
 		$map = $this->getMock(IMap::class);
+		$map->method('loader')->willReturn($this->mockLoader());
 		$s->setMap($map);
 		return $map;
+	}
+	
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject|ILoader
+	 */
+	private function mockLoader()
+	{
+		return $this->getMock(ILoader::class);
 	}
 	
 	/**
@@ -171,17 +181,6 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($map, $s->getMap());
 	}
 	
-	public function test_setMap_LoaderPassedToMap()
-	{
-		/** @var  \PHPUnit_Framework_MockObject_MockObject|IMap $map */
-		$map = $this->getMock(IMap::class);
-		$s = new Skeleton();
-		
-		$map->expects($this->once())->method('setLoader');
-		
-		$s->setMap($map);
-	}
-	
 	
 	public function test_setConfigLoader_LoaderSet() 
 	{
@@ -199,6 +198,32 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
+	public function test_enableKnot_EnableKnotOnMapCalled()
+	{
+		$s = new Skeleton();
+		
+		$map = $this->mockMap($s);
+		$map->expects($this->once())
+			->method('enableKnot')
+			->with($s);
+		
+		$s->enableKnot();
+	}
+	
+	
+	public function test_load_LoadCalledOnMapsLoader()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		$loader = $map->loader();
+		$loader->expects($this->once())->method('get')->with('abc')->willReturn(123);
+		
+		$this->assertEquals(123, $s->load('abc'));
+	}
+	
+	
 	public function testSanity_knotNotEnabled()
 	{
 		$s = new Skeleton();
@@ -210,21 +235,6 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$a = $s->get(SkeletonTest_Helper_B::class);
 		
 		$this->assertNull($a->a);
-	}
-	
-	public function testSanity_knotEnabled()
-	{
-		$s = new Skeleton();
-		
-		$s->set(SkeletonTest_Helper_A::class, SkeletonTest_Helper_A::class);
-		$s->set(SkeletonTest_Helper_B::class, SkeletonTest_Helper_B::class);
-		
-		$s->enableKnot();
-		
-		/** @var SkeletonTest_Helper_B $a */
-		$a = $s->get(SkeletonTest_Helper_B::class);
-		
-		$this->assertInstanceOf(SkeletonTest_Helper_A::class, $a->a);
 	}
 }
 

@@ -8,9 +8,19 @@ use Skeleton\Type;
 interface IMap
 {
 	/**
+	 * @return ILoader
+	 */
+	public function loader();
+	
+	/**
 	 * @param ILoader $loader
 	 */
 	public function setLoader(ILoader $loader);
+	
+	/**
+	 * @param ISkeletonSource $skeletonSource
+	 */
+	public function enableKnot(ISkeletonSource $skeletonSource);
 	
 	/**
 	 * @param string $key

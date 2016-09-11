@@ -5,21 +5,17 @@ namespace Skeleton\Maps;
 use Skeleton\Type;
 use Skeleton\ISingleton;
 use Skeleton\Base\IMap;
-use Skeleton\Base\ILoader;
 
 use Skeleton\Exceptions;
 
 
-class SimpleMap implements IMap 
+class SimpleMap extends BaseMap implements IMap 
 {
 	/** @var array */
 	private $config = [];
 	
 	/** @var array */
 	private $resolvedValues = [];
-	
-	/** @var ILoader */
-	private $loader = null;
 	
 	
 	/**
@@ -31,7 +27,7 @@ class SimpleMap implements IMap
 		$value = $this->config[$key][0];
 		$type = $this->config[$key][1];
 		
-		$instance = $this->loader->get($value);
+		$instance = $this->loader()->get($value);
 		
 		if ($instance instanceof ISingleton || $type == Type::Singleton)
 		{
@@ -42,14 +38,6 @@ class SimpleMap implements IMap
 		return $instance;
 	}
 	
-	
-	/**
-	 * @param ILoader $loader
-	 */
-	public function setLoader(ILoader $loader)
-	{
-		$this->loader = $loader;
-	}
 	
 	/**
 	 * @param string $key

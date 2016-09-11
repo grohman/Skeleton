@@ -4,12 +4,11 @@ namespace Skeleton\Maps;
 
 use Skeleton\Type;
 use Skeleton\Base\IMap;
-use Skeleton\Base\ILoader;
 
 use Skeleton\Exceptions;
 
 
-class TestMap implements IMap
+class TestMap extends BaseMap implements IMap
 {
 	/** @var IMap */
 	private $originalMap;
@@ -23,6 +22,7 @@ class TestMap implements IMap
 	 */
 	public function __construct(IMap $main)
 	{
+		parent::__construct($main->loader());
 		$this->originalMap = $main;
 	}
 	
@@ -75,14 +75,6 @@ class TestMap implements IMap
 	public function has($key)
 	{
 		return (isset($this->overrideMap[$key]) || $this->originalMap->has($key));
-	}
-	
-	/**
-	 * @param ILoader $loader
-	 */
-	public function setLoader(ILoader $loader)
-	{
-		$this->originalMap->setLoader($loader);
 	}
 	
 	/**

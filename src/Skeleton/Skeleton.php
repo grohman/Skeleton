@@ -3,13 +3,11 @@ namespace Skeleton;
 
 
 use Skeleton\Exceptions;
+use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\IMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Maps\SimpleMap;
-use Skeleton\Tools\Knot\Knot;
-use Skeleton\Loader\Loader;
 
 
 class Skeleton implements ISkeletonSource
@@ -20,14 +18,10 @@ class Skeleton implements ISkeletonSource
 	/** @var IConfigLoader|null */
 	private $configLoader;
 	
-	/** @var Loader */
-	private $loader = null;
-	
 	
 	public function __construct() 
 	{
-		$this->loader = new Loader();
-		$this->setMap(new SimpleMap());
+		$this->map = new SimpleMap();
 	}
 	
 	
@@ -38,7 +32,6 @@ class Skeleton implements ISkeletonSource
 	public function setMap(IMap $map) 
 	{
 		$this->map = $map;
-		$this->map->setLoader($this->loader);
 		return $this;
 	}
 	
@@ -73,7 +66,7 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function enableKnot()
 	{
-		$this->loader->setKnot(new Knot($this));
+		$this->map->enableKnot($this);
 		return $this;
 	}
 	
@@ -134,6 +127,6 @@ class Skeleton implements ISkeletonSource
 	 */
 	public function load($className)
 	{
-		return $this->loader->get($className);
+		return $this->map->loader()->get($className);
 	}
 }	
