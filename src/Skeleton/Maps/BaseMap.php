@@ -14,6 +14,9 @@ abstract class BaseMap implements IMap
 	private $loader;
 	
 	
+	/**
+	 * @param ILoader|null $loader
+	 */
 	public function __construct(ILoader $loader = null) 
 	{
 		$this->loader = ($loader ?: new Loader());
