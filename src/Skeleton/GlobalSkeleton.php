@@ -3,6 +3,7 @@ namespace Skeleton;
 
 
 use Skeleton\Base\ISkeletonSource;
+use Skeleton\Exceptions\ImplementerNotDefinedException;
 
 
 class GlobalSkeleton
@@ -18,7 +19,7 @@ class GlobalSkeleton
 	 * @param string $key
 	 * @return ISkeletonSource|null
 	 */
-	public function get($key)
+	public function getSkeleton($key)
 	{
 		$length		= strlen($key);
 		$keyStart	= substr($key, 0, 3);
@@ -37,6 +38,20 @@ class GlobalSkeleton
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function get($key)
+	{
+		$source = $this->getSkeleton($key);
+		
+		if (!$source)
+			throw new ImplementerNotDefinedException($key);
+		
+		return $source->getLocal($key);
 	}
 	
 	/**

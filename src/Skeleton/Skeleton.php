@@ -3,20 +3,50 @@ namespace Skeleton;
 
 
 use Skeleton\Exceptions;
-use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\IMap;
+use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
-use Skeleton\Base\ISkeletonSource;
+use Skeleton\Base\AbstractSkeletonSource;
 
 
-class Skeleton implements ISkeletonSource
+class Skeleton extends AbstractSkeletonSource
 {
+	/** @var bool */
+	private $useGlobal = false;
+	
 	/** @var IMap */
 	private $map;
 	
 	/** @var IConfigLoader|null */
 	private $configLoader;
+	
+	
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
+	private function tryLoadLocal($key)
+	{
+		if (is_null($this->configLoader))
+			return false;
+		
+		ConfigSearch::searchFor($key, $this->map, $this->configLoader);
+		
+		return $this->map->has($key);
+	}
+	
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	private function tryLoadGlobal($key)
+	{
+		if ($this->useGlobal)
+			return GlobalSkeleton::instance()->get($key);
+		
+		throw new Exceptions\ImplementerNotDefinedException($key);
+	}
 	
 	
 	public function __construct() 
@@ -32,6 +62,15 @@ class Skeleton implements ISkeletonSource
 	public function setMap(IMap $map) 
 	{
 		$this->map = $map;
+		return $this;
+	}
+	
+	/**
+	 * @return static
+	 */
+	public function useGlobal()
+	{
+		$this->useGlobal = true;
 		return $this;
 	}
 	
@@ -73,22 +112,34 @@ class Skeleton implements ISkeletonSource
 	
 	/**
 	 * @param string $key
+	 * @param bool $useGlobal
 	 * @return object|string
 	 */
-	public function get($key)
+	public function get($key, $useGlobal = true)
 	{
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
-		if ($this->map->has($key)) 
+		if (
+			$this->map->has($key) ||
+			$this->tryLoadLocal($key))
+		{
 			return $this->map->get($key);
+		}
+		else if ($useGlobal)
+		{
+			try 
+			{
+				return $this->tryLoadGlobal($key);
+			}
+			// Reset call stuck to be relative to this method. 
+			catch (Exceptions\ImplementerNotDefinedException $e)
+			{
+				throw new Exceptions\ImplementerNotDefinedException($key);
+			}
+		}
 		
-		if (is_null($this->configLoader)) 
-			throw new Exceptions\ImplementerNotDefinedException($key);
-		
-		ConfigSearch::searchFor($key, $this->map, $this->configLoader);
-		
-		return $this->map->get($key);
+		throw new Exceptions\ImplementerNotDefinedException($key);
 	}
 	
 	/**
@@ -101,8 +152,6 @@ class Skeleton implements ISkeletonSource
 	{
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
-		else if (!is_string($value) && !is_object($value))
-			throw new Exceptions\InvalidImplementerException($value);
 		
 		$this->map->set($key, $value, $flags);
 		

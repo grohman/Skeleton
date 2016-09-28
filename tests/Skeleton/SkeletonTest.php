@@ -7,6 +7,7 @@ use Skeleton\Base\ILoader;
 use Skeleton\Base\IConfigLoader;
 
 use Skeleton\Exceptions;
+use Skeleton\Maps\SimpleMap;
 
 
 class SkeletonTest extends \PHPUnit_Framework_TestCase
@@ -33,6 +34,23 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject|GlobalSkeleton
+	 */
+	private function mockGlobalSkeleton()
+	{
+		$global = $this->getMockBuilder(GlobalSkeleton::class)
+			->disableOriginalConstructor()
+			->getMock();
+		
+		$ref = new \ReflectionClass(GlobalSkeleton::class);
+		$instanceProperty = $ref->getProperty('instance');
+		$instanceProperty->setAccessible(true);
+		$instanceProperty->setValue(null, $global);
+		
+		return $global;
+	}
+	
+	/**
 	 * @param Skeleton $s
 	 * @param bool $has
 	 * @return \PHPUnit_Framework_MockObject_MockObject
@@ -54,6 +72,15 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$loader = $this->getMock(IConfigLoader::class);
 		$s->setConfigLoader($loader);
 		return $loader;
+	}
+	
+	
+	protected function tearDown()
+	{
+		$ref = new \ReflectionClass(GlobalSkeleton::class);
+		$instanceProperty = $ref->getProperty('instance');
+		$instanceProperty->setAccessible(true);
+		$instanceProperty->setValue(null, null);
 	}
 	
 	
@@ -94,6 +121,10 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->get('a\b');
 	}
 	
+	/**
+	 * Ignore missing value, this is not tested by this unit test.
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
 	public function test_get_NotClassInMap_ConfigLoaderCalled()
 	{
 		$s = new Skeleton();
@@ -105,6 +136,10 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->get('a\b');
 	}
 	
+	/**
+	 * Ignore missing value, this is not tested by this unit test.
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
 	public function test_get_ConfigLoaderCalledWithCorrectValues()
 	{
 		$s = new Skeleton();
@@ -116,29 +151,90 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->get('a\b');
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
-	 */
-	public function test_get_NotClassInMapAdnConfigLoaderIsNull_ErrorThrown()
+	public function test_get_ValueExistsAfterConfigLoaderIsUsed_LoadedValueReturned()
 	{
 		$s = new Skeleton();
-		$this->mockMapHasValue($s, false);
-		$s->setConfigLoader(null);
+		$loader = $this->mockConfigLoader($s);
+		$s->setMap(new SimpleMap());
 		
-		$s->get('a\b');
+		$loader
+			->expects($this->once())
+			->method('tryLoad')
+			->willReturnCallback(
+				function() 
+					use ($s) 
+				{
+					$s->set('some\complex\namespace', 123);
+					return true;
+				}
+			);
+		
+		$this->assertSame(123, $s->get('some\complex\namespace'));
 	}
 	
-	public function test_get_GetCalledOneMoreTimeAfterConfigLoaded()
+	
+	/**
+	 * Ignore missing value, this is not tested by this unit test.
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_get_SkeletonUseGlobalFlagNotSet_GlobalNotCalled()
 	{
+		$global = $this->mockGlobalSkeleton();
 		$s = new Skeleton();
-		$map = $this->mockMapHasValue($s, false);
-		$this->mockConfigLoader($s);
 		
-		// Has method will return false by default so get should only be called once. 
-		$map->expects($this->once())->method('get')->with('some\complex\namespace');
+		$global->expects($this->never())->method('get');
 		
+		$s->get('a', true);
+	}
+	
+	public function test_get_SkeletonUseGlobalFlagSet_GlobalSkeletonCalled()
+	{
+		$global = $this->mockGlobalSkeleton();
+		$s = new Skeleton();
 		
-		$s->get('some\complex\namespace');
+		$global->expects($this->once())->method('get');
+		
+		$s->useGlobal();
+		
+		$s->get('a', true);
+	}
+	
+	public function test_get_SkeletonUseGlobalFlagSet_KeyPassedToGlobalSkeleton()
+	{
+		$global = $this->mockGlobalSkeleton();
+		$s = new Skeleton();
+		
+		$global->expects($this->once())->method('get')->with('a');
+		
+		$s->useGlobal();
+		
+		$s->get('a', true);
+	}
+	
+	/**
+	 * Ignore missing value, this is not tested by this unit test.
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_get_FunctionUseGlobalFlagIsFalse_GlobalNotCalled()
+	{
+		$global = $this->mockGlobalSkeleton();
+		$s = new Skeleton();
+		$s->useGlobal();
+		
+		$global->expects($this->never())->method('get');
+		
+		$s->get('a', false);
+	}
+	
+	public function test_get_ObjectReturnedFromGlobal_NoErrorThrown()
+	{
+		$global = $this->mockGlobalSkeleton();
+		$s = new Skeleton();
+		$s->useGlobal();
+		
+		$global->method('get')->willReturn(123);
+		
+		$this->assertSame(123, $s->get('a'));
 	}
 	
 	
@@ -149,15 +245,6 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 	{
 		$s = new Skeleton();
 		$s->set(12, "a");
-	}
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\InvalidImplementerException
-	 */
-	public function test_set_ImplementerIsNotObjectOrString_ErrorThrown()
-	{
-		$s = new Skeleton();
-		$s->set("a", 12);
 	}
 	
 	public function test_set_SetOnMapCalled()

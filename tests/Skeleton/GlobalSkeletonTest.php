@@ -25,41 +25,82 @@ class GlobalSkeletonTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_get_Empty_ReturnFalse()
+	public function test_getSkeleton_Empty_ReturnFalse()
 	{
-		$this->assertNull(GlobalSkeleton::instance()->get('abcd'));
+		$this->assertNull(GlobalSkeleton::instance()->getSkeleton('abcd'));
 	}
 	
-	public function test_get_NotFound_ReturnNull()
+	public function test_getSkeleton_NotFound_ReturnNull()
 	{
 		GlobalSkeleton::instance()->add('123', $this->mockISkeletonSource());
 		GlobalSkeleton::instance()->add('456', $this->mockISkeletonSource());
 		
-		$this->assertNull(GlobalSkeleton::instance()->get('abc'));
+		$this->assertNull(GlobalSkeleton::instance()->getSkeleton('abc'));
 	}
 	
-	public function test_get_HAveSkeletonWithSameStart_ReturnNull()
+	public function test_getSkeleton_HAveSkeletonWithSameStart_ReturnNull()
 	{
 		GlobalSkeleton::instance()->add('SameStart1', $this->mockISkeletonSource());
 		
-		$this->assertNull(GlobalSkeleton::instance()->get('SameStart2'));
+		$this->assertNull(GlobalSkeleton::instance()->getSkeleton('SameStart2'));
 	}
 	
-	public function test_get_PrefixShorterThan3Characters_ReturnNull()
+	public function test_getSkeleton_PrefixShorterThan3Characters_ReturnNull()
 	{
 		GlobalSkeleton::instance()->add('abc', $this->mockISkeletonSource());
 		
-		$this->assertNull(GlobalSkeleton::instance()->get('ab'));
+		$this->assertNull(GlobalSkeleton::instance()->getSkeleton('ab'));
 	}
 	
-	public function test_get_HaveSimilar_ReturnCorrect()
+	public function test_getSkeleton_HaveSimilar_ReturnCorrect()
 	{
 		$target = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('abcdefg1', $this->mockISkeletonSource());
 		GlobalSkeleton::instance()->add('abcdefg2', $target);
 		GlobalSkeleton::instance()->add('abcdefg3', $this->mockISkeletonSource());
 		
-		$this->assertSame($target, GlobalSkeleton::instance()->get('abcdefg2'));
+		$this->assertSame($target, GlobalSkeleton::instance()->getSkeleton('abcdefg2'));
+	}
+	
+	
+	/**
+	 *  @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_get_NoSkeletonsDefined_ErrorThrown()
+	{
+		GlobalSkeleton::instance()->add('b', $this->mockISkeletonSource());
+		
+		GlobalSkeleton::instance()->get('a');
+	}
+	
+	public function test_get_SkeletonsDefined_GetForSkeletonCalled()
+	{
+		$source = $this->mockISkeletonSource();
+		GlobalSkeleton::instance()->add('a', $source);
+		
+		$source->expects($this->once())->method('getLocal');
+		
+		GlobalSkeleton::instance()->get('a');
+	}
+	
+	public function test_get_SkeletonsDefined_CorrectParamsPassed()
+	{
+		$source = $this->mockISkeletonSource();
+		GlobalSkeleton::instance()->add('a', $source);
+		
+		$source->method('getLocal')->with('a');
+		
+		GlobalSkeleton::instance()->get('a');
+	}
+	
+	public function test_get_SkeletonsDefined_ReturnedValueReturnedByGlobal()
+	{
+		$source = $this->mockISkeletonSource();
+		GlobalSkeleton::instance()->add('a', $source);
+		
+		$source->method('getLocal')->willReturn(123);
+		
+		$this->assertSame(123, GlobalSkeleton::instance()->get('a'));
 	}
 	
 	
@@ -68,6 +109,6 @@ class GlobalSkeletonTest extends \PHPUnit_Framework_TestCase
 		$source = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('ac', $source);
 		
-		$this->assertSame($source, GlobalSkeleton::instance()->get('ac'));
+		$this->assertSame($source, GlobalSkeleton::instance()->getSkeleton('ac'));
 	}
 }

@@ -3,10 +3,10 @@ namespace Skeleton;
 
 
 use Skeleton\Maps\TestMap;
-use Skeleton\Base\ISkeletonSource;
+use Skeleton\Base\AbstractSkeletonSource;
 
 
-class UnitTestSkeleton implements ISkeletonSource
+class UnitTestSkeleton extends AbstractSkeletonSource
 {
 	/** @var TestMap */
 	private $testMap;
@@ -24,9 +24,10 @@ class UnitTestSkeleton implements ISkeletonSource
 	
 	/**
 	 * @param string $key
+	 * @param bool $useGlobal
 	 * @return mixed
 	 */
-	public function get($key)
+	public function get($key, $useGlobal = true)
 	{
 		return $this->testMap->get($key);
 	}
