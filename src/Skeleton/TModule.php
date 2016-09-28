@@ -16,6 +16,9 @@ trait TModule
 	/** @var array */
 	private $components;
 	
+	/** @var Skeleton */
+	private $skeleton;
+	
 	
 	/**
 	 * @return array
@@ -28,8 +31,9 @@ trait TModule
 	 */
 	protected static function initialize($instance) 
 	{
-		$instance->subModules = $instance->getSubModules();
-		$instance->components = $instance->getComponent();
+		$instance->subModules	= $instance->getSubModules();
+		$instance->components	= $instance->getComponent();
+		$instance->skeleton		= $instance->skeleton();
 	}
 	
 	
@@ -52,7 +56,7 @@ trait TModule
 	public function __call($name, $arguments)
 	{
 		if (isset(self::$instance->components[$name])) 
-			return self::$instance->skeleton()->get(self::$instance->components[$name]);
+			return self::$instance->skeleton->get(self::$instance->components[$name]);
 		
 		if (isset(self::$instance->subModules[$name]))
 		{
