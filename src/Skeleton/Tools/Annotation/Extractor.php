@@ -41,14 +41,12 @@ class Extractor
 			
 			return false;
 		}
-		else
-		{
-			$pattern = $allowComment ?
-				"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
-				"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m";
-			
-			return (preg_match($pattern, $this->getDocComment($element)) == 1);
-		}
+		
+		$pattern = $allowComment ?
+			"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
+			"/^[ \\t]*\\*[ \\t]*@{$annotation}[ \\t]*$/m";
+		
+		return (preg_match($pattern, $this->getDocComment($element)) == 1);
 	}
 	
 	/**

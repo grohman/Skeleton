@@ -109,6 +109,16 @@ class Skeleton extends AbstractSkeletonSource
 		return $this;
 	}
 	
+	/**
+	 * @param string $prefix
+	 * @return $this
+	 */
+	public function globalFor($prefix)
+	{
+		GlobalSkeleton::instance()->add($prefix, $this);
+		return $this;
+	}
+	
 	
 	/**
 	 * @param string $key
@@ -120,8 +130,7 @@ class Skeleton extends AbstractSkeletonSource
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
-		if (
-			$this->map->has($key) ||
+		if ($this->map->has($key) ||
 			$this->tryLoadLocal($key))
 		{
 			return $this->map->get($key);

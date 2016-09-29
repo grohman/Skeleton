@@ -8,7 +8,7 @@ use Skeleton\Base\IConfigLoader;
 class DirectoryConfigLoader implements IConfigLoader
 {
 	/** @var array */
-	private $m_aDirectories;
+	private $directories;
 	
 	
 	/**
@@ -43,7 +43,7 @@ class DirectoryConfigLoader implements IConfigLoader
 		if (!is_array($directories))
 			$directories = [$directories];
 		
-		$this->m_aDirectories = $directories;
+		$this->directories = $directories;
 	}
 	
 	
@@ -57,7 +57,7 @@ class DirectoryConfigLoader implements IConfigLoader
 	{
 		$result = false;
 		
-		foreach ($this->m_aDirectories as $directory)
+		foreach ($this->directories as $directory)
 		{
 			$fullPath = $this->createPath($directory, $path); 
 			$fileResult = $this->tryLoadSingleFile($fullPath);

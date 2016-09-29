@@ -1,20 +1,15 @@
 <?php
-namespace Skeleton\Tools\Knot;
+namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;
+use Skeleton\Tools\Knot\KnotConsts;
+use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Annotation\Extractor;
 
 
-class PropertyConnector
+class PropertyConnector extends AbstractObjectToSkeletonConnector
 {
-	/** @var ISkeletonSource */
-	private $skeleton;
-	
-	/** @var Extractor */
-	private $extractor;
-	
-	
 	/**
 	 * @param \ReflectionProperty $property
 	 * @param string $type
@@ -51,7 +46,7 @@ class PropertyConnector
 	 */
 	private function isPropertyMustBeLoaded(\ReflectionProperty $property, $instance)
 	{
-		if (!$this->extractor->has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
+		if (!$this->getAnnotationsExtractor()->has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			return false;
 		
 		$property->setAccessible(true);
@@ -65,7 +60,7 @@ class PropertyConnector
 	 */
 	private function loadProperty(\ReflectionProperty $property, $instance)
 	{
-		$type = $this->extractor->get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
+		$type = $this->getAnnotationsExtractor()->get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
 		
 		if (!$type)
 		{
@@ -73,29 +68,8 @@ class PropertyConnector
 		}
 		
 		$type = $this->getFullTypeName($property, $type);
-		$value = $this->skeleton->get($type);
+		$value = $this->getSkeleton()->get($type);
 		$property->setValue($instance, $value);
-	}
-	
-	
-	/**
-	 * @param ISkeletonSource $skeleton
-	 * @return static
-	 */
-	public function setSkeleton(ISkeletonSource $skeleton)
-	{
-		$this->skeleton = $skeleton;
-		return $this;
-	}
-	
-	/**
-	 * @param Extractor $extractor
-	 * @return static
-	 */
-	public function setExtractor(Extractor $extractor)
-	{
-		$this->extractor = $extractor;
-		return $this;
 	}
 	
 	

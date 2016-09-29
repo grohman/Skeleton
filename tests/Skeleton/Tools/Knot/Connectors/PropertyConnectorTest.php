@@ -1,5 +1,5 @@
 <?php
-namespace Skeleton\Tools\Knot;
+namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;
@@ -92,7 +92,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_PublicAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\PubType', 1);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Connectors\PubType', 1);
 		
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_PublicAutoload::class);
 		$this->assertEquals(1, $instance->pub);
@@ -101,7 +101,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_ProtectedAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\ProtType', 2);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Connectors\ProtType', 2);
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_ProtectedAutoload::class);
 		$this->assertEquals(2, $instance->get());
 	}
@@ -109,7 +109,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	public function test_connect_PrivTypeAutoloadParameter_SkeletonCalled()
 	{
 		$obj = $this->getPropertyConnector();
-		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\PrivType', 3);
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Connectors\PrivType', 3);
 		$instance = $this->invokeConnect($obj, test_PropertyConnector_Helper_PrivateAutoload::class);
 		$this->assertEquals(3, $instance->get());
 	}
@@ -138,7 +138,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	{
 		$obj = $this->getPropertyConnector();
 		
-		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Name');
+		$this->expectSkeletonCalledFor('Skeleton\Tools\Knot\Connectors\Name');
 		
 		$this->invokeConnect($obj, test_PropertyConnector_TestRelativeNamespace::class);
 	}

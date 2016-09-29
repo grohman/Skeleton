@@ -1,5 +1,5 @@
 <?php
-namespace Skeleton\Tools\Knot;
+namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;

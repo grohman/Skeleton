@@ -74,7 +74,7 @@ class ExtractorTest extends \PHPUnit_Framework_TestCase
 	public function test_has_CommentIsNotAllowedButPresent_ReturnFalse()
 	{
 		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClass_WithComment::class, 'has'));
+		$this->assertFalse($e->has(test_ExtractorTest_HelperClass_WithComment::class, 'has', false));
 	}
 	
 	public function test_has_CommentIsNotAllowedAndNotPresent_ReturnTrue()
