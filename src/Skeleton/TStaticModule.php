@@ -41,7 +41,8 @@ trait TStaticModule
 		{
 			self::initialize();
 		}
-		else if (isset(self::$components[$name]))
+		
+		if (isset(self::$components[$name]))
 		{
 			return self::skeleton()->get(self::$components[$name]);
 		}
