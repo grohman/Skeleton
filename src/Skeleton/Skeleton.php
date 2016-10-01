@@ -113,7 +113,7 @@ class Skeleton extends AbstractSkeletonSource
 	 * @param string $prefix
 	 * @return $this
 	 */
-	public function globalFor($prefix)
+	public function registerGlobalFor($prefix)
 	{
 		GlobalSkeleton::instance()->add($prefix, $this);
 		return $this;
