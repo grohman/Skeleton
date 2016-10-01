@@ -3,14 +3,15 @@ namespace Skeleton;
 
 
 use Skeleton\Exceptions;
-use Skeleton\Base\IMap;
 use Skeleton\Maps\SimpleMap;
+use Skeleton\Base\IMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
+use Skeleton\Base\IBoneConstructor;
 use Skeleton\Base\AbstractSkeletonSource;
 
 
-class Skeleton extends AbstractSkeletonSource
+class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
 {
 	/** @var bool */
 	private $useGlobal = false;
@@ -88,6 +89,7 @@ class Skeleton extends AbstractSkeletonSource
 	 */
 	public function setConfigLoader(IConfigLoader $loader = null)
 	{
+		$loader->setBoneConstructor($this);
 		$this->configLoader = $loader;
 		return $this;
 	}

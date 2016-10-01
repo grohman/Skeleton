@@ -6,34 +6,11 @@ use Skeleton\Base\IConfigLoader;
 use Skeleton\Exceptions\SkeletonException;
 
 
-class PrefixDirectoryConfigLoader implements IConfigLoader
+class PrefixDirectoryConfigLoader extends AbstractConfigLoader  implements IConfigLoader
 {
 	/** @var array */
 	private $dirByPrefix = [];
 	
-	
-	/**
-	 * @param string $directory
-	 * @param string $path
-	 * @return string
-	 */
-	private function createPath($directory, $path)
-	{
-		return $directory . DIRECTORY_SEPARATOR . "$path.php";
-	}
-	
-	/**
-	 * @param string $fullPath
-	 * @return bool
-	 */
-	private function tryLoadSingleFile($fullPath)
-	{
-		if (!is_readable($fullPath)) return false; 
-		
-		require_once $fullPath;
-		
-		return true;
-	}
 	
 	/**
 	 * @param string $needle

@@ -5,34 +5,10 @@ namespace Skeleton\ConfigLoader;
 use Skeleton\Base\IConfigLoader;
 
 
-class DirectoryConfigLoader implements IConfigLoader
+class DirectoryConfigLoader extends AbstractConfigLoader implements IConfigLoader
 {
 	/** @var array */
 	private $directories;
-	
-	
-	/**
-	 * @param string $directory
-	 * @param string $path
-	 * @return string
-	 */
-	private function createPath($directory, $path)
-	{
-		return $directory . DIRECTORY_SEPARATOR . "$path.php";
-	}
-	
-	/**
-	 * @param string $fullPath
-	 * @return bool
-	 */
-	private function tryLoadSingleFile($fullPath)
-	{
-		if (!is_readable($fullPath)) return false; 
-		
-		require_once $fullPath;
-		
-		return true;
-	}
 	
 	
 	/**

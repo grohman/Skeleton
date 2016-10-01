@@ -9,4 +9,10 @@ interface IConfigLoader
 	 * @return bool
 	 */
 	public function tryLoad($path);
+
+	/**
+	 * @param IBoneConstructor $constructor
+	 * @return static
+	 */
+	public function setBoneConstructor(IBoneConstructor $constructor);
 }
