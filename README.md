@@ -36,7 +36,6 @@ class UserDAO implements IUserDAO
 
 
 // skeleton-config.php
-// This configuration should appear in it's own file. 
 $skeleton = new \Skeleton\Skeleton();
 $skeleton->set(Proj\Base\IUserDAOO::class, Proj\DAO\IUserDAO::class);
 // or
