@@ -87,7 +87,7 @@ $instance->setUserDAO($skeleton->get(IUserDAO::class));
 
 But with autoloading you can omit the call to setUserDAO using one of the following.
 
-- Using Setter methods autolaoding
+- Using setter methods autolaoding
 
 ```php
 // skeleton-config.php
