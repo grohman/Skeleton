@@ -73,7 +73,7 @@ $skeleton->set(IUserDAO::class,	    UserDAO::class);
 $skeleton->set(IUserService::class, UserService::class);
 ```
 
-Instance of **serService** may be obtained *without* autoloading using:
+Instance of **setService** may be obtained *without* autoloading using:
 
 ```php
 class UserService implements IUserService
@@ -92,8 +92,10 @@ But with autoloading you can omit the call to setUserDAO using one of the follow
 - Using Setter methods autolaoding
 
 ```php
+// skeleton-config.php
 $skeleton->enableKnot();
 
+// example.php
 /**
  * @autoload
  */
@@ -115,8 +117,10 @@ $instance = $skeleton->get(IUserService::class);
 - Using data member autoloading.
 
 ```php
+// skeleton-config.php
 $skeleton->enableKnot();
 
+// example.php
 /**
  * @autoload
  */
@@ -136,8 +140,10 @@ $instance = $skeleton->get(IUserService::class);
 - Using \__constrcut autoloding.
 
 ```php
+// skeleton-config.php
 $skeleton->enableKnot();
 
+// example.php
 class UserService implements IUserService
 {
 	public function __construct(IUserDAO $dao)
