@@ -25,7 +25,7 @@ interface IUserDAO
     public function load($id);
 }
 
-// src/Proj/DAO/IUserDAO.php
+// src/Proj/DAO/UserDAO.php
 class UserDAO implements IUserDAO
 {
     public function load($id)
@@ -74,6 +74,7 @@ $skeleton->set(Proj\Base\IUserService::class, Proj\Service\UserService::class);
 Instance of **setService** may be obtained *without* autoloading using:
 
 ```php
+// src/Proj/Service/UserService.php
 class UserService implements IUserService
 {
     public function setUserDAO(IUserDAO $dao)
@@ -93,7 +94,7 @@ But with autoloading you can omit the call to setUserDAO using one of the follow
 // skeleton-config.php
 $skeleton->enableKnot();
 
-// example.php
+// src/Proj/Service/UserService.php
 /**
  * @autoload
  */
@@ -109,6 +110,7 @@ class UserService implements IUserService
     }
 }
 
+// example.php
 $instance = $skeleton->get(IUserService::class);
 ```
 
@@ -118,7 +120,7 @@ $instance = $skeleton->get(IUserService::class);
 // skeleton-config.php
 $skeleton->enableKnot();
 
-// example.php
+// src/Proj/Service/UserService.php
 /**
  * @autoload
  */
@@ -132,6 +134,7 @@ class UserService implements IUserService
     private $dao;
 }
 
+// example.php
 $instance = $skeleton->get(IUserService::class);
 ```
 
@@ -141,14 +144,14 @@ $instance = $skeleton->get(IUserService::class);
 // skeleton-config.php
 $skeleton->enableKnot();
 
-// example.php
+// src/Proj/Service/UserService.php
 class UserService implements IUserService
 {
-	public function __construct(IUserDAO $dao)
-	{
-		
-	}
+    public function __construct(IUserDAO $dao)
+    {
+    }
 }
 
+// example.php
 $instance = $skeleton->get(IUserService::class);
 ```
