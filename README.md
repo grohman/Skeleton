@@ -1,102 +1,150 @@
 # Skeleton
-Skeleton is an [Inversion of Controller (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher.
+Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher.
 
-Skeleton consists of the next main features:
+- Simple example project (Coming soon)
+- Full documentation (Coming soon)
 
-1. Autoloading the skeletons configuration.
-2. Resolving class data *members*, *setter methods* and *\__constructor* parameters when a class is obtained through skeleton.
-3. The **GlobalSkeleton** singleton class allows to connect different *skeleton* instances to access classes of another library.
+## Installation
+
+```shell
+composer require oktopost/skeleton
+```
+or inside *composer.json*
+```json
+"require": {
+    "oktopost/skeleton": "^1.0"
+}
+```
 
 ## Basic Usage Example:
 
 ```php
-interface IMyInterface
+<?php
+require_once 'vendor/autoload.php';
+
+
+interface IUserDAO
 {
-	
+    public function load($id);
 }
 
-class MyInterfaceImplementer implements IMyInterface
+class UserDAO implements IUserDAO
 {
-	
+    public function load($id)
+    {
+        // ...
+    }
 }
 
+
+// This configuration should appear in it's own file. 
 $skeleton = new \Skeleton\Skeleton();
-$skeleton->set(IMyInterface::class, MyInterfaceImplementer::class);
+$skeleton->set(IUserDAO::class,	            UserDAO::class);
+// or
+$skeleton->set("Using any string as key",   UserDAO::class);
 
-$instance = $skeleton->get(IMyInterface::class);
+
+// Obtaining a new instance using
+$service = $skeleton->get(IUserDAO::class);
+// or
+$service = $skeleton->get("Using any string as key");
 ```
 
-In this case **$instance** will be set to a new instance of the **MyInterfaceImplementer** class.
-Note that **IMyInterface** interface was used as the key her, both to register and later obtain an instance of the implementing class. However for **Skeleton** it's unimportant what key is used. Using
+In this case, **$service** will be set to a new instance of the **UserDAO** class that was created by Skeleton.
+
+## Autoloading class
+
+Given the following setup:
 
 ```php
-$skeleton->set("some key", MyInterfaceImplementer::class);
-$instance = $skeleton->get("some key");
+<?php
+require_once 'vendor/autoload.php';
+
+
+interface IUserDAO {}
+interface IUserService {}
+
+class UserDAO implements IUserDAO {}
+
+
+// Given the config
+$skeleton = new \Skeleton\Skeleton();
+$skeleton->set(IUserDAO::class,	    UserDAO::class);
+$skeleton->set(IUserService::class, UserService::class);
 ```
 
-would produce the same result. 
-
-## Resolving class members, setters and constructor
-### Data Members
-
-Folloing will work on private, protected and public data members.
+Instance of **serService** may be obtained *without* autoloading using:
 
 ```php
-namespace SomeNamespace;
+class UserService implements IUserService
+{
+    public function setUserDAO(IUserDAO $dao)
+    {
+    }
+}
 
+$instance = $skeleton->get(IUserService::class);
+$instance->setUserDAO($skeleton->get(IUserDAO::class));
+```
 
-interface IMyInterface {}
-class MyInterfaceImplementer implements IMyInterface {}
+But with autoloading you can omit the call to setUserDAO using one of the following.
 
+- Using Setter methods autolaoding
+
+```php
+$skeleton->enableKnot();
 
 /**
  * @autoload
  */
-class MyClassWithDataMember
+class UserService implements IUserService
 {
-	/**
-	 * @autoload
-	 * @var /SomeNamespace/IMyInterface
-	 */
-	private $member;
-	
-	protected function setMember(IMyInterface $member) 
-	{
-		
-	}
-	
-	public function __construct(IMyInterface $member = null)
+    /**
+     * @autoload
+     * Method must start with the word set, have only one parameter and the @autoload annotation.
+     * Private and protected methods will be also autoloaded.
+     */
+    public function setUserDAO(IUserDAO $dao)
+    {
+    }
+}
+
+$instance = $skeleton->get(IUserService::class);
+```
+
+- Using data member autoloading.
+
+```php
+$skeleton->enableKnot();
+
+/**
+ * @autoload
+ */
+class UserService implements IUserService
+{
+    /**
+     * @autoload
+     * @var \Full\Path\To\IUserDAO
+     * Importent: Full path must be defined under the @var annotation.
+     */
+    private $dao;
+}
+
+$instance = $skeleton->get(IUserService::class);
+```
+
+- Using \__constrcut autoloding.
+
+```php
+$skeleton->enableKnot();
+
+class UserService implements IUserService
+{
+	public function __construct(IUserDAO $dao)
 	{
 		
 	}
 }
 
-$skeleton = new \Skeleton\Skeleton();
-$skeleton->enableKnot();
-$skeleton->set(IMyInterface::class, MyInterfaceImplementer::class);
-
-
-// To get an instance of MyClassWithDataMember with $member set to an instance
-// of MyInterfaceImplementer use on of following: 
-
-$instance = $skeleton->load(new MyClassWithDataMember(null));
-
-// or
-
-$instance = $skeleton->load(MyClassWithDataMember::class);
-
-// or
-
-$skeleton->set('myClass', MyClassWithDataMember::class);
-$instance = $skeleton->get('myClass');
+$instance = $skeleton->get(IUserService::class);
 ```
-
-In the above code the **$member** property will be set to a new instance of **MyInterfaceImplementer** class, 
-the method **setMember** will be called with a new instance of **MyInterfaceImplementer** and in the last two cases the **__constructor** will be called with a new instance of the **MyInterfaceImplementer** class.
-
-To Enable autolaoding:
-
-1. To enable the autoloading feature, the **enableKnot()** methods must be called on the skeleton instance.
-2. For data members to be autoloaded, each data member must contain the **@autoload** or **@magic** annotation, and the **@var** annotation must be provided with full path to the target interface name (_@var /SomeNamespace/IMyInterface_ will not work).
-3. For methods to be called on loading, the method name must start with **set**, the method parameters must be of the target inerfaces type and the **@autoload** or **@magic** annotation must be called on this method.
-4. Constructor will be always autoloaded (unless knot was not enabled on the skeleton instance), and the annotation for them is not needed.
