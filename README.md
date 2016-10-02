@@ -19,15 +19,13 @@ or inside *composer.json*
 ## Basic Usage Example:
 
 ```php
-<?php
-require_once 'vendor/autoload.php';
-
-
+// src/Proj/Base/IUserDAO.php
 interface IUserDAO
 {
     public function load($id);
 }
 
+// src/Proj/DAO/IUserDAO.php
 class UserDAO implements IUserDAO
 {
     public function load($id)
@@ -37,15 +35,16 @@ class UserDAO implements IUserDAO
 }
 
 
+// skeleton-config.php
 // This configuration should appear in it's own file. 
 $skeleton = new \Skeleton\Skeleton();
-$skeleton->set(IUserDAO::class,	            UserDAO::class);
+$skeleton->set(Proj\Base\IUserDAOO::class, Proj\DAO\IUserDAO::class);
 // or
-$skeleton->set("Using any string as key",   UserDAO::class);
+$skeleton->set("Using any string as key", Proj\DAO\IUserDAO::class);
 
 
 // Obtaining a new instance using
-$service = $skeleton->get(IUserDAO::class);
+$service = $skeleton->get(Proj\DAO\IUserDAO::class);
 // or
 $service = $skeleton->get("Using any string as key");
 ```
@@ -57,20 +56,20 @@ In this case, **$service** will be set to a new instance of the **UserDAO** clas
 Given the following setup:
 
 ```php
-<?php
-require_once 'vendor/autoload.php';
-
-
+// src/Proj/Base/IUserDAO.php
 interface IUserDAO {}
+
+// src/Proj/Base/IUserService.php
 interface IUserService {}
 
+// src/Proj/DAO/UserDAO.php
 class UserDAO implements IUserDAO {}
 
 
-// Given the config
+// skeleton-config.php
 $skeleton = new \Skeleton\Skeleton();
-$skeleton->set(IUserDAO::class,	    UserDAO::class);
-$skeleton->set(IUserService::class, UserService::class);
+$skeleton->set(Proj\Base\IUserDAO::class,     Proj\DAO\UserDAO::class);
+$skeleton->set(Proj\Base\IUserService::class, Proj\Service\UserService::class);
 ```
 
 Instance of **setService** may be obtained *without* autoloading using:
