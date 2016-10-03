@@ -1,7 +1,7 @@
 # Skeleton
 Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher.
 
-- Simple example project (Coming soon)
+- [Simple example project](https://github.com/Oktopost/Example-Skeleton)
 - Full documentation (Coming soon)
 
 ## Installation
