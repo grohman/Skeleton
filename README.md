@@ -1,8 +1,10 @@
 # Skeleton
-Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher.
+Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher. 
 
 - [Simple example project](https://github.com/Oktopost/Example-Skeleton)
 - Full documentation (Coming soon)
+
+> Skeleton should work with PHP 5.4 and higher, but it was tested only on 5.6.
 
 ## Installation
 
@@ -71,7 +73,7 @@ $skeleton->set(Proj\Base\IUserDAO::class,     Proj\DAO\UserDAO::class);
 $skeleton->set(Proj\Base\IUserService::class, Proj\Service\UserService::class);
 ```
 
-Instance of **setService** may be obtained *without* autoloading using:
+Instance of **UserService** may be obtained *without* autoloading using:
 
 ```php
 // src/Proj/Service/UserService.php
@@ -88,7 +90,7 @@ $instance->setUserDAO($skeleton->get(IUserDAO::class));
 
 But with autoloading you can omit the call to setUserDAO using one of the following.
 
-- Using setter methods autolaoding
+### Using setter methods autolaoding
 
 ```php
 // skeleton-config.php
@@ -102,7 +104,7 @@ class UserService implements IUserService
 {
     /**
      * @autoload
-     * Method must start with the word set, have only one parameter and the @autoload annotation.
+     * Method must start with the word "set", have only one parameter and the @autoload annotation.
      * Private and protected methods will be also autoloaded.
      */
     public function setUserDAO(IUserDAO $dao)
@@ -114,7 +116,7 @@ class UserService implements IUserService
 $instance = $skeleton->get(IUserService::class);
 ```
 
-- Using data member autoloading.
+### Using data member autoloading.
 
 ```php
 // skeleton-config.php
@@ -129,7 +131,7 @@ class UserService implements IUserService
     /**
      * @autoload
      * @var \Full\Path\To\IUserDAO
-     * Importent: Full path must be defined under the @var annotation.
+     * Important: Full path must be defined under the @var annotation.
      */
     private $dao;
 }
@@ -138,7 +140,9 @@ class UserService implements IUserService
 $instance = $skeleton->get(IUserService::class);
 ```
 
-- Using \__constrcut autoloding.
+### Using \__construct autoloading.
+
+In this case the *autoload* annotation is not required for the class name nor for the \__construct method.
 
 ```php
 // skeleton-config.php
