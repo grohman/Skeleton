@@ -19,8 +19,7 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
 		return (new PropertyConnector())
-			->setSkeleton($this->skeleton)
-			->setExtractor(new Extractor());
+			->setSkeleton($this->skeleton);
 	}
 	
 	private function expectSkeletonNotCalled()
@@ -65,13 +64,6 @@ class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
 		$obj = new PropertyConnector();
 		
 		$this->assertSame($obj, $obj->setSkeleton($skeleton));
-	}
-	
-	
-	public function test_setExtractor_ReturnSelf()
-	{
-		$obj = new PropertyConnector();		
-		$this->assertSame($obj, $obj->setExtractor(new Extractor()));
 	}
 	
 	

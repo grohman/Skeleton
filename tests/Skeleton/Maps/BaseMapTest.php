@@ -4,7 +4,7 @@ namespace Skeleton\Maps;
 
 use Skeleton\Base\ILoader;
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Loader\Loader;
+use Skeleton\Loader\ValueLoader;
 use Skeleton\Tools\Knot\Knot;
 use Skeleton\Type;
 
@@ -13,7 +13,7 @@ class BaseMapTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_constructor_loaderNotPassed_NewLoaderCreated()
 	{
-		$this->assertInstanceOf(Loader::class, (new BaseMapTest_BaseMap_Helper())->loader());
+		$this->assertInstanceOf(ValueLoader::class, (new BaseMapTest_BaseMap_Helper())->loader());
 	}
 	
 	public function test_constructor_loaderPassed_PassedLoaderUsed()

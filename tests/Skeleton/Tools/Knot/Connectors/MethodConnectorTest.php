@@ -19,8 +19,7 @@ class MethodConnectorTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
 		return (new MethodConnector())
-			->setSkeleton($this->skeleton)
-			->setExtractor(new Extractor());
+			->setSkeleton($this->skeleton);
 	}
 	
 	private function expectSkeletonNotCalled()
@@ -79,13 +78,6 @@ class MethodConnectorTest extends \PHPUnit_Framework_TestCase
 		$obj = new MethodConnector();
 		
 		$this->assertSame($obj, $obj->setSkeleton($skeleton));
-	}
-	
-	
-	public function test_setExtractor_ReturnSelf()
-	{
-		$obj = new MethodConnector();		
-		$this->assertSame($obj, $obj->setExtractor(new Extractor()));
 	}
 	
 	

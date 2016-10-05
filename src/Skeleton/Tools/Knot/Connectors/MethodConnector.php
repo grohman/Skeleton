@@ -3,19 +3,13 @@ namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Tools\Annotation\Extractor;
+use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Knot\KnotConsts;
+use Skeleton\Tools\Annotation\Extractor;
 
 
-class MethodConnector
+class MethodConnector extends AbstractObjectToSkeletonConnector
 {
-	/** @var ISkeletonSource */
-	private $skeleton;
-	
-	/** @var Extractor */
-	private $extractor;
-	
-	
 	/**
 	 * @param \ReflectionMethod $method
 	 * @return bool
@@ -27,7 +21,7 @@ class MethodConnector
 			$method->getNumberOfRequiredParameters() != 1 ||
 			$method->isStatic() || 
 			$method->isAbstract() || 
-			!$this->extractor->has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
+			!Extractor::instance()->has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
 		{
 			return false;
 		}
@@ -51,29 +45,8 @@ class MethodConnector
 		
 		$className = $class->getName();
 		$method->setAccessible(true);
-		$value = $this->skeleton->get($className);
+		$value = $this->getSkeleton()->get($className);
 		$method->invoke($instance, $value);
-	}
-	
-	
-	/**
-	 * @param ISkeletonSource $skeleton
-	 * @return static
-	 */
-	public function setSkeleton(ISkeletonSource $skeleton)
-	{
-		$this->skeleton = $skeleton;
-		return $this;
-	}
-	
-	/**
-	 * @param Extractor $extractor
-	 * @return static
-	 */
-	public function setExtractor(Extractor $extractor)
-	{
-		$this->extractor = $extractor;
-		return $this;
 	}
 	
 	

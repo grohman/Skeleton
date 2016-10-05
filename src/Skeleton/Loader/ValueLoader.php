@@ -6,7 +6,7 @@ use Skeleton\Base\ILoader;
 use Skeleton\Tools\Knot\Knot;
 
 
-class Loader implements ILoader 
+class ValueLoader implements ILoader 
 {
 	/** @var Knot|null */
 	private $knot = null;

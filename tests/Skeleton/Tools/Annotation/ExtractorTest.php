@@ -6,149 +6,126 @@ class ExtractorTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_has_MatchClassName()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClassA::class, 'has'));
-		$this->assertFalse($e->has(test_ExtractorTest_HelperClassB::class, 'has'));
+		$this->assertTrue(Extractor::instance()->has(test_ExtractorTest_HelperClassA::class, 'has'));
+		$this->assertFalse(Extractor::instance()->has(test_ExtractorTest_HelperClassB::class, 'has'));
 	}
 	
 	public function test_has_MatchObjectInstance()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(new test_ExtractorTest_HelperClassA(), 'has'));
-		$this->assertFalse($e->has(new test_ExtractorTest_HelperClassB(), 'has'));
+		$this->assertTrue(Extractor::instance()->has(new test_ExtractorTest_HelperClassA(), 'has'));
+		$this->assertFalse(Extractor::instance()->has(new test_ExtractorTest_HelperClassB(), 'has'));
 	}
 	
 	public function test_has_MatchReflection()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(new \ReflectionClass(test_ExtractorTest_HelperClassA::class), 'has'));
-		$this->assertFalse($e->has(new \ReflectionClass(test_ExtractorTest_HelperClassB::class), 'has'));
+		$this->assertTrue(Extractor::instance()->has(new \ReflectionClass(test_ExtractorTest_HelperClassA::class), 'has'));
+		$this->assertFalse(Extractor::instance()->has(new \ReflectionClass(test_ExtractorTest_HelperClassB::class), 'has'));
 	}
 	
 	public function test_has_MatchReflectionElement()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(new \ReflectionProperty(test_ExtractorTest_HelperClassA::class, 'a'), 'has'));
-		$this->assertFalse($e->has(new \ReflectionProperty(test_ExtractorTest_HelperClassB::class, 'a'), 'has'));
+		$this->assertTrue(Extractor::instance()->has(new \ReflectionProperty(test_ExtractorTest_HelperClassA::class, 'a'), 'has'));
+		$this->assertFalse(Extractor::instance()->has(new \ReflectionProperty(test_ExtractorTest_HelperClassB::class, 'a'), 'has'));
 	}
 	
 	public function test_has_MatchArray()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation', 'testArray']));
-		$this->assertTrue($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation']));
-		$this->assertFalse($e->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['has', 'no']));
+		$this->assertTrue(Extractor::instance()->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation', 'testArray']));
+		$this->assertTrue(Extractor::instance()->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['arrayAnnotation']));
+		$this->assertFalse(Extractor::instance()->has(new \ReflectionProperty(test_ExtractorTest_HasArrayOfValues::class, 'a'), ['has', 'no']));
 	}
 	
 	
 	public function test_has_ClassWithNoAnnotations_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->has(test_ExtractorTest_HelperClassB::class, 'ann'));
+		$this->assertFalse(Extractor::instance()->has(test_ExtractorTest_HelperClassB::class, 'ann'));
 	}
 	
 	public function test_has_ClassWithAnnotations_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->has(test_ExtractorTest_HelperClassA::class, 'ann'));
+		$this->assertFalse(Extractor::instance()->has(test_ExtractorTest_HelperClassA::class, 'ann'));
 	}
 	
 	public function test_has_ClassWithAskedAnnotations_ReturnTrue()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClassA::class, 'has'));
+		$this->assertTrue(Extractor::instance()->has(test_ExtractorTest_HelperClassA::class, 'has'));
 	}
 	
 	public function test_has_CommentIsAllowedAndPresent_ReturnTrue()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClass_WithComment::class, 'has', true));
+		$this->assertTrue(Extractor::instance()->has(test_ExtractorTest_HelperClass_WithComment::class, 'has', true));
 	}
 	
 	public function test_has_CommentIsAllowedAndNoComment_ReturnTrue()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClassA::class, 'has'));
+		$this->assertTrue(Extractor::instance()->has(test_ExtractorTest_HelperClassA::class, 'has'));
 	}
 	
 	public function test_has_CommentIsNotAllowedButPresent_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->has(test_ExtractorTest_HelperClass_WithComment::class, 'has', false));
+		$this->assertFalse(Extractor::instance()->has(test_ExtractorTest_HelperClass_WithComment::class, 'has', false));
 	}
 	
 	public function test_has_CommentIsNotAllowedAndNotPresent_ReturnTrue()
 	{
-		$e = new Extractor();
-		$this->assertTrue($e->has(test_ExtractorTest_HelperClassA::class, 'has'));
+		$this->assertTrue(Extractor::instance()->has(test_ExtractorTest_HelperClassA::class, 'has'));
 	}
 	
 	
 	public function test_get_ClassWithNoAnnotations_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->get(test_ExtractorTest_HelperClassB::class, 'get'));
+		$this->assertFalse(Extractor::instance()->get(test_ExtractorTest_HelperClassB::class, 'get'));
 	}
 	
 	public function test_get_ClassWithAnnotations_ValueNotFound_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->get(test_ExtractorTest_HelperClass_WithComment::class, 'get'));
+		$this->assertFalse(Extractor::instance()->get(test_ExtractorTest_HelperClass_WithComment::class, 'get'));
 	}
 	
 	public function test_get_ClassWithAnnotations_ValueFound_ReturnValue()
 	{
-		$e = new Extractor();
-		$this->assertEquals('ABS', $e->get(test_ExtractorTest_HelperClassA::class, 'get'));
+		$this->assertEquals('ABS', Extractor::instance()->get(test_ExtractorTest_HelperClassA::class, 'get'));
 	}
 	
 	public function test_get_AnnotationHasComment_ReturnValueOnly()
 	{
-		$e = new Extractor();
-		$this->assertEquals('AB\S', $e->get(test_ExtractorTest_HelperClassA::class, 'get-with-comment'));
+		$this->assertEquals('AB\S', Extractor::instance()->get(test_ExtractorTest_HelperClassA::class, 'get-with-comment'));
 	}
 	
 	
 	public function test_getParameterType_ClassWithNoAnnotations_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->getParameterType(test_ExtractorTest_HelperClassB::class, 'withDollar'));
+		$this->assertFalse(Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassB::class, 'withDollar'));
 	}
 	
 	public function test_getParameterType_ClassWithAnnotations_ValueNotFound_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->get(test_ExtractorTest_HelperClass_WithComment::class, 'NotFound'));
+		$this->assertFalse(Extractor::instance()->get(test_ExtractorTest_HelperClass_WithComment::class, 'NotFound'));
 	}
 	
 	public function test_getParameterType_TypeFound_ReturnType()
 	{
-		$e = new Extractor();
-		$this->assertEquals('some\type', $e->getParameterType(test_ExtractorTest_HelperClassA::class, 'withDollar'));
+		$this->assertEquals('some\type', Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassA::class, 'withDollar'));
 	}
 	
 	public function test_getParameterType_VariableNameMissingDollar_ReturnType()
 	{
-		$e = new Extractor();
-		$this->assertEquals('some\type', $e->getParameterType(test_ExtractorTest_HelperClassA::class, 'noDollar'));
+		$this->assertEquals('some\type', Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassA::class, 'noDollar'));
 	}
 	
 	public function test_getParameterType_HasComment_ReturnTypeOnly()
 	{
-		$e = new Extractor();
-		$this->assertEquals('some\type', $e->getParameterType(test_ExtractorTest_HelperClassA::class, 'withComment'));
+		$this->assertEquals('some\type', Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassA::class, 'withComment'));
 	}
 	
 	public function test_getParameterType_InvalidType_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->getParameterType(test_ExtractorTest_HelperClassA::class, 'type'));
+		$this->assertFalse(Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassA::class, 'type'));
 	}
 	
 	public function test_getParameterType_MissingType_ReturnFalse()
 	{
-		$e = new Extractor();
-		$this->assertFalse($e->getParameterType(test_ExtractorTest_HelperClassA::class, 'noType'));
+		$this->assertFalse(Extractor::instance()->getParameterType(test_ExtractorTest_HelperClassA::class, 'noType'));
 	}
 }
 

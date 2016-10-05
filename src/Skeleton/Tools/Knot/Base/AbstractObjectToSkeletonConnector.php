@@ -23,14 +23,6 @@ class AbstractObjectToSkeletonConnector implements IObjectToSkeletonConnector
 		return $this->skeleton;
 	}
 	
-	/**
-	 * @return Extractor
-	 */
-	protected function getAnnotationsExtractor()
-	{
-		return $this->extractor;
-	}
-	
 	
 	/**
 	 * @param ISkeletonSource $skeleton
@@ -39,16 +31,6 @@ class AbstractObjectToSkeletonConnector implements IObjectToSkeletonConnector
 	public function setSkeleton(ISkeletonSource $skeleton)
 	{
 		$this->skeleton = $skeleton;
-		return $this;
-	}
-	
-	/**
-	 * @param Extractor $extractor
-	 * @return static
-	 */
-	public function setExtractor(Extractor $extractor)
-	{
-		$this->extractor = $extractor;
 		return $this;
 	}
 }

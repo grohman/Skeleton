@@ -4,6 +4,9 @@ namespace Skeleton\Tools\Annotation;
 
 class Extractor
 {
+	use \Objection\TSingleton;
+	
+	
 	/**
 	 * @param mixed $element
 	 * @return string

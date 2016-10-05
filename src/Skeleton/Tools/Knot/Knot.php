@@ -20,9 +20,6 @@ class Knot
 	/** @var PropertyConnector */
 	private $propertyConnector;
 	
-	/** @var Extractor */
-	private $extractor;
-	
 	
 	/**
 	 * @param \ReflectionClass $reflection
@@ -30,21 +27,15 @@ class Knot
 	 */
 	private function isAutoloadClass(\ReflectionClass $reflection)
 	{
-		return $this->extractor->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS);
+		return Extractor::instance()->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS);
 	}
 	
 	
 	public function __construct(ISkeletonSource $skeleton) 
 	{
-		$this->extractor = new Extractor();
-		
 		$this->constructorConnector	= new ConstructorConnector();
 		$this->methodConnector 		= new MethodConnector();
 		$this->propertyConnector	= new PropertyConnector();
-		
-		$this->constructorConnector->setExtractor($this->extractor);
-		$this->propertyConnector->setExtractor($this->extractor);
-		$this->methodConnector->setExtractor($this->extractor);
 		
 		$this->constructorConnector->setSkeleton($skeleton);
 		$this->propertyConnector->setSkeleton($skeleton);

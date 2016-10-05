@@ -13,10 +13,4 @@ interface IObjectToSkeletonConnector
 	 * @return static
 	 */
 	public function setSkeleton(ISkeletonSource $skeleton);
-	
-	/**
-	 * @param Extractor $extractor
-	 * @return static
-	 */
-	public function setExtractor(Extractor $extractor);
 }

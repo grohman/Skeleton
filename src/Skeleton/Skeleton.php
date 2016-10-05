@@ -3,8 +3,8 @@ namespace Skeleton;
 
 
 use Skeleton\Exceptions;
-use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\IMap;
+use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
 use Skeleton\Base\IBoneConstructor;

@@ -6,7 +6,7 @@ use Skeleton\Base\IMap;
 use Skeleton\Base\ILoader;
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Knot\Knot;
-use Skeleton\Loader\Loader;
+use Skeleton\Loader\ValueLoader;
 
 
 abstract class BaseMap implements IMap
@@ -19,7 +19,7 @@ abstract class BaseMap implements IMap
 	 */
 	public function __construct(ILoader $loader = null) 
 	{
-		$this->loader = ($loader ?: new Loader());
+		$this->loader = ($loader ?: new ValueLoader());
 	}
 	
 	
