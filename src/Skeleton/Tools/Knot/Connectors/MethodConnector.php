@@ -1,9 +1,10 @@
 <?php
-namespace Skeleton\Tools\Knot;
+namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
+use Skeleton\Tools\Knot\KnotConsts;
 
 
 class MethodConnector

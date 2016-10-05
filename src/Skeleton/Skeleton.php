@@ -89,7 +89,11 @@ class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
 	 */
 	public function setConfigLoader(IConfigLoader $loader = null)
 	{
-		$loader->setBoneConstructor($this);
+		if ($loader)
+		{
+			$loader->setBoneConstructor($this);
+		}
+		
 		$this->configLoader = $loader;
 		return $this;
 	}

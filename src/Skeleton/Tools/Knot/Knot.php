@@ -4,8 +4,9 @@ namespace Skeleton\Tools\Knot;
 
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Tools\Annotation\Extractor;
-use Skeleton\Tools\Knot\Connectors\ConstructorConnector;
+use Skeleton\Tools\Knot\Connectors\MethodConnector;
 use Skeleton\Tools\Knot\Connectors\PropertyConnector;
+use Skeleton\Tools\Knot\Connectors\ConstructorConnector;
 
 
 class Knot
