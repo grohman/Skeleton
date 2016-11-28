@@ -42,6 +42,33 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 		$map->set('a', \stdClass::class);
 	}
 	
+	public function test_set_ClassHasStaticAnnotation_ByValueFlagIsUsed()
+	{
+		$map = $this->getSimpleMap();
+		$map->set('a', Test_SimpleMapTest_StaticAnnotation::class, Type::Instance);
+		
+		$this->assertEquals(Test_SimpleMapTest_StaticAnnotation::class, $map->get('a'));
+	}
+	
+	public function test_set_ClassHasUniqueAnnotation_SingletoneFlagIsUsed()
+	{
+		$map = $this->getSimpleMap();
+		$map->set('a', Test_SimpleMapTest_UniqueAnnotation::class, Type::Instance);
+		
+		$this->assertSame($map->get('a'), $map->get('a'));
+	}
+	
+	public function test_set_ClassHasNoAnnotations_PassedFlagUsed()
+	{
+		$map = $this->getSimpleMap();
+		$map->set('a', Test_SimpleMapTest_NoAnnotation::class, Type::Instance);
+		$this->assertSame($map->get('a'), $map->get('a'));
+		
+		$map = $this->getSimpleMap();
+		$map->set('a', Test_SimpleMapTest_NoAnnotation::class, Type::ByValue);
+		$this->assertSame(Test_SimpleMapTest_NoAnnotation::class, $map->get('a'));
+	}
+	
 	
 	public function test_forceSet_FirstTime()
 	{
@@ -332,4 +359,29 @@ class SimpleMapTest extends \PHPUnit_Framework_TestCase
 		$map = $this->getSimpleMap();
 		$map->has(12);
 	}
+}
+
+
+/**
+ * @static
+ */
+class Test_SimpleMapTest_StaticAnnotation
+{
+	
+}
+
+/**
+ * @unique
+ */
+class Test_SimpleMapTest_UniqueAnnotation
+{
+	
+}
+
+/**
+ * 
+ */
+class Test_SimpleMapTest_NoAnnotation
+{
+	
 }

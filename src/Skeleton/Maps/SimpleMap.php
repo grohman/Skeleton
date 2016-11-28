@@ -2,6 +2,7 @@
 namespace Skeleton\Maps;
 
 
+use Skeleton\Tools\Annotation\Extractor;
 use Skeleton\Type;
 use Skeleton\ISingleton;
 use Skeleton\Base\IMap;
@@ -38,6 +39,21 @@ class SimpleMap extends BaseMap implements IMap
 		return $instance;
 	}
 	
+	/**
+	 * @param int $originalFlag
+	 * @param string $className
+	 * @return int
+	 */
+	private function getFlagFromClass($originalFlag, $className)
+	{
+		if (Extractor::instance()->has($className, 'static'))
+			return Type::ByValue;
+		
+		if (Extractor::instance()->has($className, 'unique'))
+			return Type::Singleton;
+		
+		return $originalFlag;
+	}
 	
 	/**
 	 * @param string $key
@@ -48,6 +64,11 @@ class SimpleMap extends BaseMap implements IMap
 	{
 		if ($this->has($key))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
+		
+		if ((is_string($value) && class_exists($value)) || is_object($value)) 
+		{
+			$flags = $this->getFlagFromClass($flags, $value);
+		}
 		
 		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue)
 		{
