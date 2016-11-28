@@ -21,12 +21,23 @@ class SimpleMap extends BaseMap implements IMap
 	
 	/**
 	 * @param string $key
-	 * @return object
+	 * @return object|mixed
 	 */
 	private function getObject($key)
 	{
 		$value = $this->config[$key][0];
 		$type = $this->config[$key][1];
+		
+		if ((is_string($value) && class_exists($value)) || is_object($value)) 
+		{
+			$type = $this->getFlagFromClass($type, $value);
+			
+			if ($type == Type::ByValue)
+			{
+				$this->resolvedValues[$key] = $value;
+				return $value;
+			}
+		}
 		
 		$instance = $this->loader()->get($value);
 		
@@ -64,11 +75,6 @@ class SimpleMap extends BaseMap implements IMap
 	{
 		if ($this->has($key))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
-		
-		if ((is_string($value) && class_exists($value)) || is_object($value)) 
-		{
-			$flags = $this->getFlagFromClass($flags, $value);
-		}
 		
 		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue)
 		{
