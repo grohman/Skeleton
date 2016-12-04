@@ -39,7 +39,7 @@ class UserDAO implements IUserDAO
 
 // skeleton-config.php
 $skeleton = new \Skeleton\Skeleton();
-$skeleton->set(Proj\Base\IUserDAOO::class, Proj\DAO\IUserDAO::class);
+$skeleton->set(Proj\Base\IUserDAO::class, Proj\DAO\IUserDAO::class);
 // or
 $skeleton->set("Using any string as key", Proj\DAO\IUserDAO::class);
 
