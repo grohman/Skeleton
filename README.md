@@ -39,9 +39,9 @@ class UserDAO implements IUserDAO
 
 // skeleton-config.php
 $skeleton = new \Skeleton\Skeleton();
-$skeleton->set(Proj\Base\IUserDAO::class, Proj\DAO\IUserDAO::class);
+$skeleton->set(Proj\Base\IUserDAO::class, Proj\DAO\UserDAO::class);
 // or
-$skeleton->set("Using any string as key", Proj\DAO\IUserDAO::class);
+$skeleton->set("Using any string as key", Proj\DAO\UserDAO::class);
 
 
 // Obtaining a new instance using
