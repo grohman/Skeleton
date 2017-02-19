@@ -158,13 +158,23 @@ class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
 	}
 	
 	/**
-	 * @param string $key
+	 * @param string|string[] $key
 	 * @param mixed $value
 	 * @param int $flags
 	 * @return static
 	 */
 	public function set($key, $value, $flags = Type::Instance)
 	{
+		if (is_array($key))
+		{
+			foreach ($key as $k)
+			{
+				$this->set($k, $value, $flags);
+			}
+			
+			return $this;
+		}
+			
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		

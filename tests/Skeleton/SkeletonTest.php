@@ -247,6 +247,12 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 		$s->set(12, "a");
 	}
 	
+	public function test_set_ReturnsSelf()
+	{
+		$s = new Skeleton();
+		$this->assertSame($s, $s->set('a', 'b'));
+	}
+	
 	public function test_set_SetOnMapCalled()
 	{
 		$s = new Skeleton();
@@ -257,6 +263,28 @@ class SkeletonTest extends \PHPUnit_Framework_TestCase
 			->with('a', 'b', Type::ByValue);
 		
 		$s->set('a', 'b', Type::ByValue);
+	}
+	
+	public function test_set_KeyIsArray_AllValuesAdded()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		$map->expects($this->at(0))
+			->method('set')
+			->with('a', 'val', Type::ByValue);
+		
+		$map->expects($this->at(1))
+			->method('set')
+			->with('b', 'val', Type::ByValue);
+		
+		$s->set(['a', 'b'], 'val', Type::ByValue);
+	}
+	
+	public function test_set_KeyIsArray_SelfReturned()
+	{
+		$s = new Skeleton();
+		$this->assertSame($s, $s->set(['a', 'b'], 'val'));
 	}
 	
 	

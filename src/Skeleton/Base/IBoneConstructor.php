@@ -8,7 +8,7 @@ use Skeleton\Type;
 interface IBoneConstructor
 {
 	/**
-	 * @param string $key
+	 * @param string|string[] $key
 	 * @param mixed $value
 	 * @param int $flags
 	 * @return static

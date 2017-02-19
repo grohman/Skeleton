@@ -49,7 +49,7 @@ abstract class AbstractConfigLoader implements IConfigLoader, IBoneConstructor
 	}
 	
 	/**
-	 * @param string $key
+	 * @param string|string[] $key
 	 * @param mixed $value
 	 * @param int $flags
 	 * @return IBoneConstructor
