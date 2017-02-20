@@ -20,6 +20,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		
 		if (!$namespace)
 		{
+			$type = substr($type, 1);
 			return $type;
 		}
 		
