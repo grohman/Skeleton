@@ -12,3 +12,6 @@
 
 # Local test files
 test.php
+
+# Build dir
+/build

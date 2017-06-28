@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Oktopost/skeleton.svg?branch=master)](https://travis-ci.org/Oktopost/skeleton)
+
 # Skeleton
 Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 5.6 and higher. 
 
