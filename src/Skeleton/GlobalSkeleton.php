@@ -46,7 +46,7 @@ class GlobalSkeleton
 	 */
 	public function get($key)
 	{
-		$source = $this->getSkeleton($key);
+		$source = $this->getSkeleton($key) ?? FindSkeleton::getSkeleton($key);
 		
 		if (!$source)
 			throw new ImplementerNotDefinedException($key);
