@@ -8,7 +8,7 @@ use Skeleton\Base\ILoader;
 use Skeleton\Loader\ValueLoader;
 
 
-class SimpleMapTest extends \PHPUnit_Framework_TestCase 
+class SimpleMapTest extends \SkeletonTestCase 
 {
 	/** @var ILoader|\PHPUnit_Framework_MockObject_MockObject */
 	private $loader;

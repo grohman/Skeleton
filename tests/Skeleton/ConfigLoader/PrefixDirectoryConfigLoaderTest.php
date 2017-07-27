@@ -5,7 +5,7 @@ namespace Skeleton\ConfigLoader;
 use tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 
 
-class PrefixDirectoryConfigLoaderTest extends \PHPUnit_Framework_TestCase
+class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 {
 	/**
 	 * @param array $dirs

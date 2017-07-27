@@ -3,10 +3,9 @@ namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Tools\Annotation\Extractor;
 
 
-class PropertyConnectorTest extends \PHPUnit_Framework_TestCase
+class PropertyConnectorTest extends \SkeletonTestCase
 {
 	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;

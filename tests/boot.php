@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
+use PHPUnit\Framework\TestCase;
+
+
 // Add auto loader for the test files
 spl_autoload_register(
 	function ($className)
@@ -16,3 +19,17 @@ spl_autoload_register(
 	true, 
 	false	// Append to end
 );
+
+
+
+class SkeletonTestCase extends TestCase
+{
+	/**
+	 * @param string $target
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	public function getMock(string $target)
+	{
+		return $this->getMockBuilder($target)->getMock();
+	}
+}

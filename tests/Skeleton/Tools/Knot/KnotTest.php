@@ -5,7 +5,7 @@ namespace Skeleton\Tools\Knot;
 use Skeleton\Base\ISkeletonSource;
 
 
-class KnotTest extends \PHPUnit_Framework_TestCase
+class KnotTest extends \SkeletonTestCase
 {
 	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;

@@ -2,9 +2,10 @@
 namespace tests\Skeleton\ConfigLoader\Files;
 
 
-class LoadedNotifier {
-
+class LoadedNotifier
+{
 	private static $loaded = [];
+	
 	
 	public static function loaded($path)
 	{

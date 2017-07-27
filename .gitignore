@@ -10,8 +10,8 @@
 # Composer
 /vendor/
 
-# Local test files
-test.php
+# Test objects
+/test.php
 
-# Build dir
+# Build folders
 /build

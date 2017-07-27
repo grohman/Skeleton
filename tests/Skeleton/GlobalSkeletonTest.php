@@ -5,7 +5,7 @@ namespace Skeleton;
 use Skeleton\Base\ISkeletonSource;
 
 
-class GlobalSkeletonTest extends \PHPUnit_Framework_TestCase
+class GlobalSkeletonTest extends \SkeletonTestCase
 {
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource

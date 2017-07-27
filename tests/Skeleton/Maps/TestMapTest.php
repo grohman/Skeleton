@@ -6,7 +6,7 @@ use Skeleton\Type;
 use Skeleton\Base\IMap;
 
 
-class TestMapTest extends \PHPUnit_Framework_TestCase
+class TestMapTest extends \SkeletonTestCase
 {
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap

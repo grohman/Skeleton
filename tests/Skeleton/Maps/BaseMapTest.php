@@ -2,14 +2,14 @@
 namespace Skeleton\Maps;
 
 
+use Skeleton\Type;
 use Skeleton\Base\ILoader;
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Loader\ValueLoader;
 use Skeleton\Tools\Knot\Knot;
-use Skeleton\Type;
+use Skeleton\Loader\ValueLoader;
 
 
-class BaseMapTest extends \PHPUnit_Framework_TestCase
+class BaseMapTest extends \SkeletonTestCase
 {
 	public function test_constructor_loaderNotPassed_NewLoaderCreated()
 	{

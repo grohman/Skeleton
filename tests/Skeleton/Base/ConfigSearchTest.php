@@ -2,7 +2,7 @@
 namespace Skeleton\Base;
 
 
-class ConfigSearchTest extends \PHPUnit_Framework_TestCase
+class ConfigSearchTest extends \SkeletonTestCase
 {
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap

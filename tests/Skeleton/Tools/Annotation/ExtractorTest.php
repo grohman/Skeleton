@@ -2,7 +2,7 @@
 namespace Skeleton\Tools\Annotation;
 
 
-class ExtractorTest extends \PHPUnit_Framework_TestCase
+class ExtractorTest extends \SkeletonTestCase
 {
 	public function test_has_MatchClassName()
 	{

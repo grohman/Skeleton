@@ -6,11 +6,10 @@ use Skeleton\Base\IMap;
 use Skeleton\Base\ILoader;
 use Skeleton\Base\IConfigLoader;
 
-use Skeleton\Exceptions;
 use Skeleton\Maps\SimpleMap;
 
 
-class SkeletonTest extends \PHPUnit_Framework_TestCase
+class SkeletonTest extends \SkeletonTestCase
 {
 	/**
 	 * @param Skeleton $s

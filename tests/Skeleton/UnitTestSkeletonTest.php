@@ -5,7 +5,7 @@ namespace Skeleton;
 use Skeleton\Base\IMap;
 
 
-class UnitTestSkeletonTest extends \PHPUnit_Framework_TestCase
+class UnitTestSkeletonTest extends \SkeletonTestCase
 {
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|Skeleton

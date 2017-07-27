@@ -66,7 +66,7 @@ class TModuleTestHelper
 
 
 
-class TModuleTest extends \PHPUnit_Framework_TestCase
+class TModuleTest extends \SkeletonTestCase
 {
 	/**
 	 * @expectedException \Skeleton\Exceptions\SkeletonException

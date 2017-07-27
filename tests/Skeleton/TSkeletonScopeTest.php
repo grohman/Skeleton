@@ -2,7 +2,7 @@
 namespace Skeleton;
 
 
-class TSkeletonScopeTest extends \PHPUnit_Framework_TestCase
+class TSkeletonScopeTest extends \SkeletonTestCase
 {
 	protected function setUp()
     {
