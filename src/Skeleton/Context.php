@@ -2,10 +2,11 @@
 namespace Skeleton;
 
 
-use Skeleton\Exceptions\ContextNotDefinedException;
+use Skeleton\Base\IContextSource;
+use Skeleton\Exceptions\MissingContextValueException;
 
 
-class Context
+class Context implements IContextSource
 {
 	private $name;
 	
@@ -84,16 +85,16 @@ class Context
 		if (!isset($this->context[$key]))
 		{
 			if (!$this->parentContext)
-				throw new ContextNotDefinedException($this->name, $key);
+				throw new MissingContextValueException($this->name, $key);
 			
 			try
 			{
 				$value = $this->parentContext->get($key);
 			}
 			// Rethrow the exception so context name and callstack will match this point. 
-			catch (ContextNotDefinedException $e)
+			catch (MissingContextValueException $e)
 			{
-				throw new ContextNotDefinedException($this->name, $key);
+				throw new MissingContextValueException($this->name, $key);
 			}
 			
 			$this->context[$key] = $value;

@@ -51,7 +51,7 @@ class GlobalSkeleton
 		if (!$source)
 			throw new ImplementerNotDefinedException($key);
 		
-		return $source->getLocal($key);
+		return $source->get($key, null, true);
 	}
 	
 	/**

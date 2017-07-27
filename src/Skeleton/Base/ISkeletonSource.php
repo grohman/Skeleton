@@ -6,14 +6,9 @@ interface ISkeletonSource
 {
 	/**
 	 * @param string $key
-	 * @param bool $useGlobal
+	 * @param IContextReference|null $context
+	 * @param bool $skipGlobal
 	 * @return mixed
 	 */
-	public function get($key, $useGlobal = true);
-	
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function getLocal($key);
+	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false);
 }

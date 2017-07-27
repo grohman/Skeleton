@@ -78,7 +78,7 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 		$source = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('a', $source);
 		
-		$source->expects($this->once())->method('getLocal');
+		$source->expects($this->once())->method('get');
 		
 		GlobalSkeleton::instance()->get('a');
 	}
@@ -88,7 +88,7 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 		$source = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('a', $source);
 		
-		$source->method('getLocal')->with('a');
+		$source->method('get')->with('a');
 		
 		GlobalSkeleton::instance()->get('a');
 	}
@@ -98,7 +98,7 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 		$source = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('a', $source);
 		
-		$source->method('getLocal')->willReturn(123);
+		$source->method('get')->willReturn(123);
 		
 		$this->assertSame(123, GlobalSkeleton::instance()->get('a'));
 	}

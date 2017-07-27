@@ -2,6 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use Skeleton\Base\IContextReference;
+use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Annotation\Extractor;
@@ -37,54 +39,71 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		
 		return "$namespace\\$type";
 	}
-	
+
 	/**
 	 * @param \ReflectionProperty $property
-	 * @param mixed $instance
-	 * @return bool
+	 * @return mixed
 	 */
-	private function isPropertyMustBeLoaded(\ReflectionProperty $property, $instance)
-	{
-		if (!Extractor::has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
-			return false;
-		
-		$property->setAccessible(true);
-		
-		return !$property->getValue($instance);
-	}
-	
-	/**
-	 * @param \ReflectionProperty $property
-	 * @param mixed $instance
-	 */
-	private function loadProperty(\ReflectionProperty $property, $instance)
+	private function getAutoloadValue(\ReflectionProperty $property)
 	{
 		$type = Extractor::get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
 		
 		if (!$type)
-		{
-			throw new \Exception('Variable autoload is configured but missing it\'s type: ' . $property->name);
-		}
+			throw new \Exception("Variable autoload is configured but missing it's type: {$property->name}");
 		
 		$type = $this->getFullTypeName($property, $type);
-		$value = $this->get($type);
-		$property->setValue($instance, $value);
+		
+		return $this->get($type);
+	}
+
+	/**
+	 * @param \ReflectionProperty $property
+	 * @param IContextReference $context
+	 * @return mixed
+	 */
+	private function getContextValue(\ReflectionProperty $property, IContextReference $context)
+	{
+		$name = Extractor::get($property, KnotConsts::CONTEXT_ANNOTATION);
+		
+		if (!$name)
+		{
+			$name = Extractor::get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
+			$name = ($name ? $this->getFullTypeName($property, $name) : $property->name);
+		}
+		
+		return $context->get($name);
 	}
 	
 	
 	/**
 	 * @param \ReflectionClass $class
 	 * @param mixed $instance
+	 * @param IContextReference|null $context
 	 */
-	public function connect(\ReflectionClass $class, $instance)
+	public function connect(\ReflectionClass $class, $instance, ?IContextReference $context = null)
 	{
 		foreach ($class->getProperties() as $property)
 		{
-			if ($property->class == $class->name && 
-				$this->isPropertyMustBeLoaded($property, $instance))
+			if ($property->class != $class->name) continue;
+			
+			if (Extractor::has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			{
-				$this->loadProperty($property, $instance);
+				$value = $this->getAutoloadValue($property);
 			}
+			else if (Extractor::has($property, KnotConsts::CONTEXT_ANNOTATION))
+			{
+				if (is_null($context))
+					throw new MissingContextException($class->name);
+				
+				$value = $this->getContextValue($property, $context);
+			}
+			else
+			{
+				continue;
+			}
+			
+			$property->setAccessible(true);
+			$property->setValue($instance, $value);
 		}
 	}
 }

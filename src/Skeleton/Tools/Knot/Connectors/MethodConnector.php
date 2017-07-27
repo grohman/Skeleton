@@ -2,6 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use Skeleton\Base\IContextReference;
+use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Annotation\Extractor;
@@ -27,12 +29,12 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 		
 		return true;
 	}
-	
+
 	/**
 	 * @param \ReflectionMethod $method
-	 * @param mixed $instance
+	 * @return mixed
 	 */
-	private function invokeMethod(\ReflectionMethod $method, $instance)
+	private function getAutoloadValue(\ReflectionMethod $method)
 	{
 		$parameter = $method->getParameters()[0];
 		$class = $parameter->getClass();
@@ -42,26 +44,59 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 			throw new \Exception('Method autoload is configured but missing it\'s parameter type: ' . $method->name);
 		}
 		
-		$className = $class->getName();
-		$method->setAccessible(true);
-		$value = $this->get($className);
-		$method->invoke($instance, $value);
+		return $this->get($class->getName());
+	}
+
+	/**
+	 * @param \ReflectionMethod $method
+	 * @param IContextReference $context
+	 * @return string
+	 */
+	private function getContextValue(\ReflectionMethod $method, IContextReference $context)
+	{
+		$name = Extractor::get($method, KnotConsts::CONTEXT_ANNOTATION);
+		
+		if (!$name)
+		{
+			$parameter = $method->getParameters()[0];
+			$class = $parameter->getClass();
+			
+			$name = ($class ? $class->getName() : $parameter->getName());
+		}
+		
+		return $context->get($name);
 	}
 	
 	
 	/**
 	 * @param \ReflectionClass $class
+	 * @param IContextReference|null $context
 	 * @param mixed $instance
 	 */
-	public function connect(\ReflectionClass $class, $instance)
+	public function connect(\ReflectionClass $class, $instance, ?IContextReference $context = null)
 	{
 		foreach ($class->getMethods() as $method)
 		{
-			if ($method->class == $class->name && 
-				$this->isAutoloadMethod($method))
+			if ($method->class != $class->name || !$this->isAutoloadMethod($method)) continue;
+			
+			if (Extractor::has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			{
-				$this->invokeMethod($method, $instance);
+				$value = $this->getAutoloadValue($method);
 			}
+			else if (Extractor::has($method, KnotConsts::CONTEXT_ANNOTATION)) 
+			{
+				if (is_null($context))
+					throw new MissingContextException($class->name);
+					
+				$value = $this->getContextValue($method, $context);
+			}
+			else
+			{
+				continue;
+			}
+				
+			$method->setAccessible(true);
+			$method->invoke($instance, $value);
 		}
 	}
 }

@@ -2,10 +2,11 @@
 namespace Skeleton\Maps;
 
 
-use Skeleton\Tools\Annotation\Extractor;
 use Skeleton\Type;
 use Skeleton\ISingleton;
 use Skeleton\Base\IMap;
+use Skeleton\Base\IContextReference;
+use Skeleton\Tools\Annotation\Extractor;
 
 use Skeleton\Exceptions;
 
@@ -107,13 +108,11 @@ class SimpleMap extends BaseMap implements IMap
 	
 	/**
 	 * @param string $key
-	 * @return mixed
+	 * @param IContextReference|null $context
+	 * @return string|object
 	 */
-	public function get($key) 
+	public function get(string $key, ?IContextReference $context = null)
 	{
-		if (!is_string($key))
-			throw new Exceptions\InvalidKeyException($key);
-		
 		if (key_exists($key, $this->resolvedValues))
 		{
 			return $this->resolvedValues[$key];

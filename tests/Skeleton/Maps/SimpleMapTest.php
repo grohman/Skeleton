@@ -111,15 +111,6 @@ class SimpleMapTest extends \SkeletonTestCase
 		$map->get("a");
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\InvalidKeyException
-	 */
-	public function test_get_InvalidKey_ErrorIsThrown()
-	{
-		$map = $this->getSimpleMap();
-		$map->get(123);
-	}
-	
 	public function test_get_ValueIsObject_ValueReturned()
 	{
 		$map = $this->getSimpleMap();

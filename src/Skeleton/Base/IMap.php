@@ -38,9 +38,10 @@ interface IMap
 	
 	/**
 	 * @param string $key
+	 * @param IContextReference|null $context
 	 * @return string|object
 	 */
-	public function get($key);
+	public function get(string $key, ?IContextReference $context = null);
 	
 	/**
 	 * @param string $key

@@ -7,11 +7,12 @@ use Skeleton\Base\IMap;
 use Skeleton\Maps\SimpleMap;
 use Skeleton\Base\ConfigSearch;
 use Skeleton\Base\IConfigLoader;
+use Skeleton\Base\ISkeletonSource;
 use Skeleton\Base\IBoneConstructor;
-use Skeleton\Base\AbstractSkeletonSource;
+use Skeleton\Base\IContextReference;
 
 
-class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
+class Skeleton implements ISkeletonSource, IBoneConstructor
 {
 	/** @var bool */
 	private $useGlobal = false;
@@ -124,14 +125,15 @@ class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
 		GlobalSkeleton::instance()->add($prefix, $this);
 		return $this;
 	}
-	
-	
+
+
 	/**
 	 * @param string $key
-	 * @param bool $useGlobal
-	 * @return object|string
+	 * @param IContextReference|null $context
+	 * @param bool $skipGlobal
+	 * @return mixed
 	 */
-	public function get($key, $useGlobal = true)
+	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
 	{
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
@@ -139,22 +141,21 @@ class Skeleton extends AbstractSkeletonSource implements IBoneConstructor
 		if ($this->map->has($key) ||
 			$this->tryLoadLocal($key))
 		{
-			return $this->map->get($key);
+			return $this->map->get($key, $context);
 		}
-		else if ($useGlobal)
-		{
-			try 
-			{
-				return $this->tryLoadGlobal($key);
-			}
-			// Reset call stuck to be relative to this method. 
-			catch (Exceptions\ImplementerNotDefinedException $e)
-			{
-				throw new Exceptions\ImplementerNotDefinedException($key);
-			}
-		}
+
+		if ($skipGlobal)
+			throw new Exceptions\ImplementerNotDefinedException($key);
 		
-		throw new Exceptions\ImplementerNotDefinedException($key);
+		try 
+		{
+			return $this->tryLoadGlobal($key);
+		}
+		// Reset call stuck to be relative to this method. 
+		catch (Exceptions\ImplementerNotDefinedException $e)
+		{
+			throw new Exceptions\ImplementerNotDefinedException($key);
+		}
 	}
 	
 	/**

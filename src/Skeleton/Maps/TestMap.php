@@ -4,8 +4,7 @@ namespace Skeleton\Maps;
 
 use Skeleton\Type;
 use Skeleton\Base\IMap;
-
-use Skeleton\Exceptions;
+use Skeleton\Base\IContextReference;
 
 
 class TestMap extends BaseMap implements IMap
@@ -47,9 +46,10 @@ class TestMap extends BaseMap implements IMap
 	
 	/**
 	 * @param string $key
+	 * @param IContextReference|null $context
 	 * @return string|object
 	 */
-	public function get($key) 
+	public function get(string $key, ?IContextReference $context = null)
 	{
 		if (isset($this->overrideMap[$key]))
 		{

@@ -3,10 +3,11 @@ namespace Skeleton;
 
 
 use Skeleton\Maps\TestMap;
-use Skeleton\Base\AbstractSkeletonSource;
+use Skeleton\Base\ISkeletonSource;
+use Skeleton\Base\IContextReference;
 
 
-class UnitTestSkeleton extends AbstractSkeletonSource
+class UnitTestSkeleton implements ISkeletonSource
 {
 	/** @var TestMap */
 	private $testMap;
@@ -20,16 +21,17 @@ class UnitTestSkeleton extends AbstractSkeletonSource
 		$this->testMap = new TestMap($skeleton->getMap());
 		$skeleton->setMap($this->testMap);
 	}
-	
-	
+
+
 	/**
 	 * @param string $key
-	 * @param bool $useGlobal
+	 * @param IContextReference|null $context
+	 * @param bool $skipGlobal
 	 * @return mixed
 	 */
-	public function get($key, $useGlobal = true)
+	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
 	{
-		return $this->testMap->get($key);
+		return $this->testMap->get($key, $context);
 	}
 	
 	/**

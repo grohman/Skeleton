@@ -183,7 +183,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$global->expects($this->never())->method('get');
 		
-		$s->get('a', true);
+		$s->get('a');
 	}
 	
 	public function test_get_SkeletonUseGlobalFlagSet_GlobalSkeletonCalled()
@@ -195,7 +195,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$s->useGlobal();
 		
-		$s->get('a', true);
+		$s->get('a');
 	}
 	
 	public function test_get_SkeletonUseGlobalFlagSet_KeyPassedToGlobalSkeleton()
@@ -207,7 +207,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$s->useGlobal();
 		
-		$s->get('a', true);
+		$s->get('a');
 	}
 	
 	/**
@@ -222,7 +222,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$global->expects($this->never())->method('get');
 		
-		$s->get('a', false);
+		$s->get('a', null, true);
 	}
 	
 	public function test_get_ObjectReturnedFromGlobal_NoErrorThrown()

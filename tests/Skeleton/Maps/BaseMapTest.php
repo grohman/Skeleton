@@ -2,6 +2,7 @@
 namespace Skeleton\Maps;
 
 
+use Skeleton\Base\IContextReference;
 use Skeleton\Type;
 use Skeleton\Base\ILoader;
 use Skeleton\Base\ISkeletonSource;
@@ -55,6 +56,6 @@ class BaseMapTest_BaseMap_Helper extends BaseMap
 {
 	public function set($key, $value, $flags = Type::Instance) {}
 	public function forceSet($key, $value, $flags = Type::Instance) {}
-	public function get($key) {}
+	public function get(string $key, ?IContextReference $context = null) {}
 	public function has($key) {}
 }
