@@ -2,9 +2,9 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
-use Skeleton\Tools\Annotation\Extractor;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
+use Skeleton\Tools\Annotation\Extractor;
 
 
 class PropertyConnector extends AbstractObjectToSkeletonConnector
@@ -33,7 +33,6 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		else if ($namespaceSeparatorPosition !== false)
 		{
 			$type = explode('\\', $type, 2)[1];
-			
 		}
 		
 		return "$namespace\\$type";
@@ -46,7 +45,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 	 */
 	private function isPropertyMustBeLoaded(\ReflectionProperty $property, $instance)
 	{
-		if (!Extractor::instance()->has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
+		if (!Extractor::has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			return false;
 		
 		$property->setAccessible(true);
@@ -60,7 +59,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 	 */
 	private function loadProperty(\ReflectionProperty $property, $instance)
 	{
-		$type = Extractor::instance()->get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
+		$type = Extractor::get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
 		
 		if (!$type)
 		{
@@ -68,7 +67,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		}
 		
 		$type = $this->getFullTypeName($property, $type);
-		$value = $this->getSkeleton()->get($type);
+		$value = $this->get($type);
 		$property->setValue($instance, $value);
 	}
 	

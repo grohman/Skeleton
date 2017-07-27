@@ -4,14 +4,14 @@ namespace Skeleton\Tools\Annotation;
 
 class Extractor
 {
-	use \Objection\TSingleton;
+	use \Objection\TStaticClass;
 	
 	
 	/**
 	 * @param mixed $element
 	 * @return string
 	 */
-	private function getDocComment($element)
+	private static function getDocComment($element): string
 	{
 		if ($element instanceof \ReflectionClass ||
 			$element instanceof \ReflectionMethod ||
@@ -32,13 +32,13 @@ class Extractor
 	 * @param bool $allowComment
 	 * @return bool
 	 */
-	public function has($element, $annotation, $allowComment = true)
+	public static function has($element, $annotation, bool $allowComment = true): bool
 	{
 		if (is_array($annotation))
 		{
 			foreach ($annotation as $singleAnnotation)
 			{
-				if ($this->has($element, $singleAnnotation, $allowComment)) 
+				if (self::has($element, $singleAnnotation, $allowComment)) 
 					return true;
 			}
 			
@@ -49,19 +49,19 @@ class Extractor
 			"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
 			"/^[ \\t]*\\*[ \\t]*@{$annotation}[ \\t]*$/m";
 		
-		return (preg_match($pattern, $this->getDocComment($element)) == 1);
+		return (preg_match($pattern, self::getDocComment($element)) == 1);
 	}
 	
 	/**
 	 * @param mixed $element
 	 * @param string $annotation
-	 * @return bool
+	 * @return string|false
 	 */
-	public function get($element, $annotation)
+	public static function get($element, string $annotation)
 	{
 		$pattern = "/^[ \\t]*\\*[ \\t]*@{$annotation} ([\\w\\\\]*).*$/m";
 		$matches = [];
-		$result = preg_match($pattern, $this->getDocComment($element), $matches);
+		$result = preg_match($pattern, self::getDocComment($element), $matches);
 		
 		return ($result === 1 ?
 			$matches[1] : 
@@ -71,13 +71,13 @@ class Extractor
 	/**
 	 * @param mixed $element
 	 * @param string $parameterName
-	 * @return bool
+	 * @return string|false
 	 */
-	public function getParameterType($element, $parameterName)
+	public static function getParameterType($element, string $parameterName)
 	{		
 		$pattern = "/^[ \\t]*\\*[ \\t]*@var ([\\w\\\\]+)[ \\t]+\\$?{$parameterName}.*$/m";
 		$matches = [];
-		$result = preg_match($pattern, $this->getDocComment($element), $matches);
+		$result = preg_match($pattern, self::getDocComment($element), $matches);
 		
 		return ($result === 1 ?
 			$matches[1] :

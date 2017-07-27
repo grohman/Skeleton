@@ -22,7 +22,7 @@ class ConstructorConnector extends AbstractObjectToSkeletonConnector
 					$parameter->getName());
 		}
 		
-		return $this->getSkeleton()->get($class->getName());
+		return $this->get($class->getName());
 	}
 	
 	

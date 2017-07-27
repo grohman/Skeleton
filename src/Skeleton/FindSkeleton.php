@@ -7,11 +7,11 @@ use Skeleton\Base\ISkeletonInit;
 
 class FindSkeleton
 {
+	use \Objection\TStaticClass;
+	
+	
 	private const SEPARATOR            = '\\';
 	private const SKELETON_CONFIG_NAME = 'SkeletonInit';
-	
-	
-	use \Objection\TStaticClass;
 	
 	
 	public static function getSkeleton(string $key): ?Skeleton

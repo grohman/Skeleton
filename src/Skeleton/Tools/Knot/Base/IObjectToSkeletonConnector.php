@@ -3,14 +3,13 @@ namespace Skeleton\Tools\Knot\Base;
 
 
 use Skeleton\Base\ISkeletonSource;
-use Skeleton\Tools\Annotation\Extractor;
 
 
 interface IObjectToSkeletonConnector
 {
 	/**
 	 * @param ISkeletonSource $skeleton
-	 * @return static
+	 * @return static|IObjectToSkeletonConnector
 	 */
-	public function setSkeleton(ISkeletonSource $skeleton);
+	public function setSkeleton(ISkeletonSource $skeleton): IObjectToSkeletonConnector;
 }

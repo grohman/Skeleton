@@ -57,10 +57,10 @@ class SimpleMap extends BaseMap implements IMap
 	 */
 	private function getFlagFromClass($originalFlag, $className)
 	{
-		if (Extractor::instance()->has($className, 'static'))
+		if (Extractor::has($className, 'static'))
 			return Type::ByValue;
 		
-		if (Extractor::instance()->has($className, 'unique'))
+		if (Extractor::has($className, 'unique'))
 			return Type::Singleton;
 		
 		return $originalFlag;

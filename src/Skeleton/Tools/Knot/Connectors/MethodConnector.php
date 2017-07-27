@@ -2,9 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
-use Skeleton\Base\ISkeletonSource;
-use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Knot\KnotConsts;
+use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Annotation\Extractor;
 
 
@@ -21,7 +20,7 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 			$method->getNumberOfRequiredParameters() != 1 ||
 			$method->isStatic() || 
 			$method->isAbstract() || 
-			!Extractor::instance()->has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
+			!Extractor::has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
 		{
 			return false;
 		}
@@ -45,7 +44,7 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 		
 		$className = $class->getName();
 		$method->setAccessible(true);
-		$value = $this->getSkeleton()->get($className);
+		$value = $this->get($className);
 		$method->invoke($instance, $value);
 	}
 	

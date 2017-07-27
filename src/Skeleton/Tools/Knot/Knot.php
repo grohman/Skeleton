@@ -27,7 +27,7 @@ class Knot
 	 */
 	private function isAutoloadClass(\ReflectionClass $reflection)
 	{
-		return Extractor::instance()->has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS);
+		return Extractor::has($reflection, KnotConsts::AUTOLOAD_ANNOTATIONS);
 	}
 	
 	
