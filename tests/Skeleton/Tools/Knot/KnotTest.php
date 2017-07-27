@@ -35,7 +35,7 @@ class KnotTest extends \SkeletonTestCase
 		$knot = $this->getKnot();
 		$this->assertInstanceOf(
 			test_Knot_Helper_EmptyClass::class,
-			$knot->load(test_Knot_Helper_EmptyClass::class));
+			$knot->load(test_Knot_Helper_EmptyClass::class, null));
 	}
 	
 	
@@ -45,7 +45,7 @@ class KnotTest extends \SkeletonTestCase
 		
 		$this->assertInstanceOf(
 			test_Knot_Helper_AutoloadEmpty::class, 
-			$knot->load(test_Knot_Helper_AutoloadEmpty::class));
+			$knot->load(test_Knot_Helper_AutoloadEmpty::class, null));
 	}
 	
 	
@@ -56,7 +56,7 @@ class KnotTest extends \SkeletonTestCase
 		$object = new test_Knot_Helper_Type();
 		$this->setSkeletonWillReturn($object);
 		
-		$instance = $knot->load(test_Knot_Helper_Constructor::class);
+		$instance = $knot->load(test_Knot_Helper_Constructor::class, null);
 		
 		$this->assertSame($object, $instance->a);
 	}
@@ -68,7 +68,7 @@ class KnotTest extends \SkeletonTestCase
 		$object = new test_Knot_Helper_Type();
 		$this->setSkeletonWillReturn($object);
 		
-		$instance = $knot->load(test_Knot_Helper_Method::class);
+		$instance = $knot->load(test_Knot_Helper_Method::class, null);
 		
 		$this->assertSame($object, $instance->a);
 	}
@@ -80,7 +80,7 @@ class KnotTest extends \SkeletonTestCase
 		$object = new test_Knot_Helper_Type();
 		$this->setSkeletonWillReturn($object);
 		
-		$instance = $knot->load(test_Knot_Helper_Properties::class);
+		$instance = $knot->load(test_Knot_Helper_Properties::class, null);
 		
 		$this->assertSame($object, $instance->a);
 	}

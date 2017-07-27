@@ -11,10 +11,11 @@ interface ILoader
 	 * @param Knot $knot
 	 */
 	public function setKnot(Knot $knot);
-	
+
 	/**
 	 * @param mixed $item
+	 * @param IContextReference|null $context
 	 * @return mixed
 	 */
-	public function get($item);
+	public function get($item, ?IContextReference $context = null);
 }

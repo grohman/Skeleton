@@ -3,6 +3,7 @@ namespace Skeleton\Loader;
 
 
 use Skeleton\Base\ILoader;
+use Skeleton\Base\IContextReference;
 use Skeleton\Tools\Knot\Knot;
 
 
@@ -19,18 +20,19 @@ class ValueLoader implements ILoader
 	{
 		$this->knot = $knot;
 	}
-	
+
 	/**
 	 * @param mixed $item
+	 * @param IContextReference|null $context
 	 * @return mixed
 	 */
-	public function get($item) 
+	public function get($item, ?IContextReference $context = null) 
 	{
 		if (is_string($item))
 		{
 			if ($this->knot)
 			{
-				return $this->knot->load($item);
+				return $this->knot->load($item, $context);
 			}
 			else
 			{
@@ -43,7 +45,7 @@ class ValueLoader implements ILoader
 		}
 		else
 		{
-			return $this->knot->loadInstance($item);
+			return $this->knot->loadInstance($item, $context);
 		}
 	}
 }

@@ -11,7 +11,7 @@ interface IBoneConstructor
 	 * @param string|string[] $key
 	 * @param mixed $value
 	 * @param int $flags
-	 * @return static
+	 * @return static|IBoneConstructor
 	 */
-	public function set($key, $value, $flags = Type::Instance);
+	public function set($key, $value, int $flags = Type::Instance): IBoneConstructor;
 }

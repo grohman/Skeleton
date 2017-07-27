@@ -16,13 +16,35 @@ class ContextReference implements IContextReference
 	private $skeleton;
 	
 	
+	public function __construct(Context $context, ISkeletonSource $skeleton)
+	{
+		$this->context = $context;
+		$this->skeleton = $skeleton;
+	}
+	
+	
 	public function get(string $key)
 	{
 		return $this->skeleton->get($key, $this);
 	}
 	
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function value(string $key)
+	{
+		return $this->context->get($key);
+	}
+	
 	public function context(): IContextSource
 	{
 		return $this->context;
+	}
+	
+	
+	public function __debugInfo()
+	{
+		return [ 'context' => $this->context->name() ];
 	}
 }

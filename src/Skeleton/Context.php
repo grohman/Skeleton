@@ -26,14 +26,6 @@ class Context implements IContextSource
 	}
 	
 	
-	public function copy(string $name): Context
-	{
-		$context = new Context($name);
-		$context->context = $this->context;
-		
-		return $context;
-	}
-	
 	public function name(): string
 	{
 		return $this->name;

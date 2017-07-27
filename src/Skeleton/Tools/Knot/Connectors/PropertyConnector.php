@@ -71,7 +71,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 			$name = ($name ? $this->getFullTypeName($property, $name) : $property->name);
 		}
 		
-		return $context->get($name);
+		return $context->value($name);
 	}
 	
 	

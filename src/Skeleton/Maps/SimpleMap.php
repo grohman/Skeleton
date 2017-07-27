@@ -18,13 +18,14 @@ class SimpleMap extends BaseMap implements IMap
 	
 	/** @var array */
 	private $resolvedValues = [];
-	
-	
+
+
 	/**
 	 * @param string $key
-	 * @return object|mixed
+	 * @param IContextReference|null $context
+	 * @return mixed|object
 	 */
-	private function getObject($key)
+	private function getObject($key, ?IContextReference $context = null)
 	{
 		$value = $this->config[$key][0];
 		$type = $this->config[$key][1];
@@ -40,7 +41,7 @@ class SimpleMap extends BaseMap implements IMap
 			}
 		}
 		
-		$instance = $this->loader()->get($value);
+		$instance = $this->loader()->get($value, $context);
 		
 		if ($instance instanceof ISingleton || $type == Type::Singleton)
 		{
@@ -122,7 +123,7 @@ class SimpleMap extends BaseMap implements IMap
 			throw new Exceptions\ImplementerNotDefinedException($key);
 		}
 		
-		return $this->getObject($key);
+		return $this->getObject($key, $context);
 	}
 	
 	/**

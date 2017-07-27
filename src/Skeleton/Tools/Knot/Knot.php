@@ -52,7 +52,7 @@ class Knot
 	 * @param IContextReference|null $context
 	 * @return mixed Same instance always returned
 	 */
-	public function loadInstance($instance, ?IContextReference $context = null)
+	public function loadInstance($instance, ?IContextReference $context)
 	{
 		$reflection = new \ReflectionClass($instance);
 		
@@ -83,7 +83,7 @@ class Knot
 	 * @param IContextReference|null $context
 	 * @return bool|mixed False if no auto loading required.
 	 */
-	public function load($className, ?IContextReference $context = null)
+	public function load($className, ?IContextReference $context)
 	{
 		$reflection = new \ReflectionClass($className);
 		$instance = $this->constructorConnector->connect($reflection);

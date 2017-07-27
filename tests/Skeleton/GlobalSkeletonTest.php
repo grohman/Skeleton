@@ -88,7 +88,7 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 		$source = $this->mockISkeletonSource();
 		GlobalSkeleton::instance()->add('a', $source);
 		
-		$source->method('get')->with('a');
+		$source->method('get')->with('a', null, true);
 		
 		GlobalSkeleton::instance()->get('a');
 	}

@@ -64,7 +64,7 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 			$name = ($class ? $class->getName() : $parameter->getName());
 		}
 		
-		return $context->get($name);
+		return $context->value($name);
 	}
 	
 	

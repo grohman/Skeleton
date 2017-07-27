@@ -11,4 +11,10 @@ interface IContextReference
 	 * @return mixed
 	 */
 	public function get(string $key);
+	
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function value(string $key);
 }

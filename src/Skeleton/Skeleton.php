@@ -10,6 +10,7 @@ use Skeleton\Base\IConfigLoader;
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Base\IBoneConstructor;
 use Skeleton\Base\IContextReference;
+use Skeleton\Tools\ContextManager;
 
 
 class Skeleton implements ISkeletonSource, IBoneConstructor
@@ -162,9 +163,9 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	 * @param string|string[] $key
 	 * @param mixed $value
 	 * @param int $flags
-	 * @return static
+	 * @return static|IBoneConstructor
 	 */
-	public function set($key, $value, $flags = Type::Instance)
+	public function set($key, $value, int $flags = Type::Instance): IBoneConstructor
 	{
 		if (is_array($key))
 		{
@@ -190,7 +191,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	 * @param int $flag
 	 * @return static
 	 */
-	public function override($key, $value, $flag = Type::Instance)
+	public function override(string $key, $value, int $flag = Type::Instance)
 	{
 		$this->map->forceSet($key, $value, $flag);
 		return $this;
@@ -200,8 +201,18 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	 * @param string $className
 	 * @return mixed
 	 */
-	public function load($className)
+	public function load(string $className)
 	{
 		return $this->map->loader()->get($className);
+	}
+	
+	public function for($instance): IContextReference
+	{
+		return ContextManager::get($instance);
+	}
+	
+	public function context($instance, string $name): Context
+	{
+		return ContextManager::create($instance, $this, $name);
 	}
 }	
