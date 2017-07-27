@@ -16,7 +16,7 @@ class ContextManager
 	use TStaticClass;
 	
 	
-	const CONTEXT_PROPERTY_NAME	= '__SKELETON_CONTEXT__';
+	public const CONTEXT_PROPERTY_NAME	= '__SKELETON_CONTEXT__';
 	
 
 	public static function set($instance, IContextReference $context)
@@ -32,7 +32,7 @@ class ContextManager
 		return $instance->{self::CONTEXT_PROPERTY_NAME};
 	}
 	
-	public static function create($instance, ISkeletonSource $skeleton, string $name): Context
+	public static function init($instance, ISkeletonSource $skeleton, string $name): Context
 	{
 		if (!isset($instance->{self::CONTEXT_PROPERTY_NAME}))
 		{

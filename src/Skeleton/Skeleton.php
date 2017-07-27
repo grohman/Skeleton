@@ -213,6 +213,6 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	
 	public function context($instance, string $name): Context
 	{
-		return ContextManager::create($instance, $this, $name);
+		return ContextManager::init($instance, $this, $name);
 	}
 }	

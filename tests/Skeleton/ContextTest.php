@@ -2,7 +2,6 @@
 namespace Skeleton;
 
 
-use DeepCopyTest\C;
 use PHPUnit\Framework\TestCase;
 
 
