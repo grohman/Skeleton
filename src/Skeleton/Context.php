@@ -8,15 +8,31 @@ use Skeleton\Exceptions\ContextNotDefinedException;
 class Context
 {
 	private $name;
-	private $context = [];
+	
+	/** @var array */
+	private $context;
+	
+	/** @var null|Context */
+	private $parentContext = null;
 	
 	
-	public function __construct(string $name = 'context')
+	public function __construct(string $name = 'context', ?Context $parent = null)
 	{
 		$this->name = $name;
+		$this->parentContext = $parent;
+		
+		$this->context = ($parent ? $parent->context : []); 
 	}
-
-
+	
+	
+	public function copy(string $name): Context
+	{
+		$context = new Context($name);
+		$context->context = $this->context;
+		
+		return $context;
+	}
+	
 	public function name(): string
 	{
 		return $this->name;
@@ -24,7 +40,7 @@ class Context
 	
 	public function has(string $key): bool
 	{
-		return isset($this->context[$key]);
+		return isset($this->context[$key]) || ($this->parentContext && $this->parentContext->has($key));
 	}
 
 	/**
@@ -66,7 +82,24 @@ class Context
 	public function get(string $key)
 	{
 		if (!isset($this->context[$key]))
-			throw new ContextNotDefinedException($this->name, $key);
+		{
+			if (!$this->parentContext)
+				throw new ContextNotDefinedException($this->name, $key);
+			
+			try
+			{
+				$value = $this->parentContext->get($key);
+			}
+			// Rethrow the exception so context name and callstack will match this point. 
+			catch (ContextNotDefinedException $e)
+			{
+				throw new ContextNotDefinedException($this->name, $key);
+			}
+			
+			$this->context[$key] = $value;
+			
+			return $value;
+		}
 		
 		return $this->context[$key];
 	}
