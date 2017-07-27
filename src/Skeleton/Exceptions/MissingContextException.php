@@ -6,6 +6,6 @@ class MissingContextException extends SkeletonException
 {
 	public function __construct(string $target)
 	{
-		parent::__construct("A contact is required for the class '$target'", 102);
+		parent::__construct("Context is required for the class '$target'", 102);
 	}
 }

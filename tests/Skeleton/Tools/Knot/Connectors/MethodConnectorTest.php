@@ -2,6 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use Skeleton\Context;
+use Skeleton\ContextReference;
 use Skeleton\Base\ISkeletonSource;
 
 
@@ -11,14 +13,31 @@ class MethodConnectorTest extends \SkeletonTestCase
 	private $skeleton;
 	
 	
+	private function assertContextLoaded(string $item, string $className, $value)
+	{
+		$obj = $this->getMethodConnector();
+		$context = new Context('a');
+		$ref = new ContextReference($context, $this->skeleton);
+		$inst = new $className();
+		
+		$context->set($item, $value);
+		
+		$obj->connect(new \ReflectionClass($inst), $inst, $ref);
+		
+		
+		self::assertEquals($value, $inst->i);
+	}
+	
 	/**
 	 * @return MethodConnector
 	 */
 	private function getMethodConnector()
 	{
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
-		return (new MethodConnector())
-			->setSkeleton($this->skeleton);
+		
+		/** @var MethodConnector $res */
+		$res = (new MethodConnector())->setSkeleton($this->skeleton);
+		return $res;
 	}
 	
 	private function expectSkeletonNotCalled()
@@ -136,6 +155,36 @@ class MethodConnectorTest extends \SkeletonTestCase
 		$obj = $this->getMethodConnector();
 		$this->invokeConnect($obj, test_MethodConnector_Helper_NoType::class);
 	}
+	
+	
+	public function test_connect_ContextMethod_ContextResolvedByAnnotationValue()
+	{
+		$this->assertContextLoaded('a', test_MethodConnector_Helper_ContextByAnnotation::class, 123);
+	}
+	
+	public function test_connect_ContextMethod_ContextResolvedByParameterName()
+	{
+		$this->assertContextLoaded('i', test_MethodConnector_Helper_ContextByParamName::class, 123);
+	}
+	
+	public function test_connect_ContextMethod_ContextResolvedByParameterType()
+	{
+		$this->assertContextLoaded(
+			test_MethodConnector_cls::class, 
+			test_MethodConnector_Helper_ContextByType::class, 
+			new test_MethodConnector_cls());
+	}
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextException
+	 */
+	public function test_connect_ContextNotSet_ExceptionThrown()
+	{
+		$obj = $this->getMethodConnector();
+		$inst = new test_MethodConnector_Helper_ContextByAnnotation();
+		
+		$obj->connect(new \ReflectionClass($inst), $inst, null);
+	}
 }
 
 
@@ -237,4 +286,36 @@ class test_MethodConnector_Helper_NoType
 	 * @autoload
 	 */
 	public function setParam($i) {}
+}
+
+
+class test_MethodConnector_Helper_ContextByAnnotation
+{
+	public $i;
+	
+	/**
+	 * @context a
+	 */
+	public function setParam($i) { $this->i = $i; }
+}
+
+class test_MethodConnector_Helper_ContextByParamName
+{
+	public $i;
+	
+	/**
+	 * @context
+	 */
+	public function setParam($i) { $this->i = $i; }
+}
+
+class test_MethodConnector_cls {}
+class test_MethodConnector_Helper_ContextByType
+{
+	public $i;
+	
+	/**
+	 * @context
+	 */
+	public function setParam(test_MethodConnector_cls $i) { $this->i = $i; }
 }

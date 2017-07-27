@@ -2,6 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use Skeleton\Context;
+use Skeleton\ContextReference;
 use Skeleton\Base\ISkeletonSource;
 
 
@@ -11,14 +13,32 @@ class PropertyConnectorTest extends \SkeletonTestCase
 	private $skeleton;
 	
 	
+	private function assertContextLoaded(string $item, string $className, $value)
+	{
+		$obj = $this->getPropertyConnector();
+		$context = new Context('a');
+		$ref = new ContextReference($context, $this->skeleton);
+		$inst = new $className();
+		
+		$context->set($item, $value);
+		
+		$obj->connect(new \ReflectionClass($inst), $inst, $ref);
+		
+		
+		self::assertEquals($value, $inst->i);
+	}
+	
+	
 	/**
 	 * @return PropertyConnector
 	 */
 	private function getPropertyConnector()
 	{
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
-		return (new PropertyConnector())
-			->setSkeleton($this->skeleton);
+		
+		/** @var PropertyConnector $res */
+		$res = (new PropertyConnector())->setSkeleton($this->skeleton);
+		return $res;
 	}
 	
 	private function expectSkeletonNotCalled()
@@ -142,6 +162,33 @@ class PropertyConnectorTest extends \SkeletonTestCase
 		
 		$this->invokeConnect($obj, test_PropertyConnector_TestFullNamespace::class);
 	}
+	
+	
+	public function test_connect_ContextProperty_ContextResolvedByAnnotationValue()
+	{
+		$this->assertContextLoaded('a', test_PropertyConnector_ContextByAnnotation::class, 123);
+	}
+	
+	public function test_connect_ContextProperty_ContextResolvedByPropertyName()
+	{
+		$this->assertContextLoaded('i', test_PropertyConnector_ContextByPropertyName::class, 123);
+	}
+	
+	public function test_connect_ContextProperty_ContextResolvedByPropertyType()
+	{
+		$this->assertContextLoaded('n', test_PropertyConnector_ContextByPropertyType::class, 123);
+	}
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextException
+	 */
+	public function test_connect_ContextNotSet_ExceptionThrown()
+	{
+		$obj = $this->getPropertyConnector();
+		$inst = new test_PropertyConnector_ContextByAnnotation();
+		
+		$obj->connect(new \ReflectionClass($inst), $inst, null);
+	}
 }
 
 
@@ -235,4 +282,26 @@ class test_PropertyConnector_TestFullNamespace
 	 * @var \Full\Knot\Name
 	 */
 	private $noType;
+}
+
+
+class test_PropertyConnector_ContextByAnnotation
+{
+	/** @context a */
+	public $i;
+}
+
+class test_PropertyConnector_ContextByPropertyName
+{
+	/** @context */
+	public $i;
+}
+
+class test_PropertyConnector_ContextByPropertyType
+{
+	/** 
+	 * @context
+	 * @var \n  
+	 */
+	public $i;
 }

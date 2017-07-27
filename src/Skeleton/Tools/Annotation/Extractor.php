@@ -46,8 +46,8 @@ class Extractor
 		}
 		
 		$pattern = $allowComment ?
-			"/^[ \\t]*\\*[ \\t]*@{$annotation}.*$/m" : 
-			"/^[ \\t]*\\*[ \\t]*@{$annotation}[ \\t]*$/m";
+			"/^[ \\t]*\\/?\\*+[ \\t]*@{$annotation}.*$/m" : 
+			"/^[ \\t]*\\/?\\*+[ \\t]*@{$annotation}[ \\t]*$/m";
 		
 		return (preg_match($pattern, self::getDocComment($element)) == 1);
 	}
@@ -59,7 +59,7 @@ class Extractor
 	 */
 	public static function get($element, string $annotation)
 	{
-		$pattern = "/^[ \\t]*\\*[ \\t]*@{$annotation} ([\\w\\\\]*).*$/m";
+		$pattern = "/^[ \\t]*\\/?\\*+[ \\t]*@{$annotation} ([\\w\\\\]*).*$/m";
 		$matches = [];
 		$result = preg_match($pattern, self::getDocComment($element), $matches);
 		

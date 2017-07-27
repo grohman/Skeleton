@@ -5,8 +5,8 @@ namespace Skeleton\Tools\Knot\Connectors;
 use Skeleton\Base\IContextReference;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
-use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Annotation\Extractor;
+use Skeleton\Exceptions\MissingContextException;
 
 
 class MethodConnector extends AbstractObjectToSkeletonConnector
