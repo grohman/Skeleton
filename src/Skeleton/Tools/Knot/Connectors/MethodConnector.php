@@ -3,9 +3,9 @@ namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\IContextReference;
-use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
+use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Annotation\Extractor;
 
 
@@ -17,17 +17,11 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 	 */
 	private function isAutoloadMethod(\ReflectionMethod $method)
 	{
-		if (strpos($method->getName(), KnotConsts::AUTOLOAD_METHOD_PREFIX) !== 0 || 
-			$method->getNumberOfParameters() != 1 || 
-			$method->getNumberOfRequiredParameters() != 1 ||
-			$method->isStatic() || 
-			$method->isAbstract() || 
-			!Extractor::has($method, KnotConsts::AUTOLOAD_ANNOTATIONS))
-		{
-			return false;
-		}
-		
-		return true;
+		return (strpos($method->getName(), KnotConsts::AUTOLOAD_METHOD_PREFIX) === 0 && 
+			$method->getNumberOfParameters() == 1 &&
+			$method->getNumberOfRequiredParameters() == 1 &&
+			!$method->isStatic() && 
+			!$method->isAbstract());
 	}
 
 	/**

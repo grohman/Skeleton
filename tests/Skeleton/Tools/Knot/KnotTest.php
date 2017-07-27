@@ -2,7 +2,11 @@
 namespace Skeleton\Tools\Knot;
 
 
+use Skeleton\Context;
+use Skeleton\Skeleton;
+use Skeleton\ContextReference;
 use Skeleton\Base\ISkeletonSource;
+use Skeleton\Tools\ContextManager;
 
 
 class KnotTest extends \SkeletonTestCase
@@ -11,14 +15,16 @@ class KnotTest extends \SkeletonTestCase
 	private $skeleton;
 	
 	
-	/**
-	 * @return Knot
-	 */
-	private function getKnot()
+	private function getKnot(): Knot
 	{
 		/** @var ISkeletonSource skeleton */
 		$this->skeleton = $this->getMock(ISkeletonSource::class);
 		return (new Knot($this->skeleton));
+	}
+	
+	private function getContextReference(): ContextReference
+	{
+		return new ContextReference(new Context('a'), new Skeleton());
 	}
 	
 	/**
@@ -84,6 +90,62 @@ class KnotTest extends \SkeletonTestCase
 		
 		$this->assertSame($object, $instance->a);
 	}
+	
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextException
+	 */
+	public function test_load_ContextAnnotationPresent_MissingContext_ExceptionThrown()
+	{
+		$knot = $this->getKnot();
+		$knot->load(test_Knot_Helper_Context::class, null);
+	}
+	
+	public function test_load_ContextAnnotationPresent_ContextSet()
+	{
+		$knot = $this->getKnot();
+		$res = $knot->load(test_Knot_Helper_Context::class, $this->getContextReference());
+		
+		self::assertObjectHasAttribute(ContextManager::CONTEXT_PROPERTY_NAME, $res);
+	}
+	
+	public function test_load_ContextAnnotationPresentInInheritedClass_ContextSet()
+	{
+		$knot = $this->getKnot();
+		$res = $knot->load(test_Knot_Helper_ChildOfContext::class, $this->getContextReference());
+		
+		self::assertObjectHasAttribute(ContextManager::CONTEXT_PROPERTY_NAME, $res);
+	}
+	
+	public function test_load_AutoloadInInheritedClassAndContextIsPresent_ContextSet()
+	{
+		$knot = $this->getKnot();
+		$res = $knot->load(test_Knot_Helper_ChildOfAutoloadEmpty::class, $this->getContextReference());
+		
+		self::assertObjectHasAttribute(ContextManager::CONTEXT_PROPERTY_NAME, $res);
+	}
+	
+	public function test_load_ContextSanityForProperty()
+	{
+		$knot = $this->getKnot();
+		$context = new Context('');
+		$context->set('a', 'b');
+		
+		$res = $knot->load(test_Knot_Helper_ContextProperties::class, new ContextReference($context, new Skeleton()));
+		
+		self::assertEquals('b', $res->a);
+	}
+	
+	public function test_load_ContextSanityForMethod()
+	{
+		$knot = $this->getKnot();
+		$context = new Context('');
+		$context->set('a', 'b');
+		
+		$res = $knot->load(test_Knot_Helper_ContextMethod::class, new ContextReference($context, new Skeleton()));
+		
+		self::assertEquals('b', $res->a);
+	}
 }
 
 
@@ -96,6 +158,7 @@ class test_Knot_Helper_EmptyClass {}
  * @autoload
  */
 class test_Knot_Helper_AutoloadEmpty {}
+class test_Knot_Helper_ChildOfAutoloadEmpty extends test_Knot_Helper_AutoloadEmpty {}
 
 /**
  * @autoload
@@ -137,3 +200,37 @@ class test_Knot_Helper_Properties
 	 */
 	public $a;
 }
+
+
+/**
+ * @autoload
+ */
+class test_Knot_Helper_ContextProperties
+{
+	/**
+	 * @context
+	 */
+	public $a;
+}
+
+/**
+ * @autoload
+ */
+class test_Knot_Helper_ContextMethod
+{
+	public $a;
+	
+	/**
+	 * @context
+	 */
+	public function setA($a)
+	{
+		$this->a = $a;
+	}
+}
+
+/**
+ * @context
+ */
+class test_Knot_Helper_Context {}
+class test_Knot_Helper_ChildOfContext extends test_Knot_Helper_Context {}

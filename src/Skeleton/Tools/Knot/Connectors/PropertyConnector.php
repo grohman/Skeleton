@@ -3,10 +3,10 @@ namespace Skeleton\Tools\Knot\Connectors;
 
 
 use Skeleton\Base\IContextReference;
-use Skeleton\Exceptions\MissingContextException;
 use Skeleton\Tools\Knot\KnotConsts;
 use Skeleton\Tools\Knot\Base\AbstractObjectToSkeletonConnector;
 use Skeleton\Tools\Annotation\Extractor;
+use Skeleton\Exceptions\MissingContextException;
 
 
 class PropertyConnector extends AbstractObjectToSkeletonConnector

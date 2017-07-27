@@ -55,19 +55,28 @@ class Knot
 	public function loadInstance($instance, ?IContextReference $context)
 	{
 		$reflection = new \ReflectionClass($instance);
+		$isContextSet = false;
 		
-		if (Extractor::has($reflection, KnotConsts::CONTEXT_ANNOTATION))
-		{
-			if (is_null($context))
-				throw new MissingContextException($reflection->name);
-			
-			ContextManager::set($instance, $context);
-		}
 		
 		while ($reflection)
 		{
+			if (!$isContextSet && Extractor::has($reflection, KnotConsts::CONTEXT_ANNOTATION))
+			{
+				if (is_null($context))
+					throw new MissingContextException(get_class($instance));
+				
+				ContextManager::set($instance, $context);
+				$isContextSet = true;
+			}
+			
 			if ($this->isAutoloadClass($reflection))
 			{
+				if (!$isContextSet && $context)
+				{
+					ContextManager::set($instance, $context);
+					$isContextSet = true;
+				}
+				
 				$this->propertyConnector->connect($reflection, $instance, $context);
 				$this->methodConnector->connect($reflection, $instance, $context);
 			}
