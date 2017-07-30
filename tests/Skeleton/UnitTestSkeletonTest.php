@@ -49,10 +49,37 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 	public function test_contextPassed()
 	{
 		$skeleton = $this->mockSkeleton($map);
-		// TODO :
-		
 		$skeleton->expects($this->once())->method('setMap');
-		new UnitTestSkeleton($skeleton);
+		
+		$testSkeleton = new UnitTestSkeleton($skeleton);
+		
+		$context = new Context('test_context');
+		$context->set('a', 'c');
+		$contextReference = new ContextReference($context, $testSkeleton);
+
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
+		$map->expects($this->once())
+			->method('get')
+			->with($this->equalTo('a'), $this->equalTo($contextReference))
+			->willReturn($context->get('a'));
+
+		self::assertEquals('c', $testSkeleton->get('a', $contextReference));
+	}
+	
+	public function test_contextNotPassed()
+	{
+		$skeleton = $this->mockSkeleton($map);
+		$skeleton->expects($this->once())->method('setMap');
+		
+		$testSkeleton = new UnitTestSkeleton($skeleton);
+
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
+		$map->expects($this->once())
+			->method('get')
+			->with($this->equalTo('a'))
+			->willReturn('c');
+
+		self::assertEquals('c', $testSkeleton->get('a'));
 	}
 	
 	

@@ -13,7 +13,7 @@ class TestMap extends BaseMap implements IMap
 	private $originalMap;
 	
 	/** @var array */
-	private $overrideMap;
+	private $overrideMap = [];
 	
 	
 	/**
