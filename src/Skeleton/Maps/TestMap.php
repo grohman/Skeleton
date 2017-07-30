@@ -65,7 +65,7 @@ class TestMap extends BaseMap implements IMap
 			}
 		}
 		
-		return $this->originalMap->get($key);
+		return $this->originalMap->get($key, $context);
 	}
 	
 	/**
@@ -100,5 +100,10 @@ class TestMap extends BaseMap implements IMap
 	public function clear()
 	{
 		$this->overrideMap = [];
+	}
+	
+	public function asArray(): array 
+	{
+		return $this->overrideMap;
 	}
 }

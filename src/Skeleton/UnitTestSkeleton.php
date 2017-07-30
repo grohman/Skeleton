@@ -13,6 +13,17 @@ class UnitTestSkeleton implements ISkeletonSource
 	private $testMap;
 	
 	
+	private function asContext(): IContextReference
+	{
+		$context = new Context('unit_test_context');
+		$ref = new ContextReference($context, $this);
+		
+		$context->set($this->testMap->asArray());
+			
+		return $ref;
+	}
+	
+	
 	/**
 	 * @param Skeleton $skeleton
 	 */
@@ -31,7 +42,7 @@ class UnitTestSkeleton implements ISkeletonSource
 	 */
 	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
 	{
-		return $this->testMap->get($key, $context);
+		return $this->testMap->get($key, ($context ?: $this->asContext()));
 	}
 	
 	/**

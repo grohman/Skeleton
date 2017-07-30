@@ -10,7 +10,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|Skeleton
 	 */
-	private function mockSkeleton()
+	private function mockSkeleton(&$map)
 	{
 		$map = $this->getMock(IMap::class);
 		$skeleton = $this->getMock(Skeleton::class);
@@ -21,7 +21,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 	
 	public function test_constructor()
 	{
-		$skeleton = $this->mockSkeleton();
+		$skeleton = $this->mockSkeleton($map);
 		$skeleton->expects($this->once())->method('setMap');
 		new UnitTestSkeleton($skeleton);
 	}
@@ -44,6 +44,15 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton->override('a', 'c');
 		
 		$this->assertEquals('c', $testSkeleton->get('a'));
+	}
+	
+	public function test_contextPassed()
+	{
+		$skeleton = $this->mockSkeleton($map);
+		// TODO :
+		
+		$skeleton->expects($this->once())->method('setMap');
+		new UnitTestSkeleton($skeleton);
 	}
 	
 	
