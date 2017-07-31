@@ -3,6 +3,7 @@ namespace Skeleton;
 
 
 use Skeleton\Base\IMap;
+use Skeleton\Base\IContextReference;
 
 
 class UnitTestSkeletonTest extends \SkeletonTestCase
@@ -46,40 +47,78 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$this->assertEquals('c', $testSkeleton->get('a'));
 	}
 	
-	public function test_contextPassed()
+	
+	public function test_get_contextPassed_ContextValuesPassedToMapGetMethod()
 	{
 		$skeleton = $this->mockSkeleton($map);
-		$skeleton->expects($this->once())->method('setMap');
-		
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 		
-		$context = new Context('test_context');
-		$context->set('a', 'c');
-		$contextReference = new ContextReference($context, $testSkeleton);
+		$context = new Context('');
+		$context->set('a', 'b');
+		$contextReference = new ContextReference($context, $skeleton);
 
 		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
-			->with($this->equalTo('a'), $this->equalTo($contextReference))
-			->willReturn($context->get('a'));
+			->willReturnCallback(function ($a, IContextReference $context)
+			{
+				$this->assertEquals('b', $context->context()->get('a'));
+			});
 
-		self::assertEquals('c', $testSkeleton->get('a', $contextReference));
+		$testSkeleton->get('n', $contextReference);
 	}
 	
-	public function test_contextNotPassed()
+	public function test_get_contextPassed_UnitTestMapDecoratesParentContextValues()
 	{
 		$skeleton = $this->mockSkeleton($map);
-		$skeleton->expects($this->once())->method('setMap');
+		$testSkeleton = new UnitTestSkeleton($skeleton);
+		$testSkeleton->override('a', 'over_b');
 		
+		$context = new Context('');
+		$context->set('a', 'b');
+		$contextReference = new ContextReference($context, $skeleton);
+
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
+		$map->expects($this->once())
+			->method('get')
+			->willReturnCallback(function ($a, IContextReference $context)
+			{
+				$this->assertEquals('over_b', $context->context()->get('a'));
+			});
+
+		$testSkeleton->get('n', $contextReference);
+	}
+	
+	public function test_get_contextNotPassed_NewContextCreated()
+	{
+		$skeleton = $this->mockSkeleton($map);
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 
 		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
-			->with($this->equalTo('a'))
+			->with('a', $this->isInstanceOf(ContextReference::class))
 			->willReturn('c');
 
 		self::assertEquals('c', $testSkeleton->get('a'));
+	}
+	
+	public function test_get_contextNotPassed_NewContextHasUnitTestMapValues()
+	{
+		$skeleton = $this->mockSkeleton($map);
+		
+		$testSkeleton = new UnitTestSkeleton($skeleton);
+		$testSkeleton->override('a', 'b');
+
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
+		$map->expects($this->once())
+			->method('get')
+			->willReturnCallback(function ($a, IContextReference $context)
+			{
+				$this->assertEquals('b', $context->get('a'));
+			});
+
+		$testSkeleton->get('n');
 	}
 	
 	

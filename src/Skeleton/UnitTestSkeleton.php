@@ -13,9 +13,9 @@ class UnitTestSkeleton implements ISkeletonSource
 	private $testMap;
 	
 	
-	private function asContext(): IContextReference
+	private function asContext(?IContextReference $parent): IContextReference
 	{
-		$context = new Context('unit_test_context');
+		$context = new Context('unit_test_context', ($parent ? $parent->context() : null));
 		$ref = new ContextReference($context, $this);
 		
 		$context->set($this->testMap->asArray());
@@ -42,7 +42,7 @@ class UnitTestSkeleton implements ISkeletonSource
 	 */
 	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
 	{
-		return $this->testMap->get($key, ($context ?: $this->asContext()));
+		return $this->testMap->get($key, $this->asContext($context));
 	}
 	
 	/**
