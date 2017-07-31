@@ -7,6 +7,38 @@ use PHPUnit\Framework\TestCase;
 
 class ContextTest extends TestCase
 {
+	public function test_constructor_Empty_NameSet()
+	{
+		$subject = new Context();
+		self::assertEquals('context', $subject->name());
+	}
+	
+	public function test_constructor_PassArray_NameSetCorrectly()
+	{
+		$subject = new Context(['a' => 'b']);
+		self::assertEquals('context', $subject->name());
+	}
+	
+	public function test_constructor_PassArray_ContextSet()
+	{
+		$subject = new Context(['a' => 'b']);
+		self::assertEquals('b', $subject->get('a'));
+	}
+	
+	public function test_constructor_PassNameAndArray_NameSetCorrectly()
+	{
+		$subject = new Context('c', ['a' => 'b']);
+		self::assertEquals('c', $subject->name());
+	}
+	
+	public function test_constructor_PassNameAndArray_ContextSet()
+	{
+		$subject = new Context('c', ['a' => 'b']);
+		self::assertEquals('b', $subject->get('a'));
+	}
+	
+	
+	
 	public function test_name()
 	{
 		$subject = new Context('a');

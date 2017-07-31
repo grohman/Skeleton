@@ -22,16 +22,16 @@ class ContextReference implements IContextReference
 		$this->skeleton = $skeleton;
 	}
 	
-	
 	public function get(string $key)
 	{
 		return $this->skeleton->get($key, $this);
 	}
 	
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
+	public function load(string $key)
+	{
+		return $this->skeleton->load($key, $this);
+	}
+	
 	public function value(string $key)
 	{
 		return $this->context->get($key);

@@ -5,6 +5,7 @@ namespace Skeleton;
 use Skeleton\Maps\TestMap;
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Base\IContextReference;
+use Skeleton\Tools\ContextManager;
 
 
 class UnitTestSkeleton implements ISkeletonSource
@@ -36,13 +37,29 @@ class UnitTestSkeleton implements ISkeletonSource
 
 	/**
 	 * @param string $key
-	 * @param IContextReference|null $context
+	 * @param IContextReference|Context|array|null $context
 	 * @param bool $skipGlobal
 	 * @return mixed
 	 */
-	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
+	public function get($key, $context = null, bool $skipGlobal = false)
 	{
+		if ($context && !$context instanceof IContextReference)
+			$context = ContextManager::create($this, $context);
+		
 		return $this->testMap->get($key, $this->asContext($context));
+	}
+
+	/**
+	 * @param string|mixed $item
+	 * @param IContextReference|Context|array|null $context
+	 * @return mixed
+	 */
+	public function load($item, $context = null)
+	{
+		if ($context && !$context instanceof IContextReference)
+			$context = ContextManager::create($this, $context);
+		
+		return $this->testMap->loader()->get($item, $context);
 	}
 	
 	/**

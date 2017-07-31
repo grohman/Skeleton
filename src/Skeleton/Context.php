@@ -15,14 +15,41 @@ class Context implements IContextSource
 	
 	/** @var null|Context */
 	private $parentContext = null;
-	
-	
-	public function __construct(string $name = 'context', ?Context $parent = null)
+
+
+	/**
+	 * Context constructor.
+	 * @param string|array $name
+	 * @param array|Context|null $parent
+	 */
+	public function __construct($name = null, $parent = null)
 	{
-		$this->name = $name;
-		$this->parentContext = $parent;
+		if (is_array($name))
+		{
+			$parent = $name;
+			$this->name = 'context';
+		}
+		else
+		{
+			$this->name = $name ?: 'context';
+		}
 		
-		$this->context = ($parent ? $parent->context : []); 
+		if ($parent)
+		{
+			if (is_array($parent))
+			{
+				$this->context = $parent;
+			}
+			else if ($parent instanceof Context)
+			{
+				$this->parentContext = $parent;
+				$this->context = $parent->context;
+			}
+		}
+		else
+		{
+			$this->context = [];
+		}
 	}
 	
 	

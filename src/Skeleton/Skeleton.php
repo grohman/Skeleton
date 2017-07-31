@@ -126,16 +126,19 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		GlobalSkeleton::instance()->add($prefix, $this);
 		return $this;
 	}
-
-
+	
+	
 	/**
 	 * @param string $key
-	 * @param IContextReference|null $context
+	 * @param IContextReference|Context|array|null $context
 	 * @param bool $skipGlobal
 	 * @return mixed
 	 */
-	public function get($key, ?IContextReference $context = null, bool $skipGlobal = false)
+	public function get($key, $context = null, bool $skipGlobal = false)
 	{
+		if ($context && !$context instanceof IContextReference)
+			$context = ContextManager::create($this, $context);
+		
 		if (!is_string($key))
 			throw new Exceptions\InvalidKeyException($key);
 		
@@ -198,21 +201,37 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	}
 	
 	/**
-	 * @param string $className
+	 * @param string|mixed $item
+	 * @param IContextReference|Context|array|null $context
 	 * @return mixed
 	 */
-	public function load(string $className)
+	public function load($item, $context = null)
 	{
-		return $this->map->loader()->get($className);
+		if ($context && !($context instanceof IContextReference))
+			$context = ContextManager::create($this, $context);
+		
+		return $this->map->loader()->get($item, $context);
 	}
 	
+	/**
+	 * @param mixed $instance
+	 * @return IContextReference
+	 */
 	public function for($instance): IContextReference
 	{
-		return ContextManager::get($instance);
+		if (is_array($instance))
+			return ContextManager::create($this, $instance);
+		
+		return ContextManager::get($instance, $this);
 	}
 	
-	public function context($instance, string $name): Context
+	/**
+	 * @param mixed $instance
+	 * @param string|null $name
+	 * @return Context
+	 */
+	public function context($instance, ?string $name = null): Context
 	{
 		return ContextManager::init($instance, $this, $name);
 	}
-}	
+}

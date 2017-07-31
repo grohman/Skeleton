@@ -2,11 +2,13 @@
 namespace Skeleton;
 
 
+use Skeleton\Base\IContextReference;
 use Skeleton\Base\IMap;
 use Skeleton\Base\ILoader;
 use Skeleton\Base\IConfigLoader;
 
 use Skeleton\Maps\SimpleMap;
+use Skeleton\Tools\ContextManager;
 
 
 class SkeletonTest extends \SkeletonTestCase
@@ -169,6 +171,26 @@ class SkeletonTest extends \SkeletonTestCase
 			);
 		
 		$this->assertSame(123, $s->get('some\complex\namespace'));
+	}
+	
+	public function test_get_PassContext_ContextUsed()
+	{
+		/**
+		 * @autoload
+		 */
+		$cls = new class 
+		{
+			/** @context */
+			public $item;
+		};
+		
+		$s = new Skeleton();
+		$s->enableKnot();
+		$s->set('a', get_class($cls));
+		
+		$obj = $s->get('a', ['item' => 123]);
+		
+		self::assertEquals(123, $obj->item);
 	}
 	
 	
@@ -335,6 +357,101 @@ class SkeletonTest extends \SkeletonTestCase
 		$loader->expects($this->once())->method('get')->with('abc')->willReturn(123);
 		
 		$this->assertEquals(123, $s->load('abc'));
+	}
+	
+	public function test_load_ContextNotPassed_PassNullToLoader()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		$loader = $map->loader();
+		$loader->expects($this->once())->method('get')->with($this->anything(), null);
+		
+		$s->load(\stdClass::class);
+	}
+	
+	public function test_load_IContextReferencePassed_IContextReferencePassedToLoader()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		$context = new ContextReference(new Context(), $s);
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		$loader = $map->loader();
+		$loader->expects($this->once())->method('get')->with($this->anything(), $context);
+		
+		$s->load(\stdClass::class, $context);
+	}
+	
+	public function test_load_ContextPassed_IContextReferenceWithContextPassed()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		$context = new Context();
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		$loader = $map->loader();
+		$loader->expects($this->once())
+			->method('get')
+			->willReturnCallback(function ($a, IContextReference $b) use ($context)
+			{
+				self::assertEquals($context, $b->context());
+			});
+		
+		$s->load(\stdClass::class, $context);
+	}
+	
+	public function test_load_ArrayPassed_IContextReferenceWithArrayDataPassed()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		$loader = $map->loader();
+		$loader->expects($this->once())
+			->method('get')
+			->willReturnCallback(function ($a, IContextReference $b)
+			{
+				self::assertEquals('b', $b->context()->get('a'));
+			});
+		
+		$s->load(\stdClass::class, ['a' => 'b']);
+	}
+	
+	
+	public function test_for_InstancePassed_InstanceContextReferenceReturned()
+	{
+		$s = new Skeleton();
+		
+		$obj = new \stdClass();
+		$s->context($obj);
+		
+		self::assertEquals($obj->{ContextManager::CONTEXT_PROPERTY_NAME}, $s->for($obj));
+	}
+	
+	public function test_for_ArrayPassed_InstanceContextForArrayReturned()
+	{
+		$s = new Skeleton();
+		
+		$result = $s->for(['a' => 'b']);
+		
+		self::assertInstanceOf(IContextReference::class, $result);
+		self::assertEquals('b', $result->context()->get('a'));
+	}
+	
+	
+	public function test_context_Sanity()
+	{
+		$s = new Skeleton();
+		
+		
+		self::assertInstanceOf(Context::class, $s->context(['a' => 'b']));
+		
+		self::assertEquals('b', $s->context(['a' => 'b'])->get('a'));
+		self::assertEquals('c', $s->context(['a' => 'b'], 'c')->name());
 	}
 	
 	

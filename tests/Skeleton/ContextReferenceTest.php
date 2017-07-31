@@ -57,4 +57,52 @@ class ContextReferenceTest extends TestCase
 		
 		self::assertEquals(['context' => 'a'], $subject->__debugInfo($subject, true));
 	}
+	
+	
+	public function test_load_SkeletonPassed()
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
+		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
+		
+		
+		$subject = new ContextReference(new Context(), $skeleton);
+		$skeleton->expects($this->once())
+			->method('load')
+			->with(
+				$this->anything(), 
+				$subject
+			);
+		
+		
+		$subject->load(\stdClass::class);
+	}
+	
+	public function test_load_KeyPassed()
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
+		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
+		
+		
+		$subject = new ContextReference(new Context(), $skeleton);
+		$skeleton->expects($this->once())
+			->method('load')
+			->with(
+				'hello',
+				$this->anything() 
+			);
+		
+		
+		$subject->load('hello');
+	}
+	
+	public function test_load_SkeletonResultReturned()
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
+		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
+		
+		$subject = new ContextReference(new Context(), $skeleton);
+		$skeleton->method('load')->willReturn(123);
+		
+		self::assertEquals(123, $subject->load('hello'));
+	}
 }
