@@ -2,6 +2,7 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use Skeleton\Base\IContextReference;
 use Skeleton\Context;
 use Skeleton\ContextReference;
 use Skeleton\Base\ISkeletonSource;
@@ -26,6 +27,28 @@ class PropertyConnectorTest extends \SkeletonTestCase
 		
 		
 		self::assertEquals($value, $inst->i);
+	}
+	
+	private function assertPropertyContextLoaded(string $parentClass, string $childClass,
+												 string $property, string $key, string $value)
+	{
+		$obj = $this->getPropertyConnector();
+		
+		$context = new Context('a');
+		$context->set($key, $value);
+		
+		$ref = new ContextReference($context, $this->skeleton);
+
+		$this->skeleton
+			->expects($this->once())
+			->method('get')
+			->with($this->equalTo($childClass),
+				$this->isInstanceOf(IContextReference::class))
+			->willReturn($this->invokeConnect($obj, $childClass, $ref));
+		
+		$inst = $this->invokeConnect($obj, $parentClass, $ref);
+		
+		self::assertEquals($context->get($key), $inst->$property->$key);
 	}
 	
 	
@@ -66,12 +89,13 @@ class PropertyConnectorTest extends \SkeletonTestCase
 	/**
 	 * @param PropertyConnector $connector
 	 * @param string $type
+	 * @param ContextReference|null $context
 	 * @return mixed
 	 */
-	private function invokeConnect(PropertyConnector $connector, $type)
+	private function invokeConnect(PropertyConnector $connector, $type, ?IContextReference $context = null)
 	{
 		$instance = new $type;
-		$connector->connect(new \ReflectionClass($type), $instance);
+		$connector->connect(new \ReflectionClass($type), $instance, $context);
 		return $instance;
 	}
 	
@@ -189,6 +213,17 @@ class PropertyConnectorTest extends \SkeletonTestCase
 		
 		$obj->connect(new \ReflectionClass($inst), $inst, null);
 	}
+	
+	public function test_connect_ContextInsideAutoloadedClassProperty_ContextResolved()
+	{
+		$this->assertPropertyContextLoaded(
+			test_PropertyConnector_ContextInsideAutoloadedClassProperty::class,
+			test_PropertyConnector_ClassWithContext::class,
+			'i',
+			'n',
+			'b'
+		);
+	}
 }
 
 
@@ -304,4 +339,24 @@ class test_PropertyConnector_ContextByPropertyType
 	 * @var \n  
 	 */
 	public $i;
+}
+
+class test_PropertyConnector_ContextInsideAutoloadedClassProperty
+{
+	/**
+	 * @autoload
+	 * @var test_PropertyConnector_ClassWithContext
+	 */
+	public $i;
+}
+
+/**
+ * @context
+ */
+class test_PropertyConnector_ClassWithContext
+{
+	/**
+	 * @context
+	 */
+	public $n;
 }

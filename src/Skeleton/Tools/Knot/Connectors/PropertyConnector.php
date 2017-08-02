@@ -42,9 +42,10 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 
 	/**
 	 * @param \ReflectionProperty $property
+	 * @param IContextReference|null $context
 	 * @return mixed
 	 */
-	private function getAutoloadValue(\ReflectionProperty $property)
+	private function getAutoloadValue(\ReflectionProperty $property, ?IContextReference $context = null)
 	{
 		$type = Extractor::get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
 		
@@ -53,7 +54,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		
 		$type = $this->getFullTypeName($property, $type);
 		
-		return $this->get($type);
+		return $this->get($type, $context);
 	}
 
 	/**
@@ -88,7 +89,7 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 			
 			if (Extractor::has($property, KnotConsts::AUTOLOAD_ANNOTATIONS))
 			{
-				$value = $this->getAutoloadValue($property);
+				$value = $this->getAutoloadValue($property, $context);
 			}
 			else if (Extractor::has($property, KnotConsts::CONTEXT_ANNOTATION))
 			{
