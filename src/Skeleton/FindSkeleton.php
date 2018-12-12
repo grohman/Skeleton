@@ -3,11 +3,12 @@ namespace Skeleton;
 
 
 use Skeleton\Base\ISkeletonInit;
+use Traitor\TStaticClass;
 
 
 class FindSkeleton
 {
-	use \Objection\TStaticClass;
+	use TStaticClass;
 	
 	
 	private const SEPARATOR            = '\\';
@@ -16,15 +17,25 @@ class FindSkeleton
 	
 	public static function getSkeleton(string $key): ?Skeleton
 	{
-		/** @var ISkeletonInit $instance */
-		$instance = strtok($key, self::SEPARATOR) . self::SEPARATOR . self::SKELETON_CONFIG_NAME;
+		$part = strtok($key, self::SEPARATOR);
+		$path = $part;
 		
-		if (class_exists($instance) && in_array(ISkeletonInit::class, class_implements($instance)))
+		/** @var ISkeletonInit $className */
+		$className = $path . self::SEPARATOR . self::SKELETON_CONFIG_NAME;
+		
+		while ($part != false)
 		{
-			/** @var Skeleton $result */
-			$result = $instance::skeleton();
+			if (class_exists($className) && in_array(ISkeletonInit::class, class_implements($className)))
+			{
+				/** @var Skeleton $result */
+				$result = $className::skeleton();
+				
+				return $result;
+			}
 			
-			return $result;
+			$part = strtok(self::SEPARATOR);
+			$path = $path . self::SEPARATOR . $part;
+			$className = $path . self::SEPARATOR . self::SKELETON_CONFIG_NAME; 
 		}
 		
 		return null;
