@@ -309,6 +309,35 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
+	public function test_override_ForceSetCalledOnMap()
+	{
+		$s = new Skeleton();
+		$map = $this->mockMap($s);
+		
+		$map->expects($this->once())
+			->method('forceSet')
+			->with('a', 'b', Type::ByValue);
+		
+		$s->override('a', 'b', Type::ByValue);
+	}
+	
+	
+	public function test_registerGlobalFor()
+	{
+		$now = time();
+		
+		$sMain = new Skeleton();
+		$sMain->set('hello\world', $now);
+		$sMain->registerGlobalFor('hello');
+		
+		$sSec = new Skeleton();
+		$sSec->useGlobal();
+		
+		
+		self::assertEquals($now, $sSec->get('hello\world'));
+	}
+	
+	
 	public function test_setMap_MapSet() 
 	{
 		$s = new Skeleton();

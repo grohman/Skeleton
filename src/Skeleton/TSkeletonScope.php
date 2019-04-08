@@ -2,9 +2,12 @@
 namespace Skeleton;
 
 
+use Traitor\TStaticClass;
+
+
 trait TSkeletonScope
 {
-	use \Objection\TStaticClass;
+	use TStaticClass;
 	
 	
 	/** @var Skeleton */

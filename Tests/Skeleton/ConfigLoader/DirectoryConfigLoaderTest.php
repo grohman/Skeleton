@@ -2,7 +2,7 @@
 namespace Skeleton\ConfigLoader;
 
 
-use tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
+use Tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 
 
 class DirectoryConfigLoaderTest extends \SkeletonTestCase

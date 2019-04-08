@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 spl_autoload_register(
 	function ($className)
 	{
-		if (substr($className, 0, strlen('test')) != 'test') 
+		if (substr($className, 0, strlen('Tests')) != 'Tests') 
 			return;
 		
 		$classPath = __DIR__ . '/../' . str_replace('\\', '/', $className) . '.php';

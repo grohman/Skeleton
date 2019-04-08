@@ -2,12 +2,13 @@
 namespace Skeleton;
 
 
+use Traitor\TSingleton;
 use Skeleton\Exceptions\SkeletonException;
 
 
 trait TModule
 {
-	use \Objection\TSingleton;
+	use TSingleton;
 	
 	
 	/** @var static[] */

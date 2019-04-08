@@ -5,10 +5,12 @@ namespace Skeleton;
 use Skeleton\Base\ISkeletonSource;
 use Skeleton\Exceptions\ImplementerNotDefinedException;
 
+use Traitor\TSingleton;
+
 
 class GlobalSkeleton
 {
-	use \Objection\TSingleton;
+	use TSingleton;
 	
 	
 	/** @var ISkeletonSource[][] */

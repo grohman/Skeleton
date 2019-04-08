@@ -2,9 +2,12 @@
 namespace Skeleton\Base;
 
 
+use Traitor\TStaticClass;
+
+
 class ConfigSearch
 {
-	use \Objection\TStaticClass;
+	use TStaticClass;
 	
 	
 	/** @var string */

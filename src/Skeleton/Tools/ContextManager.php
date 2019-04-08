@@ -9,7 +9,7 @@ use Skeleton\Base\IContextReference;
 use Skeleton\Exceptions\SkeletonException;
 use Skeleton\Exceptions\MissingContextException;
 
-use Objection\TStaticClass;
+use Traitor\TStaticClass;
 
 
 class ContextManager

@@ -2,13 +2,16 @@
 namespace Skeleton\Tools\Knot;
 
 
+use Traitor\TConstsClass;
+
+
 class KnotConsts
 {
-	use \Objection\TConstsClass;
+	use TConstsClass;
 	
 	
-	const AUTOLOAD_ANNOTATIONS				= ['autoload', 'magic'];
-	const VARIABLE_DECLARATION_ANNOTATION	= 'var';
-	const AUTOLOAD_METHOD_PREFIX			= 'set';
-	const CONTEXT_ANNOTATION				= 'context';
+	public const AUTOLOAD_ANNOTATIONS				= ['autoload', 'magic'];
+	public const VARIABLE_DECLARATION_ANNOTATION	= 'var';
+	public const AUTOLOAD_METHOD_PREFIX				= 'set';
+	public const CONTEXT_ANNOTATION					= 'context';
 }

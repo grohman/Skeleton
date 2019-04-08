@@ -3,6 +3,7 @@ namespace Skeleton;
 
 
 use Skeleton\Exceptions\SkeletonException;
+use Traitor\TStaticClass;
 
 
 /**
@@ -12,7 +13,7 @@ use Skeleton\Exceptions\SkeletonException;
  */
 trait TStaticModule
 {
-	use \Objection\TStaticClass;
+	use TStaticClass;
 	
 	
 	/** @var static[] */
@@ -47,13 +48,9 @@ trait TStaticModule
 			return self::skeleton()->get(self::$components[$name]);
 		}
 		
-		// TODO: this behavior requires php 7.*
-		if (PHP_VERSION[0] === 7)
+		if (isset(self::$subModules[$name]))
 		{
-			if (isset(self::$subModules[$name]))
-			{
-				return self::$subModules[$name];
-			}
+			return self::$subModules[$name];
 		}
 		
 		throw new SkeletonException("Unrecognized component or sub module '$name'");

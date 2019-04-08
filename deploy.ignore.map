@@ -1,5 +1,0 @@
-# Root directory
-tests
-.gitignore
-composer.*
-README.md

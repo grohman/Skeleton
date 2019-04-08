@@ -2,9 +2,12 @@
 namespace Skeleton\Tools\Annotation;
 
 
+use Traitor\TStaticClass;
+
+
 class Extractor
 {
-	use \Objection\TStaticClass;
+	use TStaticClass;
 	
 	
 	/**
