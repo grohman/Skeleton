@@ -17,16 +17,16 @@
 		"php": ">=7.1",
 		"unstable-cacao/traitor": "^1.0"
 	},
-    "require-dev": {
-        "phpunit/phpunit": "^6.2"
-    },
 	"autoload": {
 		"psr-0": {
-			"Skeleton": "src"
+			"Skeleton": "Source"
 		}
 	},
     "scripts": {
         "test": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests",
         "test-cover": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests --coverage-html ./Build/Cover"
-    }
+    },
+	"require-dev": {
+		"phpunit/phpunit": "^7.5"
+	}
 }
