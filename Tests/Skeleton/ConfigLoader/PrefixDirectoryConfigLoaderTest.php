@@ -7,6 +7,11 @@ use tests\Skeleton\ConfigLoader\Files\LoadedNotifier;
 
 class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 {
+	private function getPathToTestDirectory(string $dir): string
+	{
+		return __DIR__ . "/Files/PrefixDirectory/$dir";
+	}
+	
 	/**
 	 * @param array $dirs
 	 * @return PrefixDirectoryConfigLoader
@@ -15,7 +20,7 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	{
 		foreach ($dirs as $key => &$dir) 
 		{
-			$dir = __DIR__ . "/Files/PrefixDirectory/$dir";
+			$dir = $this->getPathToTestDirectory($dir);
 		}
 		
 		return new PrefixDirectoryConfigLoader($dirs);
@@ -34,6 +39,7 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	
 	protected function setUp() 
 	{
+		require_once __DIR__ . '/Files/LoadedNotifier.php';
 		LoadedNotifier::clear();
 	}
 	
@@ -116,5 +122,23 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 		$l = $this->createLoader([$configA]);
 		$l->tryLoad('Class/In/Path');
 		$this->assertTrue(LoadedNotifier::isLoaded($this->getPathToFiles($configA, 'Class/In/Path')));
+	}
+	
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\SkeletonException 
+	 */
+	public function test_add_InvalidParameterPassed_ExceptionThrown(): void
+	{
+		$subject = $this->createLoader([]);
+		$subject->add(123);
+	}
+	
+	public function test_add_Pass2ParametersInsteadOfArray()
+	{
+		$path = $this->getPathToTestDirectory('FileLoaded_ReturnTrue/ConfigA');
+		
+		$l = new PrefixDirectoryConfigLoader('ClassA', $path);
+		$this->assertTrue($l->tryLoad('ClassA'));
 	}
 }

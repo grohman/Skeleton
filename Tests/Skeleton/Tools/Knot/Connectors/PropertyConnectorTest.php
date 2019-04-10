@@ -224,6 +224,14 @@ class PropertyConnectorTest extends \SkeletonTestCase
 			'b'
 		);
 	}
+	
+	
+	public function test_sanity_ObjectsInGlobalSpace()
+	{
+		/** @var \PropertyHelperB $result */
+		$result = require_once __DIR__ . '/PropertyConnector/GlobalNamespaceTestHelper.php';
+		self::assertInstanceOf(\PropertyHelperA::class, $result->field);
+	}
 }
 
 
