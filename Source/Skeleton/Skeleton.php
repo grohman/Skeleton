@@ -26,11 +26,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	private $configLoader;
 	
 	
-	/**
-	 * @param string $key
-	 * @return bool
-	 */
-	private function tryLoadLocal($key)
+	private function tryLoadLocal(string $key): bool
 	{
 		if (is_null($this->configLoader))
 			return false;
@@ -40,11 +36,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this->map->has($key);
 	}
 	
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
-	private function tryLoadGlobal($key)
+	private function tryLoadGlobal(string $key)
 	{
 		if ($this->useGlobal)
 			return GlobalSkeleton::instance()->get($key);
@@ -60,37 +52,32 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	
 	
 	/**
+	 * @deprecated
 	 * @param IMap $map
-	 * @return static
+	 * @return Skeleton
 	 */
-	public function setMap(IMap $map) 
+	public function setMap(IMap $map): Skeleton
 	{
 		$this->map = $map;
 		return $this;
 	}
 	
 	/**
-	 * @return static
+	 * @deprecated 
+	 * @return IMap
 	 */
-	public function useGlobal()
+	public function getMap(): IMap
+	{
+		return $this->map;
+	}
+	
+	public function useGlobal(): Skeleton
 	{
 		$this->useGlobal = true;
 		return $this;
 	}
 	
-	/**
-	 * @return IMap
-	 */
-	public function getMap()
-	{
-		return $this->map;
-	}
-	
-	/**
-	 * @param IConfigLoader|null $loader
-	 * @return static
-	 */
-	public function setConfigLoader(IConfigLoader $loader = null)
+	public function setConfigLoader(IConfigLoader $loader = null): Skeleton
 	{
 		if ($loader)
 		{
@@ -101,28 +88,18 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this;
 	}
 	
-	/**
-	 * @return IConfigLoader
-	 */
-	public function getConfigLoader()
+	public function getConfigLoader(): ?IConfigLoader
 	{
 		return $this->configLoader;
 	}
 	
-	/**
-	 * @return static
-	 */
-	public function enableKnot()
+	public function enableKnot(): Skeleton
 	{
 		$this->map->enableKnot($this);
 		return $this;
 	}
 	
-	/**
-	 * @param string $prefix
-	 * @return $this
-	 */
-	public function registerGlobalFor($prefix)
+	public function registerGlobalFor(string $prefix): Skeleton
 	{
 		GlobalSkeleton::instance()->add($prefix, $this);
 		return $this;
@@ -194,13 +171,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this->set($key, $value, Type::ByValue);
 	}
 	
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $flag
-	 * @return static
-	 */
-	public function override(string $key, $value, int $flag = Type::Instance)
+	public function override(string $key, $value, int $flag = Type::Instance): Skeleton
 	{
 		$this->map->forceSet($key, $value, $flag);
 		return $this;
@@ -219,10 +190,6 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this->map->loader()->get($item, $context);
 	}
 	
-	/**
-	 * @param mixed $instance
-	 * @return IContextReference
-	 */
 	public function for($instance): IContextReference
 	{
 		if (is_array($instance))
@@ -231,11 +198,6 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return ContextManager::get($instance, $this);
 	}
 	
-	/**
-	 * @param mixed $instance
-	 * @param string|null $name
-	 * @return Context
-	 */
 	public function context($instance, ?string $name = null): Context
 	{
 		return ContextManager::init($instance, $this, $name);
