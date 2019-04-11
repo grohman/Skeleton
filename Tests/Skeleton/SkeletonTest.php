@@ -309,6 +309,21 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
+	public function test_setValue_SkeletonReturned()
+	{
+		$s = new Skeleton();
+		$this->assertSame($s, $s->setValue('a', 'b'));
+	}
+	
+	public function test_setValue_ObjectSetByValue()
+	{
+		$s = new Skeleton();
+		$s->setValue('a', self::class);
+		
+		self::assertEquals(self::class, $s->get('a'));
+	}
+	
+	
 	public function test_override_ForceSetCalledOnMap()
 	{
 		$s = new Skeleton();
@@ -481,6 +496,61 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		self::assertEquals('b', $s->context(['a' => 'b'])->get('a'));
 		self::assertEquals('c', $s->context(['a' => 'b'], 'c')->name());
+	}
+	
+	
+	public function test_create_NewSkeletonObjectReturned()
+	{
+		self::assertInstanceOf(Skeleton::class, Skeleton::create(__NAMESPACE__));
+	}
+	
+	public function test_create_KnotEnabled()
+	{
+		$s = Skeleton::create(__NAMESPACE__);
+		$s->set(SkeletonTest_Helper_A::class, SkeletonTest_Helper_A::class);
+		$i = $s->load(SkeletonTest_Helper_B::class);
+		
+		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i->a);
+	}
+	
+	public function test_create_RegisteredAsGlobal()
+	{
+		$key = __FUNCTION__ . '\\' . SkeletonTest_Helper_A::class;
+		$s = Skeleton::create(__FUNCTION__);
+		$s->set($key, SkeletonTest_Helper_A::class);
+		
+		$thirdPartySkeleton = new Skeleton();
+		$thirdPartySkeleton->useGlobal();
+		
+		
+		$i = $thirdPartySkeleton->get($key);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i);
+	}
+	
+	public function test_create_GlobalScopeUsed()
+	{
+		$key = __FUNCTION__ . '\\' . SkeletonTest_Helper_A::class;
+		$thirdPartySkeleton = new Skeleton();
+		$thirdPartySkeleton->registerGlobalFor(__FUNCTION__);
+		$thirdPartySkeleton->set($key, SkeletonTest_Helper_A::class);
+		
+		$s = Skeleton::create(__NAMESPACE__);
+		
+		
+		$i = $s->get($key);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i);
+	}
+	
+	public function test_create_ConfigLoaderIsSetup()
+	{
+		$key = 'ConfigLoaderIsSetup\\ABC';
+		$s = Skeleton::create(__NAMESPACE__, realpath(__DIR__ . '/SkeletonTest'));
+		
+		self::assertEquals($s->get($key), '12345');
 	}
 	
 	

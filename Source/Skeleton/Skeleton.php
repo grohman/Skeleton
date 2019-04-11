@@ -11,6 +11,7 @@ use Skeleton\Base\ISkeletonSource;
 use Skeleton\Base\IBoneConstructor;
 use Skeleton\Base\IContextReference;
 use Skeleton\Tools\ContextManager;
+use Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 
 class Skeleton implements ISkeletonSource, IBoneConstructor
@@ -238,5 +239,21 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	public function context($instance, ?string $name = null): Context
 	{
 		return ContextManager::init($instance, $this, $name);
+	}
+	
+	
+	public static function create(string $namespace, ?string $directory = null): Skeleton
+	{
+		$skeleton = new Skeleton();
+		
+		if ($directory)
+		{
+			$skeleton->setConfigLoader(new DirectoryConfigLoader($directory));
+		}
+		
+		return $skeleton
+			->enableKnot()
+			->registerGlobalFor($namespace)
+			->useGlobal();
 	}
 }

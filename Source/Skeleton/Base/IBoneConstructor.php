@@ -14,4 +14,6 @@ interface IBoneConstructor
 	 * @return static|IBoneConstructor
 	 */
 	public function set($key, $value, int $flags = Type::Instance): IBoneConstructor;
+	
+	public function setValue(string $key, $value): IBoneConstructor;
 }

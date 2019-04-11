@@ -59,4 +59,9 @@ abstract class AbstractConfigLoader implements IConfigLoader, IBoneConstructor
 		$this->constructor->set($key, $value, $flags);
 		return $this->constructor;
 	}
+	
+	public function setValue(string $key, $value): IBoneConstructor
+	{
+		return $this->set($key, $value, Type::ByValue);
+	}
 }

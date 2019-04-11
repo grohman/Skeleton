@@ -36,6 +36,11 @@ class AbstractConfigLoaderTest extends TestCase
 				/** @var IBoneConstructor $this */
 				return $this;
 			}
+			
+			public function setValue(string $key, $value): IBoneConstructor
+			{
+				return $this->set($key, $value, Type::ByValue);
+			}
 		};
 		
 		$subject = new AbstractConfigLoaderHelper();
