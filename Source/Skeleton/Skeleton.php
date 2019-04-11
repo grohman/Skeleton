@@ -188,6 +188,11 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this;
 	}
 	
+	public function setValue(string $key, $value): IBoneConstructor
+	{
+		return $this->set($key, $value, Type::ByValue);
+	}
+	
 	/**
 	 * @param string $key
 	 * @param mixed $value
