@@ -16,8 +16,9 @@ use Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 class Skeleton implements ISkeletonSource, IBoneConstructor
 {
-	/** @var bool */
-	private $useGlobal = false;
+	private $useGlobal		= false;
+	private $configLimit	= null;
+	private $configLimitLen	= 0;
 	
 	/** @var IMap */
 	private $map;
@@ -28,6 +29,14 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	
 	private function tryLoadLocal(string $key): bool
 	{
+		if ($this->configLimit)
+		{
+			if (substr($key, 0, $this->configLimitLen) != $this->configLimit)
+			{
+				return false;
+			}
+		}
+		
 		if (is_null($this->configLoader))
 			return false;
 		
@@ -77,11 +86,13 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return $this;
 	}
 	
-	public function setConfigLoader(IConfigLoader $loader = null): Skeleton
+	public function setConfigLoader(IConfigLoader $loader = null, ?string $namespaceLimit = null): Skeleton
 	{
 		if ($loader)
 		{
 			$loader->setBoneConstructor($this);
+			$this->configLimit = $namespaceLimit;
+			$this->configLimitLen = strlen($this->configLimit);
 		}
 		
 		$this->configLoader = $loader;
@@ -210,7 +221,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		
 		if ($directory)
 		{
-			$skeleton->setConfigLoader(new DirectoryConfigLoader($directory));
+			$skeleton->setConfigLoader(new DirectoryConfigLoader($directory), $namespace);
 		}
 		
 		return $skeleton

@@ -378,6 +378,72 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_setConfigLoader_PassNamespaceLimit_KeysOutsideLimitAreNotLoaded() 
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		$loader = $this->getMock(IConfigLoader::class);
+		
+		$s = new Skeleton();
+		$s->setConfigLoader($loader, 'ABC');
+		
+		
+		$loader
+			->expects($this->never())
+			->method('tryLoad');
+		
+		
+		$s->get('Hello\World');
+	}
+	
+	public function test_setConfigLoader_PassNamespaceLimit_KeysInsideLimitPassedToLoader() 
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		$loader = $this->getMock(IConfigLoader::class);
+		
+		$s = new Skeleton();
+		$s->setConfigLoader($loader, 'ABC');
+		
+		
+		$loader
+			->expects($this->once())
+			->method('tryLoad')
+			->willReturnCallback(
+				function () 
+					use ($s)
+				{
+					$s->setValue('ABC\World', 123);
+					return true;
+				}
+			);
+		
+		
+		self::assertEquals(123, $s->get('ABC\World'));
+	}
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_setConfigLoader_PassNamespaceLimit_KeyIsShorterThenLimit() 
+	{
+		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		$loader = $this->getMock(IConfigLoader::class);
+		
+		$s = new Skeleton();
+		$s->setConfigLoader($loader, 'ABC');
+		
+		
+		$loader
+			->expects($this->never())
+			->method('tryLoad');
+		
+		
+		$s->get('AB');
+	}
+	
+	
 	public function test_enableKnot_EnableKnotOnMapCalled()
 	{
 		$s = new Skeleton();
@@ -548,9 +614,23 @@ class SkeletonTest extends \SkeletonTestCase
 	public function test_create_ConfigLoaderIsSetup()
 	{
 		$key = 'ConfigLoaderIsSetup\\ABC';
-		$s = Skeleton::create(__NAMESPACE__, realpath(__DIR__ . '/SkeletonTest'));
+		$s = Skeleton::create('ConfigLoaderIsSetup', realpath(__DIR__ . '/SkeletonTest'));
 		
 		self::assertEquals($s->get($key), '12345');
+	}
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
+	public function test_create_ConfigLoaderIsSetupAndLimitedToNamespace()
+	{
+		$keySuccess = 'ConfigLoaderIsSetupAndLimited\\ABC';
+		$keyFail = 'Fail_ConfigLoaderIsSetupAndLimited\\ABC';
+		$s = Skeleton::create('ConfigLoaderIsSetupAndLimited', realpath(__DIR__ . '/SkeletonTest'));
+		
+		
+		self::assertEquals('12345', $s->get($keySuccess));
+		$s->get($keyFail);
 	}
 	
 	
