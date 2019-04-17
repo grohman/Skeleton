@@ -16,6 +16,8 @@ use Skeleton\ConfigLoader\DirectoryConfigLoader;
 
 class Skeleton implements ISkeletonSource, IBoneConstructor
 {
+	private static $_isTest = false;
+	
 	private $useGlobal		= false;
 	private $configLimit	= null;
 	private $configLimitLen	= 0;
@@ -125,6 +127,9 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 	 */
 	public function get($key, $context = null, bool $skipGlobal = false)
 	{
+		if (self::$_isTest && TestSkeleton::has($key))
+			return TestSkeleton::get($key);
+		
 		if ($context && !$context instanceof IContextReference)
 			$context = ContextManager::create($this, $context);
 		

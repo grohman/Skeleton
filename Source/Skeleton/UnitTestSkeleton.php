@@ -8,6 +8,9 @@ use Skeleton\Base\IContextReference;
 use Skeleton\Tools\ContextManager;
 
 
+/**
+ * @deprecated
+ */
 class UnitTestSkeleton implements ISkeletonSource
 {
 	/** @var TestMap */
