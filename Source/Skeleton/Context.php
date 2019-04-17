@@ -6,6 +6,9 @@ use Skeleton\Base\IContextSource;
 use Skeleton\Exceptions\MissingContextValueException;
 
 
+/**
+ * @deprecated 
+ */
 class Context implements IContextSource
 {
 	private $name;

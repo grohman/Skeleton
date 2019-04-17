@@ -7,6 +7,9 @@ use Skeleton\Base\ISkeletonSource;
 use Skeleton\Base\IContextReference;
 
 
+/**
+ * @deprecated 
+ */
 class ContextReference implements IContextReference
 {
 	/** @var Context */
