@@ -341,15 +341,6 @@ class SimpleMapTest extends \SkeletonTestCase
 		$map->set('key', function() {}, Type::ByValue);
 		$this->assertTrue($map->has('key'));
 	}
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\InvalidKeyException
-	 */
-	public function test_has_KeyNotString_ErrorIsThrown()
-	{
-		$map = $this->getSimpleMap();
-		$map->has(12);
-	}
 }
 
 

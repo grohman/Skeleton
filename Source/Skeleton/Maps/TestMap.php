@@ -7,6 +7,9 @@ use Skeleton\Base\IMap;
 use Skeleton\Base\IContextReference;
 
 
+/**
+ * @deprecated 
+ */
 class TestMap extends BaseMap implements IMap
 {
 	/** @var IMap */
@@ -16,9 +19,6 @@ class TestMap extends BaseMap implements IMap
 	private $overrideMap = [];
 	
 	
-	/**
-	 * @param IMap $main
-	 */
 	public function __construct(IMap $main)
 	{
 		parent::__construct($main->loader());
@@ -26,22 +26,19 @@ class TestMap extends BaseMap implements IMap
 	}
 	
 	
-	/**
-	 * @return IMap
-	 */
-	public function getOriginal() 
+	public function getOriginal(): IMap
 	{
 		return $this->originalMap;
 	}
 	
-	/**
-	 * @param string $key
-	 * @param string|object $value
-	 * @param int $flags
-	 */
-	public function set($key, $value, $flags = Type::Instance)
+	public function set(string $key, $value, int $flags = Type::Instance): void
 	{
 		$this->originalMap->set($key, $value, $flags);
+	}
+	
+	public function forceSet(string $key, $value, int $flags = Type::Instance): void
+	{
+		$this->originalMap->forceSet($key, $value, $flags);
 	}
 	
 	/**
@@ -68,23 +65,9 @@ class TestMap extends BaseMap implements IMap
 		return $this->originalMap->get($key, $context);
 	}
 	
-	/**
-	 * @param string $key
-	 * @return bool
-	 */
-	public function has($key)
+	public function has(string $key): bool 
 	{
 		return (isset($this->overrideMap[$key]) || $this->originalMap->has($key));
-	}
-	
-	/**
-	 * @param string $key
-	 * @param string|object $value
-	 * @param int $flags
-	 */
-	public function forceSet($key, $value, $flags = Type::Instance)
-	{
-		$this->originalMap->forceSet($key, $value, $flags);
 	}
 	
 	
@@ -92,12 +75,12 @@ class TestMap extends BaseMap implements IMap
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function override($key, $value) 
+	public function override(string $key, $value): void 
 	{
 		$this->overrideMap[$key] = $value;
 	}
 	
-	public function clear()
+	public function clear(): void
 	{
 		$this->overrideMap = [];
 	}

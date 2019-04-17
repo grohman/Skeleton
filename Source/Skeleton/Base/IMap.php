@@ -7,45 +7,17 @@ use Skeleton\Type;
 
 interface IMap
 {
-	/**
-	 * @return ILoader
-	 */
-	public function loader();
-	
-	/**
-	 * @param ILoader $loader
-	 */
-	public function setLoader(ILoader $loader);
-	
-	/**
-	 * @param ISkeletonSource $skeletonSource
-	 */
-	public function enableKnot(ISkeletonSource $skeletonSource);
-	
-	/**
-	 * @param string $key
-	 * @param string|object $value
-	 * @param int $flags
-	 */
-	public function set($key, $value, $flags = Type::Instance);
-	
-	/**
-	 * @param string $key
-	 * @param string|object $value
-	 * @param int $flags
-	 */
-	public function forceSet($key, $value, $flags = Type::Instance);
+	public function loader(): ILoader;
+	public function setLoader(ILoader $loader): void;
+	public function enableKnot(ISkeletonSource $skeletonSource): void;
+	public function set(string $key, $value, int $flags = Type::Instance): void;
+	public function forceSet(string $key, $value, int $flags = Type::Instance): void;
+	public function has(string $key): bool;
 	
 	/**
 	 * @param string $key
 	 * @param IContextReference|null $context
-	 * @return string|object
+	 * @return mixed
 	 */
 	public function get(string $key, ?IContextReference $context = null);
-	
-	/**
-	 * @param string $key
-	 * @return bool
-	 */
-	public function has($key);
 }

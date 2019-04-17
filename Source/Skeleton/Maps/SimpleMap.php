@@ -68,12 +68,7 @@ class SimpleMap extends BaseMap implements IMap
 		return $originalFlag;
 	}
 	
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $flags
-	 */
-	public function set($key, $value, $flags = Type::Instance)
+	public function set(string $key, $value, int $flags = Type::Instance): void
 	{
 		if ($this->has($key))
 			throw new Exceptions\ImplementerAlreadyDefinedException($key);
@@ -93,7 +88,7 @@ class SimpleMap extends BaseMap implements IMap
 	 * @param string|object $value
 	 * @param int $flags
 	 */
-	public function forceSet($key, $value, $flags = Type::Instance)
+	public function forceSet(string $key, $value, int $flags = Type::Instance): void
 	{
 		if ((is_string($value) || is_callable($value)) && $flags != Type::ByValue)
 		{
@@ -130,11 +125,8 @@ class SimpleMap extends BaseMap implements IMap
 	 * @param string $key
 	 * @return bool
 	 */
-	public function has($key)
+	public function has(string $key): bool
 	{
-		if (!is_string($key))
-			throw new Exceptions\InvalidKeyException($key);
-		
 		return key_exists($key, $this->resolvedValues) || isset($this->config[$key]);
 	}
 }

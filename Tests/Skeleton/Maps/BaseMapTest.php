@@ -53,9 +53,9 @@ class BaseMapTest extends \SkeletonTestCase
 
 
 class BaseMapTest_BaseMap_Helper extends BaseMap
-{
-	public function set($key, $value, $flags = Type::Instance) {}
-	public function forceSet($key, $value, $flags = Type::Instance) {}
-	public function get(string $key, ?IContextReference $context = null) {}
-	public function has($key) {}
+{	
+	public function set(string $key, $value, int $flags = Type::Instance): void {}
+	public function forceSet(string $key, $value, int $flags = Type::Instance): void {}
+	public function has(string $key): bool {return false;}
+	public function get(string $key, ?IContextReference $context = null) {return null;}
 }

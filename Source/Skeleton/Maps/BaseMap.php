@@ -26,7 +26,7 @@ abstract class BaseMap implements IMap
 	/**
 	 * @return ILoader
 	 */
-	public function loader()
+	public function loader(): ILoader
 	{
 		return $this->loader;
 	}
@@ -34,7 +34,7 @@ abstract class BaseMap implements IMap
 	/**
 	 * @param ILoader $loader
 	 */
-	public function setLoader(ILoader $loader)
+	public function setLoader(ILoader $loader): void
 	{
 		$this->loader = $loader;
 	}
@@ -42,7 +42,7 @@ abstract class BaseMap implements IMap
 	/**
 	 * @param ISkeletonSource $skeletonSource
 	 */
-	public function enableKnot(ISkeletonSource $skeletonSource)
+	public function enableKnot(ISkeletonSource $skeletonSource): void
 	{
 		$this->loader()->setKnot(new Knot($skeletonSource));
 	}
