@@ -6,3 +6,10 @@ Skeleton - IoC library for PHP
 	:maxdepth: 5
 	
 	skeleton
+
+
+// Intro
+// Setting up skeleton
+// 	Simple
+//	Advanced
+// 
