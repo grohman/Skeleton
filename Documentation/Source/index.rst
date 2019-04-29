@@ -12,4 +12,8 @@ Skeleton - IoC library for PHP
 // Setting up skeleton
 // 	Simple
 //	Advanced
-// 
+// Using skeleton
+//	
+//	@unique annotation
+// Testing with skeleton
+// Theory
