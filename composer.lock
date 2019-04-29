@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee224efc102a285b933409b5c10b7fb",
+    "content-hash": "903e1cb2dd08d1d970f2707fccf1326f",
     "packages": [
         {
             "name": "oktopost/unit-cover",
