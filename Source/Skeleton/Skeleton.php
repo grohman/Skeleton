@@ -18,6 +18,9 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 {
 	private static $_isTest = false;
 	
+	/** @var Skeleton|null */
+	private static $globalContainer = null;
+	
 	private $useGlobal		= false;
 	private $configLimit	= null;
 	private $configLimitLen	= 0;
@@ -219,6 +222,25 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		return ContextManager::init($instance, $this, $name);
 	}
 	
+	
+	public static function container($item)
+	{
+		if (!self::$globalContainer)
+		{
+			self::$globalContainer = new Skeleton();
+			self::$globalContainer->useGlobal = true;
+			self::$globalContainer->enableKnot();
+		}
+		
+		if (is_string($item) && !class_exists($item))
+		{
+			return self::$globalContainer->get($item);
+		}
+		else
+		{
+			return self::$globalContainer->load($item);
+		}
+	}
 	
 	public static function create(string $namespace, ?string $directory = null): Skeleton
 	{

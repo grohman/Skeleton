@@ -553,7 +553,7 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
-	public function test_context_Sanity()
+	public function test_context_Sanity(): void
 	{
 		$s = new Skeleton();
 		
@@ -565,12 +565,12 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
-	public function test_create_NewSkeletonObjectReturned()
+	public function test_create_NewSkeletonObjectReturned(): void
 	{
 		self::assertInstanceOf(Skeleton::class, Skeleton::create(__NAMESPACE__));
 	}
 	
-	public function test_create_KnotEnabled()
+	public function test_create_KnotEnabled(): void
 	{
 		$s = Skeleton::create(__NAMESPACE__);
 		$s->set(SkeletonTest_Helper_A::class, SkeletonTest_Helper_A::class);
@@ -579,7 +579,7 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i->a);
 	}
 	
-	public function test_create_RegisteredAsGlobal()
+	public function test_create_RegisteredAsGlobal(): void
 	{
 		$key = __FUNCTION__ . '\\' . SkeletonTest_Helper_A::class;
 		$s = Skeleton::create(__FUNCTION__);
@@ -595,7 +595,7 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i);
 	}
 	
-	public function test_create_GlobalScopeUsed()
+	public function test_create_GlobalScopeUsed(): void
 	{
 		$key = __FUNCTION__ . '\\' . SkeletonTest_Helper_A::class;
 		$thirdPartySkeleton = new Skeleton();
@@ -611,7 +611,7 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertInstanceOf(SkeletonTest_Helper_A::class, $i);
 	}
 	
-	public function test_create_ConfigLoaderIsSetup()
+	public function test_create_ConfigLoaderIsSetup(): void
 	{
 		$key = 'ConfigLoaderIsSetup\\ABC';
 		$s = Skeleton::create('ConfigLoaderIsSetup', realpath(__DIR__ . '/SkeletonTest'));
@@ -622,7 +622,7 @@ class SkeletonTest extends \SkeletonTestCase
 	/**
 	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
 	 */
-	public function test_create_ConfigLoaderIsSetupAndLimitedToNamespace()
+	public function test_create_ConfigLoaderIsSetupAndLimitedToNamespace(): void
 	{
 		$keySuccess = 'ConfigLoaderIsSetupAndLimited\\ABC';
 		$keyFail = 'Fail_ConfigLoaderIsSetupAndLimited\\ABC';
@@ -634,7 +634,48 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	
-	public function testSanity_knotNotEnabled()
+	public function test_container_PassInterface_InterfaceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('abc');
+		$s->set('abc/def', 123);
+		
+		self::assertEquals(123, Skeleton::container('abc/def'));
+	}
+	
+	public function test_container_PassClassName_InstanceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('Skeleton');
+		$s->enableKnot();
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		
+		
+		$item = Skeleton::container(SkeletonTest_Container_Helper_B::class);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Container_Helper_B::class, $item);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
+	}
+	
+	public function test_container_PassInstance_InstanceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('Skeleton');
+		$s->enableKnot();
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		
+		
+		$item = new SkeletonTest_Container_Helper_B();
+		Skeleton::container($item);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Container_Helper_B::class, $item);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
+	}
+	
+	
+	public function testSanity_knotNotEnabled(): void
 	{
 		$s = new Skeleton();
 		
@@ -645,6 +686,47 @@ class SkeletonTest extends \SkeletonTestCase
 		$a = $s->get(SkeletonTest_Helper_B::class);
 		
 		$this->assertNull($a->a);
+	}
+	
+	
+	public function test_GlobalMethod_skeleton_PassInterface_InterfaceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('abc');
+		$s->set('abc/def', 123);
+		
+		self::assertEquals(123, skeleton('abc/def'));
+	}
+	
+	public function test_GlobalMethod_skeleton_PassClassName_InstanceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('Skeleton');
+		$s->enableKnot();
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		
+		
+		$item = skeleton(SkeletonTest_Container_Helper_B::class);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Container_Helper_B::class, $item);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
+	}
+	
+	public function test_GlobalMethod_skeleton_PassInstance_InstanceLoaded(): void
+	{
+		$s = new Skeleton();
+		$s->registerGlobalFor('Skeleton');
+		$s->enableKnot();
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		
+		
+		$item = new SkeletonTest_Container_Helper_B();
+		skeleton($item);
+		
+		
+		self::assertInstanceOf(SkeletonTest_Container_Helper_B::class, $item);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
 	}
 }
 
@@ -660,6 +742,27 @@ class SkeletonTest_Helper_B
 	/**
 	 * @autoload
 	 * @var SkeletonTest_Helper_A
+	 */
+	public $a;
+}
+
+
+/**
+ * @autoload
+ */
+class SkeletonTest_Container_Helper_A
+{
+	
+}
+
+/**
+ * @autoload
+ */
+class SkeletonTest_Container_Helper_B
+{
+	/**
+	 * @autoload
+	 * @var \Skeleton\SkeletonTest_Container_Helper_A
 	 */
 	public $a;
 }

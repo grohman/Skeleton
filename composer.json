@@ -21,7 +21,10 @@
 	"autoload": {
 		"psr-0": {
 			"Skeleton": "Source"
-		}
+		},
+		"files": [
+			"Source/skeleton.php"
+		]
 	},
     "scripts": {
         "test": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests",
