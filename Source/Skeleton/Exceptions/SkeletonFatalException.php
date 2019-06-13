@@ -2,7 +2,7 @@
 namespace Skeleton\Exceptions;
 
 
-class SkeletonException extends \Exception
+class SkeletonFatalException extends \Error
 {
 	
 }

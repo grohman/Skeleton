@@ -3,12 +3,29 @@ namespace Skeleton;
 
 
 use Skeleton\Maps\SimpleMap;
+use Skeleton\ProcessMock\IProcessMock;
+use Skeleton\ProcessMock\ProcessMock;
 
 
 class TestSkeleton
 {
+	/** @var ProcessMock */
+	private static $processMock = null;
+	
 	/** @var SimpleMap */
 	private static $map = null;
+	
+	
+	private static function getProcessMock(): ProcessMock
+	{
+		if (!self::$processMock)
+		{
+			$file = realpath(__DIR__ . '/../../Mock') . '/process_mock.php';
+			self::$processMock = new ProcessMock($file);
+		}
+		
+		return self::$processMock;
+	}
 	
 	
 	private static function overrideIsTestValueInSkeleton(bool $to): void
@@ -66,5 +83,16 @@ class TestSkeleton
 	{
 		self::$map = new SimpleMap();
 		self::overrideIsTestValueInSkeleton(false);
+	}
+	
+	
+	public static function includeMockFileIfExists(): bool
+	{
+		return self::getProcessMock()->includeIfExists();
+	}
+	
+	public static function processMock(): IProcessMock
+	{
+		return self::getProcessMock();
 	}
 }
