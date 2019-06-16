@@ -16,3 +16,6 @@
 # Build folders
 /build
 /Build
+
+# Process mock
+/Mock/process_mock*.php

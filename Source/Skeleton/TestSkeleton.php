@@ -9,6 +9,8 @@ use Skeleton\ProcessMock\ProcessMock;
 
 class TestSkeleton
 {
+	private static $mockProcessID = null;
+	
 	/** @var ProcessMock */
 	private static $processMock = null;
 	
@@ -16,11 +18,17 @@ class TestSkeleton
 	private static $map = null;
 	
 	
-	private static function getProcessMock(): ProcessMock
+	private static function getProcessMock(string $id = null): ProcessMock
 	{
 		if (!self::$processMock)
 		{
-			$file = realpath(__DIR__ . '/../../Mock') . '/process_mock.php';
+			if (!$id)
+			{
+				$id = base_convert(sha1(time() . rand(PHP_INT_MIN, PHP_INT_MAX)), 16, 36);
+			}
+			
+			self::$mockProcessID = $id;
+			$file = realpath(__DIR__ . '/../../Mock') . "/process_mock.$id.php";
 			self::$processMock = new ProcessMock($file);
 		}
 		
@@ -86,13 +94,18 @@ class TestSkeleton
 	}
 	
 	
-	public static function includeMockFileIfExists(): bool
+	public static function includeMockFileIfExists(string $id = null): bool
 	{
-		return self::getProcessMock()->includeIfExists();
+		return self::getProcessMock($id)->includeIfExists();
 	}
 	
-	public static function processMock(): IProcessMock
+	public static function getMockProcessID(): string
 	{
-		return self::getProcessMock();
+		return self::$mockProcessID;
+	}
+	
+	public static function processMock(string $id = null): IProcessMock
+	{
+		return self::getProcessMock($id);
 	}
 }
