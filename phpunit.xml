@@ -2,6 +2,9 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./Source/</directory>
+            <exclude>
+                <file>Skeleton/ProcessMock/Content/original_file.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <testsuites>

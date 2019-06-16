@@ -29,11 +29,11 @@ class ProcessMock implements IProcessMock
 	{
 		if ($asValue)
 		{
-			return 'mock_value';
+			return 'TestSkeleton::overrideValue';
 		}
 		else 
 		{
-			return 'mock';
+			return 'TestSkeleton::override';
 		}
 	}
 	
