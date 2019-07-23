@@ -15,8 +15,7 @@
 	"minimum-stability": "stable",
 	"require": {
 		"php": ">=7.1",
-		"unstable-cacao/traitor": "^1.0",
-		"oktopost/unit-cover": "^1.0"
+		"unstable-cacao/traitor": "^1.0"
 	},
 	"autoload": {
 		"psr-0": {
@@ -31,6 +30,7 @@
         "test-cover": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests --coverage-html ./Build/Cover && ./vendor/oktopost/unit-cover/cover /Build/Logs/clover.xml"
     },
 	"require-dev": {
-		"phpunit/phpunit": "^7.5"
+		"phpunit/phpunit": "^7.5",
+		"oktopost/unit-cover": "^1.0"
 	}
 }
