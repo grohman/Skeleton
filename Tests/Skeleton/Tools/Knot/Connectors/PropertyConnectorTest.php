@@ -178,6 +178,17 @@ class PropertyConnectorTest extends \SkeletonTestCase
 		$this->invokeConnect($obj, test_PropertyConnector_TestRelativeNamespace::class);
 	}
 	
+	public function test_connect_LoadByPropertyType_PropertyLaoded()
+	{
+		$obj = $this->getPropertyConnector();
+		$this->expectSkeletonCalledFor(test_PropertyConnector_Helper_EmptyClass::class, new test_PropertyConnector_Helper_EmptyClass());
+		
+		/** @var test_PropertyConnector_Helper_PropertyType $object */
+		$object = $this->invokeConnect($obj, test_PropertyConnector_Helper_PropertyType::class);
+		
+		self::assertInstanceOf(test_PropertyConnector_Helper_EmptyClass::class, $object->type);
+	}
+	
 	public function test_connect_PropertyHasFullNamespacePath_ProvidedPathIsUsed()
 	{
 		$obj = $this->getPropertyConnector();
@@ -303,6 +314,14 @@ class test_PropertyConnector_Helper_NoType
 	 * @autoload
 	 */
 	private $noType;
+}
+
+class test_PropertyConnector_Helper_PropertyType
+{
+	/**
+	 * @autoload
+	 */
+	public test_PropertyConnector_Helper_EmptyClass $type;
 }
 
 class test_PropertyConnector_TestRelativeNamespace

@@ -188,6 +188,7 @@ class SkeletonTest extends \SkeletonTestCase
 		$s->enableKnot();
 		$s->set('a', get_class($cls));
 		
+		/** @var mixed $obj */
 		$obj = $s->get('a', ['item' => 123]);
 		
 		self::assertEquals(123, $obj->item);
@@ -728,6 +729,35 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertInstanceOf(SkeletonTest_Container_Helper_B::class, $item);
 		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
 	}
+	
+	
+	public function test_LoadByPropertyType(): void 
+	{
+		$s = new Skeleton();
+		$s->enableKnot();
+		
+		
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		$s->set(SkeletonTest_Container_Helper_Extended_A::class, SkeletonTest_Container_Helper_A::class);
+		
+		
+		$item = $s->load(SkeletonTest_ByPropertyType::class);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_A::class, $item->a);
+	}
+	
+	public function test_PreferAutoloadValueOverType(): void 
+	{
+		$s = new Skeleton();
+		$s->enableKnot();
+		
+		
+		$s->set(SkeletonTest_Container_Helper_A::class, SkeletonTest_Container_Helper_A::class);
+		$s->set(SkeletonTest_Container_Helper_Extended_A::class, SkeletonTest_Container_Helper_Extended_A::class);
+		
+		
+		$item = $s->load(SkeletonTest_ByPropertyType::class);
+		self::assertInstanceOf(SkeletonTest_Container_Helper_Extended_A::class, $item->b);
+	}
 }
 
 
@@ -765,4 +795,27 @@ class SkeletonTest_Container_Helper_B
 	 * @var \Skeleton\SkeletonTest_Container_Helper_A
 	 */
 	public $a;
+}
+
+class SkeletonTest_Container_Helper_Extended_A extends SkeletonTest_Container_Helper_A
+{
+	
+}
+
+
+/**
+ * @autoload
+ */
+class SkeletonTest_ByPropertyType
+{
+	/**
+	 * @autoload
+	 */
+	public SkeletonTest_Container_Helper_A $a;
+	
+	/**
+	 * @autoload
+	 * @var \Skeleton\SkeletonTest_Container_Helper_Extended_A
+	 */
+	public SkeletonTest_Container_Helper_A $b;
 }
