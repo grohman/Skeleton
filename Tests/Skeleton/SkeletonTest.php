@@ -2,6 +2,8 @@
 namespace Skeleton;
 
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 use Skeleton\Base\IContextReference;
 use Skeleton\Base\IMap;
 use Skeleton\Base\ILoader;
@@ -15,11 +17,11 @@ class SkeletonTest extends \SkeletonTestCase
 {
 	/**
 	 * @param Skeleton $s
-	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
+	 * @return MockObject|IMap
 	 */
 	private function mockMap(Skeleton $s) 
 	{
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IMap $map */
+		/** @var MockObject|IMap $map */
 		$map = $this->getMock(IMap::class);
 		$map->method('loader')->willReturn($this->mockLoader());
 		$s->setMap($map);
@@ -27,7 +29,7 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|ILoader
+	 * @return MockObject|ILoader
 	 */
 	private function mockLoader()
 	{
@@ -35,7 +37,7 @@ class SkeletonTest extends \SkeletonTestCase
 	}
 	
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|GlobalSkeleton
+	 * @return MockObject|GlobalSkeleton
 	 */
 	private function mockGlobalSkeleton()
 	{
@@ -54,7 +56,7 @@ class SkeletonTest extends \SkeletonTestCase
 	/**
 	 * @param Skeleton $s
 	 * @param bool $has
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return MockObject
 	 */
 	private function mockMapHasValue(Skeleton $s, $has = false) 
 	{
@@ -65,18 +67,18 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	/**
 	 * @param Skeleton $s
-	 * @return \PHPUnit_Framework_MockObject_MockObject|IConfigLoader
+	 * @return MockObject|IConfigLoader
 	 */
 	private function mockConfigLoader(Skeleton $s) 
 	{
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		/** @var MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		$s->setConfigLoader($loader);
 		return $loader;
 	}
 	
 	
-	protected function tearDown()
+	protected function tearDown(): void
 	{
 		$ref = new \ReflectionClass(GlobalSkeleton::class);
 		$instanceProperty = $ref->getProperty('instance');
@@ -89,10 +91,10 @@ class SkeletonTest extends \SkeletonTestCase
 	{
 		$s = new Skeleton();
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IMap $map */
+		/** @var MockObject|IMap $map */
 		$map = $this->getMock(IMap::class);
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		/** @var MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		
 		$this->assertSame($s, $s->setMap($map));
@@ -101,12 +103,10 @@ class SkeletonTest extends \SkeletonTestCase
 		$this->assertSame($s, $s->enableKnot());
 	}
 	
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\InvalidKeyException
-	 */
 	public function test_get_KeyIsNotString_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\InvalidKeyException::class);
+		
 		$s = new Skeleton();
 		$s->get(12);
 	}
@@ -124,10 +124,11 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	/**
 	 * Ignore missing value, this is not tested by this unit test.
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
 	 */
 	public function test_get_NotClassInMap_ConfigLoaderCalled()
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		$s = new Skeleton();
 		$this->mockMapHasValue($s, false);
 		$loader = $this->mockConfigLoader($s);
@@ -139,10 +140,11 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	/**
 	 * Ignore missing value, this is not tested by this unit test.
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
 	 */
 	public function test_get_ConfigLoaderCalledWithCorrectValues()
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		$s = new Skeleton();
 		$this->mockMapHasValue($s, false);
 		$loader = $this->mockConfigLoader($s);
@@ -197,10 +199,11 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	/**
 	 * Ignore missing value, this is not tested by this unit test.
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
 	 */
 	public function test_get_SkeletonUseGlobalFlagNotSet_GlobalNotCalled()
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		$global = $this->mockGlobalSkeleton();
 		$s = new Skeleton();
 		
@@ -235,10 +238,11 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	/**
 	 * Ignore missing value, this is not tested by this unit test.
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
 	 */
 	public function test_get_FunctionUseGlobalFlagIsFalse_GlobalNotCalled()
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		$global = $this->mockGlobalSkeleton();
 		$s = new Skeleton();
 		$s->useGlobal();
@@ -259,12 +263,10 @@ class SkeletonTest extends \SkeletonTestCase
 		$this->assertSame(123, $s->get('a'));
 	}
 	
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\InvalidKeyException
-	 */
 	public function test_set_KeyIsNotString_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\InvalidKeyException::class);
+		
 		$s = new Skeleton();
 		$s->set(12, "a");
 	}
@@ -378,13 +380,11 @@ class SkeletonTest extends \SkeletonTestCase
 		$this->assertNull($s->getConfigLoader());
 	}
 	
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
-	 */
-	public function test_setConfigLoader_PassNamespaceLimit_KeysOutsideLimitAreNotLoaded() 
+	public function test_setConfigLoader_PassNamespaceLimit_KeysOutsideLimitAreNotLoaded()
 	{
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
+		/** @var MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		
 		$s = new Skeleton();
@@ -401,7 +401,7 @@ class SkeletonTest extends \SkeletonTestCase
 	
 	public function test_setConfigLoader_PassNamespaceLimit_KeysInsideLimitPassedToLoader() 
 	{
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		/** @var MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		
 		$s = new Skeleton();
@@ -424,12 +424,11 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertEquals(123, $s->get('ABC\World'));
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
-	 */
-	public function test_setConfigLoader_PassNamespaceLimit_KeyIsShorterThenLimit() 
+	public function test_setConfigLoader_PassNamespaceLimit_KeyIsShorterThenLimit()
 	{
-		/** @var \PHPUnit_Framework_MockObject_MockObject|IConfigLoader $loader */
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
+		/** @var MockObject|IConfigLoader $loader */
 		$loader = $this->getMock(IConfigLoader::class);
 		
 		$s = new Skeleton();
@@ -463,7 +462,7 @@ class SkeletonTest extends \SkeletonTestCase
 		$s = new Skeleton();
 		$map = $this->mockMap($s);
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		/** @var MockObject $loader */
 		$loader = $map->loader();
 		$loader->expects($this->once())->method('get')->with('abc')->willReturn(123);
 		
@@ -475,7 +474,7 @@ class SkeletonTest extends \SkeletonTestCase
 		$s = new Skeleton();
 		$map = $this->mockMap($s);
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		/** @var MockObject $loader */
 		$loader = $map->loader();
 		$loader->expects($this->once())->method('get')->with($this->anything(), null);
 		
@@ -489,7 +488,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$context = new ContextReference(new Context(), $s);
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		/** @var MockObject $loader */
 		$loader = $map->loader();
 		$loader->expects($this->once())->method('get')->with($this->anything(), $context);
 		
@@ -503,7 +502,7 @@ class SkeletonTest extends \SkeletonTestCase
 		
 		$context = new Context();
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		/** @var MockObject $loader */
 		$loader = $map->loader();
 		$loader->expects($this->once())
 			->method('get')
@@ -520,7 +519,7 @@ class SkeletonTest extends \SkeletonTestCase
 		$s = new Skeleton();
 		$map = $this->mockMap($s);
 		
-		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
+		/** @var MockObject $loader */
 		$loader = $map->loader();
 		$loader->expects($this->once())
 			->method('get')
@@ -620,11 +619,10 @@ class SkeletonTest extends \SkeletonTestCase
 		self::assertEquals($s->get($key), '12345');
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
-	 */
 	public function test_create_ConfigLoaderIsSetupAndLimitedToNamespace(): void
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		$keySuccess = 'ConfigLoaderIsSetupAndLimited\\ABC';
 		$keyFail = 'Fail_ConfigLoaderIsSetupAndLimited\\ABC';
 		$s = Skeleton::create('ConfigLoaderIsSetupAndLimited', realpath(__DIR__ . '/SkeletonTest'));

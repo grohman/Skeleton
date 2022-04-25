@@ -20,13 +20,11 @@ class ContextManagerTest extends TestCase
 		
 		self::assertEquals($ref, $inst->{ContextManager::CONTEXT_PROPERTY_NAME});
 	}
-
-
-	/**
-	 * @expectedException \Skeleton\Exceptions\MissingContextException
-	 */
+	
 	public function test_get_ContextReferenceNotSet_ExceptionThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\MissingContextException::class);
+		
 		$inst = new class {};
 		ContextManager::get($inst, new Skeleton());
 	}
@@ -120,11 +118,10 @@ class ContextManagerTest extends TestCase
 		self::assertEquals($context, $res->context());
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\SkeletonException
-	 */
 	public function test_create_InvalidTypePassed_ExceptionThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\SkeletonException::class);
+		
 		/** @noinspection PhpParamsInspection */
 		ContextManager::create(new Skeleton(), new \stdClass());
 	}

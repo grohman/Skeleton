@@ -37,7 +37,7 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	}
 	
 	
-	protected function setUp() 
+	protected function setUp(): void
 	{
 		require_once __DIR__ . '/Files/LoadedNotifier.php';
 		LoadedNotifier::clear();
@@ -124,12 +124,10 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 		$this->assertTrue(LoadedNotifier::isLoaded($this->getPathToFiles($configA, 'Class/In/Path')));
 	}
 	
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\SkeletonException 
-	 */
 	public function test_add_InvalidParameterPassed_ExceptionThrown(): void
 	{
+		$this->expectException(\Skeleton\Exceptions\SkeletonException::class);
+		
 		$subject = $this->createLoader([]);
 		$subject->add(123);
 	}

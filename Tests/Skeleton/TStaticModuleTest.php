@@ -32,17 +32,15 @@ class TStaticModuleHelper
 
 class TStaticModuleTest extends \SkeletonTestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
 		TStaticModuleHelper::resetHelper();
 	}
 	
-	
-	/**
-	 * @expectedException \Skeleton\Exceptions\SkeletonException
-	 */
 	public function test_CallOnUnExistingElement_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\SkeletonException::class);
+		
 		/** @noinspection PhpUndefinedMethodInspection */
 		$a = TStaticModuleHelper::NotFound();
 	}

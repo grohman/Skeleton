@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 
@@ -26,7 +27,7 @@ class SkeletonTestCase extends TestCase
 {
 	/**
 	 * @param string $target
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return MockObject
 	 */
 	public function getMock(string $target)
 	{

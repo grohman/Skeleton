@@ -2,13 +2,14 @@
 namespace Skeleton;
 
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Skeleton\Base\ISkeletonSource;
 
 
 class GlobalSkeletonTest extends \SkeletonTestCase
 {
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource
+	 * @return MockObject|ISkeletonSource
 	 */
 	private function mockISkeletonSource()
 	{
@@ -16,7 +17,7 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 	}
 	
 	
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$p = (new \ReflectionClass(GlobalSkeleton::class))->getProperty('skeletons');
 		$p->setAccessible(true);
@@ -62,12 +63,10 @@ class GlobalSkeletonTest extends \SkeletonTestCase
 		$this->assertSame($target, GlobalSkeleton::instance()->getSkeleton('abcdefg2'));
 	}
 	
-	
-	/**
-	 *  @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
-	 */
 	public function test_get_NoSkeletonsDefined_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
+		
 		GlobalSkeleton::instance()->add('b', $this->mockISkeletonSource());
 		
 		GlobalSkeleton::instance()->get('a');

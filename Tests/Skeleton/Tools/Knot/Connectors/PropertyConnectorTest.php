@@ -2,6 +2,8 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 use Skeleton\Base\IContextReference;
 use Skeleton\Context;
 use Skeleton\ContextReference;
@@ -10,7 +12,7 @@ use Skeleton\Base\ISkeletonSource;
 
 class PropertyConnectorTest extends \SkeletonTestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
+	/** @var MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -159,11 +161,10 @@ class PropertyConnectorTest extends \SkeletonTestCase
 		$this->assertEquals('value', $instance->get());
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_connect_PropertyHasNoType_ErrorThrown()
 	{
+		$this->expectException(\Exception::class);
+		
 		$obj = $this->getPropertyConnector();
 		$this->invokeConnect($obj, test_PropertyConnector_Helper_NoType::class);
 	}
@@ -213,12 +214,11 @@ class PropertyConnectorTest extends \SkeletonTestCase
 	{
 		$this->assertContextLoaded('n', test_PropertyConnector_ContextByPropertyType::class, 123);
 	}
-
-	/**
-	 * @expectedException \Skeleton\Exceptions\MissingContextException
-	 */
+	
 	public function test_connect_ContextNotSet_ExceptionThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\MissingContextException::class);
+		
 		$obj = $this->getPropertyConnector();
 		$inst = new test_PropertyConnector_ContextByAnnotation();
 		

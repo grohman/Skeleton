@@ -68,20 +68,18 @@ class TModuleTestHelper
 
 class TModuleTest extends \SkeletonTestCase
 {
-	/**
-	 * @expectedException \Skeleton\Exceptions\SkeletonException
-	 */
 	public function test_get_NotFound_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\SkeletonException::class);
+		
 		/** @noinspection PhpUndefinedMethodInspection */
 		TModuleTestHelper::aa();
 	}
 	
-	/**
-	 * @expectedException \Skeleton\Exceptions\SkeletonException
-	 */
 	public function test_instance_get_NotFound_ErrorThrown()
 	{
+		$this->expectException(\Skeleton\Exceptions\SkeletonException::class);
+		
 		/** @noinspection PhpUndefinedMethodInspection */
 		TModuleTestHelper::instance()->aa();
 	}
