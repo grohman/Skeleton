@@ -94,7 +94,7 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	
 	public function test_FileExists_FileLoaded()
 	{
-		$l = $this->createLoader(['FileExists_FileLoaded/ConfigA']);
+		$l = $this->createLoader(['C' => 'FileExists_FileLoaded/ConfigA']);
 		$l->tryLoad('ClassA');
 		
 		$this->assertTrue(LoadedNotifier::isLoaded(
@@ -105,8 +105,9 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	{
 		$configA = 'ConfigNotLoadedTwice/ConfigA';
 		
-		$l = $this->createLoader([$configA]);
+		$l = $this->createLoader(['C' => $configA]);
 		$l->tryLoad('ClassA');
+		
 		$this->assertTrue(LoadedNotifier::isLoadedAt($this->getPathToFiles($configA, 'ClassA'), 1));
 		LoadedNotifier::clear();
 		
@@ -119,8 +120,9 @@ class PrefixDirectoryConfigLoaderTest extends \SkeletonTestCase
 	{
 		$configA = 'ComplexPath/ConfigA';
 		
-		$l = $this->createLoader([$configA]);
+		$l = $this->createLoader(['C' => $configA]);
 		$l->tryLoad('Class/In/Path');
+		
 		$this->assertTrue(LoadedNotifier::isLoaded($this->getPathToFiles($configA, 'Class/In/Path')));
 	}
 	
