@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ee19bcfaca1b238a9076d0c282bbdfe",
+    "content-hash": "9a3b518a6ea71bbea285b4141146e9e1",
     "packages": [
         {
             "name": "oktopost/unit-cover",
@@ -32,28 +32,32 @@
                     "role": "Developer"
                 }
             ],
+            "support": {
+                "issues": "https://github.com/Oktopost/UnitCover/issues",
+                "source": "https://github.com/Oktopost/UnitCover/tree/master"
+            },
             "time": "2018-04-12T08:48:53+00:00"
         },
         {
             "name": "unstable-cacao/traitor",
-            "version": "1.0.2",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/unstable-cacao/Traitor.git",
-                "reference": "81ccd1c1e9975235b8e6a69bbecccf987b79cd15"
+                "reference": "1901418f1b3ec070677b859d67d9a766e1b2d8f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/unstable-cacao/Traitor/zipball/81ccd1c1e9975235b8e6a69bbecccf987b79cd15",
-                "reference": "81ccd1c1e9975235b8e6a69bbecccf987b79cd15",
+                "url": "https://api.github.com/repos/unstable-cacao/Traitor/zipball/1901418f1b3ec070677b859d67d9a766e1b2d8f5",
+                "reference": "1901418f1b3ec070677b859d67d9a766e1b2d8f5",
                 "shasum": ""
             },
             "require": {
                 "oktopost/unit-cover": "^1.0",
-                "php": ">=7.1-stable"
+                "php": ">=8.1-stable"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.1"
+                "phpunit/phpunit": "^8.1"
             },
             "type": "library",
             "autoload": {
@@ -75,7 +79,11 @@
                     "email": "marinashers@gmail.com"
                 }
             ],
-            "time": "2019-01-13T11:46:51+00:00"
+            "support": {
+                "issues": "https://github.com/unstable-cacao/Traitor/issues",
+                "source": "https://github.com/unstable-cacao/Traitor/tree/2.0"
+            },
+            "time": "2022-05-01T12:57:55+00:00"
         }
     ],
     "packages-dev": [
@@ -1866,7 +1874,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "php": ">=8.1"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
