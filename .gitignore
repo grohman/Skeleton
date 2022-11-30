@@ -19,3 +19,5 @@
 
 # Process mock
 /Mock/process_mock*.php
+
+.phpunit.result.cache

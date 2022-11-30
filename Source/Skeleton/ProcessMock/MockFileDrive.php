@@ -97,7 +97,7 @@ class MockFileDrive
 	
 	public function isLockedByDriver(): bool
 	{
-		return $this->isLocked;	
+		return $this->isLocked;
 	}
 	
 	public function isOpen(): bool
@@ -153,15 +153,12 @@ class MockFileDrive
 			$text = $text . PHP_EOL;
 		}
 		
-		if (!$newLine)
-		{
-			return;
-		}
-		
 		if (fwrite($this->resource, $text) === false)
 		{
 			$data = base64_encode($text);
 			throw new ProcessMockException("Error while writing to file data $data (base64)", $this->path);
 		}
+		
+		fflush($this->resource);
 	}
 }
