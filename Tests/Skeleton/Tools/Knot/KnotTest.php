@@ -2,8 +2,6 @@
 namespace Skeleton\Tools\Knot;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
 use Skeleton\Context;
 use Skeleton\Skeleton;
 use Skeleton\ContextReference;
@@ -13,7 +11,7 @@ use Skeleton\Tools\ContextManager;
 
 class KnotTest extends \SkeletonTestCase
 {
-	/** @var MockObject|ISkeletonSource */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -93,10 +91,12 @@ class KnotTest extends \SkeletonTestCase
 		$this->assertSame($object, $instance->a);
 	}
 	
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextException
+	 */
 	public function test_load_ContextAnnotationPresent_MissingContext_ExceptionThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\MissingContextException::class);
-		
 		$knot = $this->getKnot();
 		$knot->load(test_Knot_Helper_Context::class, null);
 	}

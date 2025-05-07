@@ -39,7 +39,7 @@ class DirectoryConfigLoaderTest extends \SkeletonTestCase
 	}
 	
 	
-	protected function setUp(): void
+	protected function setUp() 
 	{
 		LoadedNotifier::clear();
 	}

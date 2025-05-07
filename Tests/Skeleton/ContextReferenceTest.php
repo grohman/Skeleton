@@ -2,7 +2,6 @@
 namespace Skeleton;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 
@@ -22,7 +21,7 @@ class ContextReferenceTest extends TestCase
 	{
 		$skeleton = new Skeleton();
 		
-		/** @var Context|MockObject $context */
+		/** @var Context|\PHPUnit_Framework_MockObject_MockObject $context */
 		$context = self::getMockBuilder(Context::class)->getMock();
 		
 		
@@ -35,7 +34,7 @@ class ContextReferenceTest extends TestCase
 	
 	public function test_get_SkeletonInvoked()
 	{
-		/** @var MockObject|Skeleton $skeleton */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
 		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
 		$context = new Context('a');
 		
@@ -62,7 +61,7 @@ class ContextReferenceTest extends TestCase
 	
 	public function test_load_SkeletonPassed()
 	{
-		/** @var MockObject|Skeleton $skeleton */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
 		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
 		
 		
@@ -80,7 +79,7 @@ class ContextReferenceTest extends TestCase
 	
 	public function test_load_KeyPassed()
 	{
-		/** @var MockObject|Skeleton $skeleton */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
 		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
 		
 		
@@ -98,7 +97,7 @@ class ContextReferenceTest extends TestCase
 	
 	public function test_load_SkeletonResultReturned()
 	{
-		/** @var MockObject|Skeleton $skeleton */
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Skeleton $skeleton */
 		$skeleton = self::getMockBuilder(Skeleton::class)->getMock();
 		
 		$subject = new ContextReference(new Context(), $skeleton);

@@ -97,7 +97,7 @@ class MockFileDrive
 	
 	public function isLockedByDriver(): bool
 	{
-		return $this->isLocked;
+		return $this->isLocked;	
 	}
 	
 	public function isOpen(): bool

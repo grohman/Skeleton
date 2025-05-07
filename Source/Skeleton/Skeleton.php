@@ -97,7 +97,7 @@ class Skeleton implements ISkeletonSource, IBoneConstructor
 		{
 			$loader->setBoneConstructor($this);
 			$this->configLimit = $namespaceLimit;
-			$this->configLimitLen = $namespaceLimit ? strlen($namespaceLimit) : 0;
+			$this->configLimitLen = strlen($this->configLimit ?? '');
 		}
 		
 		$this->configLoader = $loader;

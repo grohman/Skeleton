@@ -2,8 +2,6 @@
 namespace Skeleton\Maps;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
 use Skeleton\Type;
 use Skeleton\Base\IMap;
 
@@ -11,7 +9,7 @@ use Skeleton\Base\IMap;
 class TestMapTest extends \SkeletonTestCase
 {
 	/**
-	 * @return MockObject|IMap
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
 	 */
 	private function mockIMap()
 	{

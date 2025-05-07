@@ -2,13 +2,12 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Skeleton\Base\ISkeletonSource;
 
 
 class ConstructorConnectorTest extends \SkeletonTestCase
 {
-	/** @var MockObject|ISkeletonSource */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -72,10 +71,11 @@ class ConstructorConnectorTest extends \SkeletonTestCase
 			$this->invokeConnect($obj, test_ConstructorConnector_Helper_EmptyConstructor::class));
 	}
 	
+	/**
+	 * @expectedException \Exception
+	 */
 	public function test_connect_ConstructorWithInvalidParameter_ErrorThrown()
 	{
-		$this->expectException(\Exception::class);
-		
 		$obj = $this->getConstructorConnector();
 		$this->invokeConnect($obj, test_ConstructorConnector_Helper_InvalidType::class);
 	}

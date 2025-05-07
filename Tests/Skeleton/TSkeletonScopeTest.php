@@ -4,7 +4,7 @@ namespace Skeleton;
 
 class TSkeletonScopeTest extends \SkeletonTestCase
 {
-	protected function setUp(): void
+	protected function setUp()
     {
     	TestObject::reset();
 	}

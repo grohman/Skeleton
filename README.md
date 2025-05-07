@@ -1,11 +1,10 @@
 [![Build Status](https://travis-ci.org/Oktopost/Skeleton.svg?branch=master)](https://travis-ci.org/Oktopost/Skeleton)
 
 # Skeleton
-> Latest version 1.2.0
-
-Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 7.1 or higher.
+Skeleton is an [Inversion of Control (IoC)](https://en.wikipedia.org/wiki/Inversion_of_control) Library for PHP 7.1. 
 
 [![Build Status](https://travis-ci.org/Oktopost/Skeleton.svg?branch=master)](https://travis-ci.org/Oktopost/Skeleton)
+[![Coverage Status](https://coveralls.io/repos/github/Oktopost/Skeleton/badge.svg?branch=master)](https://coveralls.io/github/Oktopost/Skeleton?branch=master)
 
 - [Simple example project](https://github.com/Oktopost/Example-Skeleton)
 

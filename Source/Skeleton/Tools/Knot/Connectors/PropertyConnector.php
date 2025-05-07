@@ -50,12 +50,12 @@ class PropertyConnector extends AbstractObjectToSkeletonConnector
 		$propertyType = $property->getType();
 		$annotationType = Extractor::get($property, KnotConsts::VARIABLE_DECLARATION_ANNOTATION);
 		
-		if (!$annotationType && !$propertyType) 
+		if (!$annotationType && !$propertyType)
 		{
 			throw new \Exception("Variable autoload is configured but missing it's type: {$property->name}");
 		}
 		
-		if ($annotationType) 
+		if ($annotationType)
 		{
 			$type = $this->getFullTypeName($property, $annotationType);
 		}

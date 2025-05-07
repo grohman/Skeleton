@@ -2,13 +2,10 @@
 namespace Skeleton\Base;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
-
 class ConfigSearchTest extends \SkeletonTestCase
 {
 	/**
-	 * @return MockObject|IMap
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IMap
 	 */
 	private function mockMap() 
 	{
@@ -16,7 +13,7 @@ class ConfigSearchTest extends \SkeletonTestCase
 	}
 	
 	/**
-	 * @return MockObject|IConfigLoader
+	 * @return \PHPUnit_Framework_MockObject_MockObject|IConfigLoader
 	 */
 	private function mockLoader() 
 	{

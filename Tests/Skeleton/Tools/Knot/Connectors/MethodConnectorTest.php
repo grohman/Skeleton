@@ -2,8 +2,6 @@
 namespace Skeleton\Tools\Knot\Connectors;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
 use Skeleton\Context;
 use Skeleton\ContextReference;
 use Skeleton\Base\ISkeletonSource;
@@ -11,7 +9,7 @@ use Skeleton\Base\ISkeletonSource;
 
 class MethodConnectorTest extends \SkeletonTestCase
 {
-	/** @var MockObject|ISkeletonSource */
+	/** @var \PHPUnit_Framework_MockObject_MockObject|ISkeletonSource */
 	private $skeleton;
 	
 	
@@ -149,10 +147,11 @@ class MethodConnectorTest extends \SkeletonTestCase
 		$this->assertSame($returnObject, $instance->getB());
 	}
 	
+	/**
+	 * @expectedException \Exception
+	 */
 	public function test_connect_MethodParameterHasNoType()
 	{
-		$this->expectException(\Exception::class);
-		
 		$obj = $this->getMethodConnector();
 		$this->invokeConnect($obj, test_MethodConnector_Helper_NoType::class);
 	}
@@ -175,11 +174,12 @@ class MethodConnectorTest extends \SkeletonTestCase
 			test_MethodConnector_Helper_ContextByType::class, 
 			new test_MethodConnector_cls());
 	}
-	
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextException
+	 */
 	public function test_connect_ContextNotSet_ExceptionThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\MissingContextException::class);
-		
 		$obj = $this->getMethodConnector();
 		$inst = new test_MethodConnector_Helper_ContextByAnnotation();
 		

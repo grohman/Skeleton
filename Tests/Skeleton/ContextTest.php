@@ -176,19 +176,22 @@ class ContextTest extends TestCase
 		self::assertEquals(123, $subject->get('b'));
 		self::assertEquals(123, $subject->get('b'));
 	}
-	
+
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextValueException
+	 */
 	public function test_get_ValueNotFound_ExceptionThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\MissingContextValueException::class);
-		
 		$subject = new Context('a', null);
 		self::assertEquals(123, $subject->get('b'));
 	}
-	
+
+	/**
+	 * @expectedException \Skeleton\Exceptions\MissingContextValueException
+	 */
 	public function test_get_ValueNotFoundWhenParentPresent_ExceptionThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\MissingContextValueException::class);
-		
 		$subject = new Context('a', new Context('b'));
 		self::assertEquals(123, $subject->get('b'));
 	}

@@ -2,8 +2,6 @@
 namespace Skeleton\Maps;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
 use Skeleton\Type;
 use Skeleton\ISingleton;
 use Skeleton\Base\ILoader;
@@ -12,7 +10,7 @@ use Skeleton\Loader\ValueLoader;
 
 class SimpleMapTest extends \SkeletonTestCase 
 {
-	/** @var ILoader|MockObject */
+	/** @var ILoader|\PHPUnit_Framework_MockObject_MockObject */
 	private $loader;
 	
 	
@@ -33,10 +31,11 @@ class SimpleMapTest extends \SkeletonTestCase
 		$map->set('a', \stdClass::class);
 	}
 	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerAlreadyDefinedException
+	 */
 	public function test_set_KeyAlreadySet_ErrorIsThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\ImplementerAlreadyDefinedException::class);
-		
 		$map = $this->getSimpleMap();
 		$map->set('a', \stdClass::class);
 		
@@ -102,10 +101,12 @@ class SimpleMapTest extends \SkeletonTestCase
 		$this->assertInstanceOf(\stdClass::class, $map->get('a'));
 	}
 	
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
 	public function test_get_NoImplementerDefinedForKey_ErrorIsThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
-		
 		$map = $this->getSimpleMap();
 		$map->get("a");
 	}

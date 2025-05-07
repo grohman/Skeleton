@@ -2,8 +2,6 @@
 namespace Skeleton;
 
 
-use PHPUnit\Framework\MockObject\MockObject;
-
 use Skeleton\Base\ILoader;
 use Skeleton\Base\IMap;
 use Skeleton\Base\IContextReference;
@@ -12,8 +10,8 @@ use Skeleton\Base\IContextReference;
 class UnitTestSkeletonTest extends \SkeletonTestCase
 {
 	/**
-	 * @param IMap|MockObject $map
-	 * @return MockObject|Skeleton
+	 * @param IMap|\PHPUnit_Framework_MockObject_MockObject $map
+	 * @return \PHPUnit_Framework_MockObject_MockObject|Skeleton
 	 */
 	private function mockSkeleton(&$map)
 	{
@@ -65,7 +63,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$context->set('a', 'b');
 		$contextReference = new ContextReference($context, $skeleton);
 
-		/** @var $map MockObject  */
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
 			->willReturnCallback(function ($a, IContextReference $context)
@@ -86,7 +84,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$context->set('a', 'b');
 		$contextReference = new ContextReference($context, $skeleton);
 
-		/** @var $map MockObject  */
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
 			->willReturnCallback(function ($a, IContextReference $context)
@@ -102,7 +100,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$skeleton = $this->mockSkeleton($map);
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 
-		/** @var $map MockObject  */
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
 			->with('a', $this->isInstanceOf(ContextReference::class))
@@ -118,7 +116,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 		$testSkeleton->override('a', 'b');
 
-		/** @var $map MockObject  */
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
 			->willReturnCallback(function ($a, IContextReference $context)
@@ -135,7 +133,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 
-		/** @var $map MockObject  */
+		/** @var $map \PHPUnit_Framework_MockObject_MockObject  */
 		$map->expects($this->once())
 			->method('get')
 			->willReturnCallback(function ($a, IContextReference $context)
@@ -152,7 +150,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($this->mockSkeleton($map));
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->expects($this->once())->method('get');
@@ -165,7 +163,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($this->mockSkeleton($map));
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->method('get')->with(\stdClass::class);
@@ -178,7 +176,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($this->mockSkeleton($map));
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->method('get')->with($this->anything(), null);
@@ -191,7 +189,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($this->mockSkeleton($map));
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->method('get')->willReturn(123);
@@ -205,7 +203,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$context = $this->getMock(IContextReference::class);
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->method('get')->willReturnCallback(function ($a, $b) use ($context)
@@ -221,7 +219,7 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton = new UnitTestSkeleton($this->mockSkeleton($map));
 		
 		/** @var IMap $map */
-		/** @var MockObject $loader */
+		/** @var \PHPUnit_Framework_MockObject_MockObject $loader */
 		$loader = $map->loader();
 		
 		$loader->method('get')->willReturnCallback(function ($a, IContextReference $b)
@@ -232,10 +230,12 @@ class UnitTestSkeletonTest extends \SkeletonTestCase
 		$testSkeleton->load(\stdClass::class, ['a' => 123]);
 	}
 	
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\ImplementerNotDefinedException
+	 */
 	public function test_clear_ValueReset()
 	{
-		$this->expectException(\Skeleton\Exceptions\ImplementerNotDefinedException::class);
-		
 		$skeleton = new Skeleton();
 		$testSkeleton = new UnitTestSkeleton($skeleton);
 		

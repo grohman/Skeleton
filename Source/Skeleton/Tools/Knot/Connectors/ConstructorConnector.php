@@ -13,7 +13,7 @@ class ConstructorConnector extends AbstractObjectToSkeletonConnector
 	 */
 	private function loadParameter(\ReflectionParameter $parameter)
 	{
-		$class = $parameter->getClass();
+		$class = get_param_class($parameter);
 		
 		if (is_null($class))
 		{

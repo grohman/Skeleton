@@ -49,7 +49,7 @@ class AbstractSkeletonInvalidSetupHelper extends AbstractSkeleton
 
 class AbstractSkeletonTest extends TestCase
 {
-	public function setUp(): void
+	public function setUp()
 	{
 		AbstractSkeletonHelper::reset();
 	}
@@ -61,9 +61,12 @@ class AbstractSkeletonTest extends TestCase
 		self::assertNotSame(AbstractSkeletonHelper::skeleton(), AbstractSkeletonExtraHelper::skeleton());
 	}
 	
+	
+	/**
+	 * @expectedException \Skeleton\Exceptions\StaticSkeletonPropertyMissing
+	 */
 	public function test_SkeletonPropertyMissing_ExceptionThrown()
 	{
-		$this->expectException(\Skeleton\Exceptions\StaticSkeletonPropertyMissing::class);
 		AbstractSkeletonInvalidSetupHelper::skeleton();
 	}
 	

@@ -30,8 +30,7 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 	 */
 	private function getAutoloadValue(\ReflectionMethod $method)
 	{
-		$parameter = $method->getParameters()[0];
-		$class = $parameter->getClass();
+		$class = get_param_class($method);
 		
 		if (is_null($class))
 		{
@@ -53,8 +52,7 @@ class MethodConnector extends AbstractObjectToSkeletonConnector
 		if (!$name)
 		{
 			$parameter = $method->getParameters()[0];
-			$class = $parameter->getClass();
-			
+			$class = get_param_class($method);
 			$name = ($class ? $class->getName() : $parameter->getName());
 		}
 		
